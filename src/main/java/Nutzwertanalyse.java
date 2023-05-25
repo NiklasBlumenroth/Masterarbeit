@@ -9,7 +9,7 @@ public class Nutzwertanalyse {
     public static void main(String[] args) {
         ArrayList<int[][]> decisionMakerList = getDecisionMakerList(5, 5, 5, 1, 10);
         ArrayList<double[]> weights = getDecisionMakerWeightList(5, 0, 1);
-
+        System.out.println();
         GetMonteCarloRanking(decisionMakerList, weights);
     }
 
