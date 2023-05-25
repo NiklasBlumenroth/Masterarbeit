@@ -7,23 +7,27 @@ import java.util.Random;
 public class Nutzwertanalyse {
 
     public static void main(String[] args) {
-        showSaw();
-        showFuzzySaw();
-//        ArrayList<int[][]> dList = getDList(5, 5, 5, 1, 10);
-//
-//        double[] weights = Helper.generateWeigths(5, 0, 1);
-//
-//        GetMonteCarloRanking(dList, weights);
+        ArrayList<int[][]> decisionMakerList = getDecisionMakerList(5, 5, 5, 1, 10);
+        ArrayList<double[]> weights = getDecisionMakerWeightList(5, 0, 1);
+
+        GetMonteCarloRanking(decisionMakerList, weights);
     }
 
-    public static int[][] GetMonteCarloRanking(ArrayList<int[][]> dList, double[] weights){
+    public static int[][] GetMonteCarloRanking(ArrayList<int[][]> dList, ArrayList<double[]> weights){
         int[][] monteCarloMatrix = generateMoteCarloMatrix(dList);
+        double[] monteCarloWeights = getMonteCarloWeights(weights);
 
-        Helper.saw(monteCarloMatrix, weights);
+        Helper.saw(monteCarloMatrix, monteCarloWeights);
 
         int monteCarloIterations = 10_000;
 
         return monteCarloMatrix;
+    }
+
+    public static double[] getMonteCarloWeights(ArrayList<double[]> weights){
+
+
+        return null;
     }
 
     public static int[][] generateMoteCarloMatrix(ArrayList<int[][]> dList){
@@ -40,7 +44,19 @@ public class Nutzwertanalyse {
         return monteCarloMatrix;
     }
 
-    public static ArrayList<int[][]> getDList(int number, int row, int col, int min, int max){
+    public static ArrayList<double[]> getDecisionMakerWeightList(int number, int min, int max){
+        ArrayList<double[]> dList = new ArrayList<>();
+        double[] matrix;
+
+        for(int i = 0; i < number; i++){
+            matrix = Helper.generateWeigths(number, min, max);
+            dList.add(matrix);
+        }
+
+        return dList;
+    }
+
+    public static ArrayList<int[][]> getDecisionMakerList(int number, int row, int col, int min, int max){
         ArrayList<int[][]> dList = new ArrayList<>();
         int[][] matrix;
 
