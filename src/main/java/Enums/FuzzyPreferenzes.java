@@ -1,13 +1,13 @@
 package Enums;
 
 public enum FuzzyPreferenzes {
-    SEHRWICHTIG     (0.0, 0.1,0.2),
-    WICHTIG         (0.1, 0.2,0.3),
-    EHERWICHTIG     (0.2, 0.35,0.5),
+    SEHRUNWICHTIG     (0.0, 0.1,0.2),
+    UNWICHTIG         (0.1, 0.2,0.3),
+    EHERUNWICHTIG     (0.2, 0.35,0.5),
     MITTEL          (0.4, 0.5,0.6),
-    EHERUNWICHTIG   (0.5, 0.65,0.8),
-    UNWICHTIG       (0.7, 0.8,0.9),
-    SEHRUNWICHTIG   (0.8, 0.9,1.0);
+    EHERWICHTIG   (0.5, 0.65,0.8),
+    WICHTIG       (0.7, 0.8,0.9),
+    SEHRWICHTIG   (0.8, 0.9,1.0);
 
     public final double value1;
     public final double value2;

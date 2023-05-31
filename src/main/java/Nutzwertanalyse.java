@@ -7,10 +7,10 @@ import java.util.Random;
 public class Nutzwertanalyse {
 
     public static void main(String[] args) {
-        ArrayList<int[][]> decisionMakerList = getDecisionMakerList(5, 5, 5, 1, 10);
-        ArrayList<double[]> weights = getDecisionMakerWeightList(5, 0, 1);
-        System.out.println();
-        GetMonteCarloRanking(decisionMakerList, weights);
+//        ArrayList<int[][]> decisionMakerList = getDecisionMakerList(5, 5, 5, 1, 10);
+//        ArrayList<double[]> weights = getDecisionMakerWeightList(5, 0, 1);
+//        GetMonteCarloRanking(decisionMakerList, weights);
+        showFuzzySaw();
     }
 
     public static int[][] GetMonteCarloRanking(ArrayList<int[][]> dList, ArrayList<double[]> weights){
