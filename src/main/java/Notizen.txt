@@ -1,0 +1,4 @@
+Aggregated Judgement Matrix
+
+Kathesisches Produkt:
+https://im-coder.com/kartesisches-produkt-beliebiger-mengen-in-java.html

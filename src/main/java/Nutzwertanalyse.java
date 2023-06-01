@@ -7,15 +7,16 @@ import java.util.Random;
 public class Nutzwertanalyse {
 
     public static void main(String[] args) {
-//        ArrayList<int[][]> decisionMakerList = getDecisionMakerList(5, 5, 5, 1, 10);
-//        ArrayList<double[]> weights = getDecisionMakerWeightList(5, 0, 1);
-//        GetMonteCarloRanking(decisionMakerList, weights);
-        showFuzzySaw();
+        ArrayList<int[][]> decisionMakerList = generateDecisionMakerList(5, 5, 5, 1, 10);
+        ArrayList<double[]> decisionMakerWeights = generateDecisionMakerWeightList(5, 0, 1);
+        GetMonteCarloRanking(decisionMakerList, decisionMakerWeights);
+        //TODO 1D array ebenfalls zufällig aus den bestehenden generieren lassen
+        //TODO Aggregated Judgement Matrix
     }
 
-    public static int[][] GetMonteCarloRanking(ArrayList<int[][]> dList, ArrayList<double[]> weights){
-        int[][] monteCarloMatrix = generateMoteCarloMatrix(dList);
-        double[] monteCarloWeights = getMonteCarloWeights(weights);
+    public static int[][] GetMonteCarloRanking(ArrayList<int[][]> dMList, ArrayList<double[]> dMWList){
+        int[][] monteCarloMatrix = generateMoteCarloMatrix(dMList);
+        double[] monteCarloWeights = getMonteCarloWeights(dMWList);
 
         Helper.saw(monteCarloMatrix, monteCarloWeights);
 
@@ -24,48 +25,54 @@ public class Nutzwertanalyse {
         return monteCarloMatrix;
     }
 
-    public static double[] getMonteCarloWeights(ArrayList<double[]> weights){
+    public static double[] getMonteCarloWeights(ArrayList<double[]> dMWList){
+        Random random = new Random();
+        double[] monteCarloWeight = new double[dMWList.get(0).length];
+        int randomNumber;
 
-
-        return null;
+        for(int i = 0; i < monteCarloWeight.length; i++){
+            randomNumber = random.nextInt(dMWList.size());
+            monteCarloWeight[i] = dMWList.get(randomNumber)[i];
+        }
+        return monteCarloWeight;
     }
 
-    public static int[][] generateMoteCarloMatrix(ArrayList<int[][]> dList){
+    public static int[][] generateMoteCarloMatrix(ArrayList<int[][]> dMList){
         Random random = new Random();
-        int[][] monteCarloMatrix = new int[dList.get(0).length][dList.get(0)[0].length];
+        int[][] monteCarloMatrix = new int[dMList.get(0).length][dMList.get(0)[0].length];
         int randomNumber;
 
         for(int i = 0; i < monteCarloMatrix.length; i++){
-            for(int j = 0; j < dList.get(0)[0].length; j++){
-                randomNumber = random.nextInt(dList.size());
-                monteCarloMatrix[i][j] = dList.get(randomNumber)[i][j];
+            for(int j = 0; j < dMList.get(0)[0].length; j++){
+                randomNumber = random.nextInt(dMList.size());
+                monteCarloMatrix[i][j] = dMList.get(randomNumber)[i][j];
             }
         }
         return monteCarloMatrix;
     }
 
-    public static ArrayList<double[]> getDecisionMakerWeightList(int number, int min, int max){
-        ArrayList<double[]> dList = new ArrayList<>();
+    public static ArrayList<double[]> generateDecisionMakerWeightList(int number, int min, int max){
+        ArrayList<double[]> dMWList = new ArrayList<>();
         double[] matrix;
 
         for(int i = 0; i < number; i++){
             matrix = Helper.generateWeigths(number, min, max);
-            dList.add(matrix);
+            dMWList.add(matrix);
         }
 
-        return dList;
+        return dMWList;
     }
 
-    public static ArrayList<int[][]> getDecisionMakerList(int number, int row, int col, int min, int max){
-        ArrayList<int[][]> dList = new ArrayList<>();
+    public static ArrayList<int[][]> generateDecisionMakerList(int number, int row, int col, int min, int max){
+        ArrayList<int[][]> dMList = new ArrayList<>();
         int[][] matrix;
 
         for(int i = 0; i < number; i++){
             matrix = Helper.generateInteger2DArray(row, col, min, max);
-            dList.add(matrix);
+            dMList.add(matrix);
         }
 
-        return dList;
+        return dMList;
     }
 
     public static void showSaw(){
