@@ -1,0 +1,52 @@
+1. Introduction
+- Entscheidungsanalyse- und Konsensbildungsansatz für kooperative, rationale Gruppen
+- Mitglieder einer Gruppe haben gemeinsames Ziel zB Team von Ingenieuren
+- Entscheidungsanalysetool für Situationen, in denen die Kriteriengewichte nicht eindeutig sind oder fehlen
+- SMAA Stochastische Multi-Kriterien-Akzeptanzanalyse
+- SMAA identifiziert schwache Alternativen um Austausch zu minimieren
+- CMAA Combinatorial Multicriteria Acceptability Analysis
+- Informationsentropie als Maß der Trennung der Alternativen in schwach und stark
+- getrennte Behandlung von Benutzereingaben
+
+2. Scientific Background
+2.1. Distributed mental models
+- mentales Modell ist die Darstellung eines spezifischen Problems im Kopf einer Person
+- in heterogenen Gruppe existieren unterschiedliche Modelle -> verteiltes Mentales Modell (DMM)
+- kooperative Gruppe: gleiches Ziel
+- rationale Gruppe: unterschiedliche Bewertungen
+- unterschiedliche Bewertungen sind Zeichen für unterschiedliche mentale Modelle
+- Minderheiteninformationen sind für die Entscheidungskompetenz einer Gruppe von entscheidender Bedeutung
+
+2.2. Use of entropy in MCDM
+- Informationsentropie -> Unsicherheit
+- Entropiegewichtungsmethode wird verwendet, um Kriteriengewichte zu bestimmen, ohne Informationen von den Entscheidungsträgern zu verwenden
+- Kriterien mit geringer Variabilität tragen wenig zur Unterscheidung der Alternativen bei
+- Kriterien mit geringer Entropie wird höhere Wichtung zugewiesen
+- Entscheidungsträgern, deren Bewertungen eine größere Unterscheidungskraft aufweisen, wird ein höheres Gewicht zugewiesen
+- Informationseentropie für Probleme ohne Kriterieninformationen
+- Entscheidungsträger wird wiederholt aufgefordert welche von zwei Alternativen er bevorzugt -> Raum zulässiger Kriteriengewichte zu reduzieren
+- Ziel: Aufforderungen minimieren (Austausch minimieren)
+
+2.3. Consensus-building in MCDM
+- hier ist Konsens eine numerische Größe (Einstimmigkeit)
+- Weicher Konsens bedeutet, dass das berechnete Maß an Übereinstimmung erreicht wird
+- völlige Einstimmigkeit gilt als nicht erreichbar
+- das Zusammenfassen oder Weglassen von Eingaben(Bewertungen) verhindert zu einem Konsens zu gelangen
+
+2.4. Stochastic multicriteria acceptability analysis
+
+3. Combinatorial Multicriteria Acceptability Analysis
+- Ein Entscheidungsproblem besteht aus Leistungsbeurteilungsaufgaben und Kriterienpräferenzaufgaben.
+-
+
+
+
+3.1. Performance judgements
+
+3.2. Criteria preferences
+
+3.3. Resolution of discrepancies
+
+3.4. Analysis algorithm
+
+3.5. Consensus iteration

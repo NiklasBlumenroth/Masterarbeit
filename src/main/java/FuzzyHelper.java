@@ -4,7 +4,23 @@ import Enums.FuzzyPreferenzes;
 import java.util.Random;
 
 public class FuzzyHelper {
-    public static double[] fuzzySaw(FuzzyJudgements[][] matrix, FuzzyPreferenzes[] weights) {
+
+    public static void showFuzzySaw(){
+        FuzzyJudgements[][] fuzzyJudgements = (FuzzyJudgements[][]) Helper.generate2DArray(FuzzyJudgements.class, 3, 3, 0, 0);
+        FuzzyPreferenzes[] fuzzyPreferenzes = FuzzyHelper.generateFuzzyPreferenzes(3);
+
+        System.out.println("Judgements: ");
+        Helper.show2DArray(fuzzyJudgements);
+        System.out.println();
+        System.out.println("Preferenzes: ");
+        Helper.show1DArray(fuzzyPreferenzes);
+        System.out.println();
+        Double[] scores = FuzzyHelper.fuzzySaw(fuzzyJudgements, fuzzyPreferenzes);
+        System.out.println("Ranking: ");
+        Helper.show1DArray(scores);
+    }
+
+    public static Double[] fuzzySaw(FuzzyJudgements[][] matrix, FuzzyPreferenzes[] weights) {
         int rows = matrix.length;
         int cols = matrix[0].length;
 
@@ -12,7 +28,7 @@ public class FuzzyHelper {
         if (cols != weights.length) {
             throw new IllegalArgumentException("ERROR: Matrix length:" + cols + " | Weights :" + weights.length );
         }
-        double[] scores = new double[rows];
+        Double[] scores = new Double[rows];
 
         // create sum for columns
         for (int i = 0; i < rows; i++) {
@@ -25,18 +41,6 @@ public class FuzzyHelper {
         return scores;
     }
 
-    public static FuzzyJudgements[][] generateFuzzyJudgementMatrix(int rows, int columns){
-        FuzzyJudgements[][] matrix = new FuzzyJudgements[rows][columns];
-        Random random = new Random();
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                matrix[i][j] = FuzzyJudgements.getJudgement(random.nextInt(7));
-            }
-        }
-        return matrix;
-    }
-
     public static FuzzyPreferenzes[] generateFuzzyPreferenzes(int size) {
         FuzzyPreferenzes[] randomArray = new FuzzyPreferenzes[size];
         Random random = new Random();
@@ -47,24 +51,5 @@ public class FuzzyHelper {
         }
 
         return randomArray;
-    }
-
-    public static void show1DArray(FuzzyPreferenzes[] array) {
-        for (FuzzyPreferenzes elem : array) {
-            System.out.print(elem + "(" + elem.value1 + "|" + elem.value2 + "|" + elem.value3 + ") ");
-        }
-        System.out.println();
-    }
-
-    public static void show2DArray(FuzzyJudgements[][] matrix) {
-        int rows = matrix.length;
-        int columns = matrix[0].length;
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                System.out.print(matrix[j][i] + "(" + matrix[j][i].value1 + "|" + matrix[j][i].value2 + "|" + matrix[j][i].value3 + ") ");;
-            }
-            System.out.println();
-        }
     }
 }
