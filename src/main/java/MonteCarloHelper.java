@@ -42,8 +42,8 @@ public class MonteCarloHelper {
         Random random = new Random();
 
         int rngNumber;
-        for(int i = 0; i < aggregatedMatrix[0].length - 1; i++){
-            for(int j = 0; j < aggregatedMatrix[i][j].size(); j++){
+        for(int i = 0; i < aggregatedMatrix.length; i++){
+            for(int j = 0; j < aggregatedMatrix[0].length; j++){
                 rngNumber = random.nextInt(aggregatedMatrix[i][j].size());
                 sawMatrix[i][j] = aggregatedMatrix[i][j].get(rngNumber);
 
@@ -58,7 +58,7 @@ public class MonteCarloHelper {
         Object[] sawWeights = new Object[aggregatedWeights[0].size()];
         Random random = new Random();
         int rngNumber;
-        for(int i = 0; i < aggregatedWeights[0].size(); i++){
+        for(int i = 0; i < aggregatedWeights.length; i++){
             rngNumber = random.nextInt(aggregatedWeights[i].size());
             sawWeights[i] = aggregatedWeights[i].get(rngNumber);
         }
