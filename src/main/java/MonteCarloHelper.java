@@ -1,5 +1,6 @@
 import Enums.FuzzyJudgements;
 import Enums.FuzzyPreferenzes;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,14 +17,6 @@ public class MonteCarloHelper {
         ArrayList<Object[]> decisionMakerWeights = generateDecisionMakerWeightList(FuzzyPreferenzes.class, 5, 5, 0, 1);
         Object[] monteCarloRanking = null;
         ArrayList<Object[]> monteCarloRankings = new ArrayList<>();
-
-        System.out.println("\nGet Monte Carlo Rankings: ");
-        for(int i = 0; i < monteCarloIterations; i++){
-            monteCarloRanking = getMonteCarloRanking(decisionMakerList, decisionMakerWeights);
-            monteCarloRankings.add(monteCarloRanking);
-            System.out.println("\nMonte Carlo ranking total value");
-            Helper.show1DArray(monteCarloRanking);
-        }
 
         System.out.println("\nGet Monte Carlo Total Ranking: ");
         Object[][] totalRanking = new Integer[monteCarloRankings.get(0).length][monteCarloRankings.get(0).length];
@@ -44,6 +37,35 @@ public class MonteCarloHelper {
         Helper.show2DArray(totalRanking);
     }
 
+    public static Object[][] getSawMatrix(ArrayList<Object>[][] aggregatedMatrix){
+        Object[][] sawMatrix = new Object[aggregatedMatrix[0].length][aggregatedMatrix[0][0].size()];
+        Random random = new Random();
+
+        int rngNumber;
+        for(int i = 0; i < aggregatedMatrix[0].length - 1; i++){
+            for(int j = 0; j < aggregatedMatrix[i][j].size(); j++){
+                rngNumber = random.nextInt(aggregatedMatrix[i][j].size());
+                sawMatrix[i][j] = aggregatedMatrix[i][j].get(rngNumber);
+
+
+            }
+        }
+
+        return sawMatrix;
+    }
+
+    public static Object[] getSawWeights(ArrayList<Object>[] aggregatedWeights){
+        Object[] sawWeights = new Object[aggregatedWeights[0].size()];
+        Random random = new Random();
+        int rngNumber;
+        for(int i = 0; i < aggregatedWeights[0].size(); i++){
+            rngNumber = random.nextInt(aggregatedWeights[i].size());
+            sawWeights[i] = aggregatedWeights[i].get(rngNumber);
+        }
+
+        return sawWeights;
+    }
+
     public static void showMonteCarloSaw(){
         ArrayList<Object[][]> decisionMakerList = generateDecisionMakerList(FuzzyJudgements.class, 3, 2, 2, 1, 10);
         ArrayList<Object[]> decisionMakerWeightsList = generateDecisionMakerWeightList(FuzzyPreferenzes.class, 2, 2, 0, 1);
@@ -60,14 +82,23 @@ public class MonteCarloHelper {
 
         System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
 
-        System.out.println("\nGet Monte Carlo Rankings: ");
-        for(int i = 0; i < monteCarloIterations; i++){
-            monteCarloRanking = getMonteCarloRanking(decisionMakerList, decisionMakerWeightsList);
-            monteCarloRankings.add(monteCarloRanking);
-            System.out.println("\nMonte Carlo ranking total value");
-            assert monteCarloRanking != null;
-            Helper.show1DArray(monteCarloRanking);
-        }
+        System.out.println("\nSaw Matrix:");
+        Object[][] sawMatrix = getSawMatrix(aggregatedMatrix);
+        Helper.show2DArray(sawMatrix);
+
+        System.out.println("\nSaw Weights:");
+        Object[] sawWeights = getSawWeights(aggregatedWeights);
+        Helper.show1DArray(sawWeights);
+
+        Helper.show1DArray(Helper.saw(sawMatrix, sawWeights));
+
+        /*
+        aggregated matrix
+        array mit rng elementen
+        saw * 10000
+        get ranked
+         */
+
 
         System.out.println("\nGet Monte Carlo Total Ranking: ");
         Object[][] totalRanking = new Object[monteCarloRankings.get(0).length][monteCarloRankings.get(0).length];
@@ -88,7 +119,8 @@ public class MonteCarloHelper {
         Helper.show2DArray(totalRanking);
     }
 
-    public static ArrayList<Object>[][] generateAggregatedMatrix(ArrayList<Object[][]> dMList){
+    @NotNull
+    public static ArrayList<Object>[][] generateAggregatedMatrix(@NotNull ArrayList<Object[][]> dMList){
         ArrayList<Object>[][] aggregatedMatrix = new ArrayList[dMList.get(0).length][dMList.get(0)[0].length];
 
         //fill aggregated with empty lists
@@ -99,11 +131,11 @@ public class MonteCarloHelper {
         }
 
         //fill empty lists
-        for(int k = 0; k < dMList.size(); k++){
-            for(int i = 0; i < aggregatedMatrix.length; i++){
-                for(int j = 0; j < dMList.get(0)[0].length; j++){
-                    if(!aggregatedMatrix[i][j].contains(dMList.get(k)[i][j])){
-                        aggregatedMatrix[i][j].add(dMList.get(k)[i][j]);
+        for (Object[][] objects : dMList) {
+            for (int i = 0; i < aggregatedMatrix.length; i++) {
+                for (int j = 0; j < dMList.get(0)[0].length; j++) {
+                    if (!aggregatedMatrix[i][j].contains(objects[i][j])) {
+                        aggregatedMatrix[i][j].add(objects[i][j]);
                     }
                 }
             }
@@ -111,7 +143,7 @@ public class MonteCarloHelper {
         return aggregatedMatrix;
     }
 
-    public static int getMatrixK(ArrayList<Object>[][] matrix, ArrayList<Object>[] weights){
+    public static int getMatrixK(@NotNull ArrayList<Object>[][] matrix, ArrayList<Object>[] weights){
         int k = 1;
 
         for (ArrayList<Object>[] arrayLists : matrix) {
@@ -126,7 +158,8 @@ public class MonteCarloHelper {
         return k;
     }
 
-    public static ArrayList<Object>[] generateAggregatedWeights(ArrayList<Object[]> dMWList){
+    @NotNull
+    public static ArrayList<Object>[] generateAggregatedWeights(@NotNull ArrayList<Object[]> dMWList){
         ArrayList<Object>[] aggregatedWeights = new ArrayList[dMWList.get(0).length];
 
         //fill aggregated with empty lists
@@ -146,6 +179,7 @@ public class MonteCarloHelper {
         return aggregatedWeights;
     }
 
+    @NotNull
     public static ArrayList<Object[]> generateDecisionMakerWeightList(Class<?> clazz, int number, int length, int min, int max){
         ArrayList<Object[]> dMWList = new ArrayList<>();
         Object[] matrix;
@@ -159,6 +193,7 @@ public class MonteCarloHelper {
         return dMWList;
     }
 
+    @NotNull
     public static ArrayList<Object[][]> generateDecisionMakerList(Class<?> clazz, int number, int row, int col, int min, int max){
         ArrayList<Object[][]> dMList = new ArrayList<>();
         Object[][] matrix;
@@ -199,18 +234,5 @@ public class MonteCarloHelper {
         return result;
     }
 
-    public static Object[] getMonteCarloRanking(ArrayList<Object[][]> dMList, ArrayList<Object[]> dMWList){
-//        Integer[][] monteCarloMatrix = (Integer[][]) generateAggregatedMatrix(dMList);
-//        Object[] monteCarloWeights = generateAggregatedWeights(dMWList);
-//
-//        System.out.println("\nGet Monte Carlo Matrix");
-//        Helper.show2DArray(monteCarloMatrix);
-//
-//        System.out.println("\nGet Monte Carlo Weight");
-//        Helper.show1DArray(monteCarloWeights);
-//
-//        return Helper.saw(Integer.class, monteCarloMatrix, monteCarloWeights);
-        return null;
-    }
 
 }

@@ -1,4 +1,5 @@
 Aggregated Judgement Matrix
+
 Aufgaben allgemein:
 - Paper zusammenfassen(6/28)
 + Monte Carlo implementieren

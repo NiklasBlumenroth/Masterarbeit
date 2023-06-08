@@ -15,15 +15,15 @@ public class Helper {
         Helper.show2DArray(matrix);
         System.out.println("\nWichtung:");
         Helper.show1DArray(weights);
-        Double[] scores = saw(Integer.class, matrix, weights);
+        Double[] scores = saw(matrix, weights);
         System.out.println("\nErgebnisse der Nutzwertanalyse:");
         Helper.show1DArray(scores);
     }
 
-    public static Double[] saw(Class<?> clazz, Object[][] matrix, Object[] weights) {
+    public static Double[] saw(Object[][] matrix, Object[] weights) {
         int rows = matrix.length;
         int cols = matrix[0].length;
-
+        Class<?> clazz = matrix[0][0].getClass();
         // check if matrix and weights fit
         if (cols != weights.length) {
             throw new IllegalArgumentException("ERROR: Matrix length:" + cols + " | Weights :" + weights.length );
@@ -37,7 +37,7 @@ public class Helper {
             for (int j = 0; j < cols; j++) {
                 if (Double.class.equals(clazz)) {
 
-                } else if (FuzzyHelper.class.equals(clazz)) {
+                } else if (FuzzyJudgements.class.equals(clazz)) {
                     FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
                     FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
                     sum += (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
@@ -98,8 +98,10 @@ public class Helper {
     }
 
     public static void show1DArray(Object[] array) {
-        for (Object elem : array) {
-            System.out.print(elem + " | ");
+        System.out.print(array[0]);
+
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(" | " + array[i]);
         }
         System.out.println();
     }
