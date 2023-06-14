@@ -3,72 +3,25 @@ import Enums.FuzzyPreferenzes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class MonteCarloHelper {
     private static final int monteCarloIterations = 10_000;
+    private static final int row = 3;
+    private static final int col = 3;
+    private static final int numberOfDecisionMaker = 10;
 
     public static void main(String[] args) {
-        showMonteCarloSaw();
-    }
+//        showMonteCarloSaw();
 
-    public static void showMonteCarloFuzzySaw(){
-        ArrayList<Object[][]> decisionMakerList = generateDecisionMakerList(FuzzyJudgements.class, 5, 5, 5, 1, 10);
-        ArrayList<Object[]> decisionMakerWeights = generateDecisionMakerWeightList(FuzzyPreferenzes.class, 5, 5, 0, 1);
-        Object[] monteCarloRanking = null;
-        ArrayList<Object[]> monteCarloRankings = new ArrayList<>();
-
-        System.out.println("\nGet Monte Carlo Total Ranking: ");
-        Object[][] totalRanking = new Integer[monteCarloRankings.get(0).length][monteCarloRankings.get(0).length];
-
-        //fill with 0
-        for(int i = 0; i < totalRanking.length; i++){
-            for(int j = 0; j < totalRanking[0].length; j++){
-                totalRanking[i][j] = 0;
-            }
-        }
-
-        //add ranking by ranking
-        for(Object[] ranking : monteCarloRankings){
-//            addRanking(totalRanking, getRanksArray(ranking));
-        }
-
-        System.out.println("\nPlacement");
-        Helper.show2DArray(totalRanking);
-    }
-
-    public static Object[][] getSawMatrix(ArrayList<Object>[][] aggregatedMatrix){
-        Object[][] sawMatrix = new Object[aggregatedMatrix[0].length][aggregatedMatrix[0][0].size()];
-        Random random = new Random();
-
-        int rngNumber;
-        for(int i = 0; i < aggregatedMatrix.length; i++){
-            for(int j = 0; j < aggregatedMatrix[0].length; j++){
-                rngNumber = random.nextInt(aggregatedMatrix[i][j].size());
-                sawMatrix[i][j] = aggregatedMatrix[i][j].get(rngNumber);
-
-
-            }
-        }
-
-        return sawMatrix;
-    }
-
-    public static Object[] getSawWeights(ArrayList<Object>[] aggregatedWeights){
-        Object[] sawWeights = new Object[aggregatedWeights[0].size()];
-        Random random = new Random();
-        int rngNumber;
-        for(int i = 0; i < aggregatedWeights.length; i++){
-            rngNumber = random.nextInt(aggregatedWeights[i].size());
-            sawWeights[i] = aggregatedWeights[i].get(rngNumber);
-        }
-
-        return sawWeights;
+        //double entropy = calculateEntropy(array);
     }
 
     public static void showMonteCarloSaw(){
-        ArrayList<Object[][]> decisionMakerList = generateDecisionMakerList(FuzzyJudgements.class, 3, 2, 2, 1, 10);
-        ArrayList<Object[]> decisionMakerWeightsList = generateDecisionMakerWeightList(FuzzyPreferenzes.class, 2, 2, 0, 1);
+        ArrayList<Object[][]> decisionMakerList = generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
+        ArrayList<Object[]> decisionMakerWeightsList = generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, col, 0, 1);
         Object[] monteCarloRanking = null;
         ArrayList<Object[]> monteCarloRankings = new ArrayList<>();
 
@@ -82,15 +35,38 @@ public class MonteCarloHelper {
 
         System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
 
-        System.out.println("\nSaw Matrix:");
-        Object[][] sawMatrix = getSawMatrix(aggregatedMatrix);
-        Helper.show2DArray(sawMatrix);
+
+        Object[][] sawMatrix;
+        Object[] sawWeights;
+        Object[] rankingTotalPoints;
+        Object[] rankingPosition;
+        Object[][] totalRankingPositions = new Object[row][col];
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                totalRankingPositions[i][j] = 0;
+            }
+
+        }
 
         System.out.println("\nSaw Weights:");
-        Object[] sawWeights = getSawWeights(aggregatedWeights);
-        Helper.show1DArray(sawWeights);
+        for(int i = 0; i < monteCarloIterations; i++){
 
-        Helper.show1DArray(Helper.saw(sawMatrix, sawWeights));
+            sawMatrix = getSawMatrix(aggregatedMatrix, col, row);
+            sawWeights = getSawWeights(aggregatedWeights, col);
+            rankingTotalPoints = Helper.saw(sawMatrix, sawWeights);
+            System.out.println("\n Ranking total points");
+            Helper.show1DArray(rankingTotalPoints);
+            rankingPosition = getRanksArray(rankingTotalPoints);
+            System.out.println("\n Ranking positions");
+            Helper.show1DArray(rankingPosition);
+            addRanking(totalRankingPositions, rankingPosition);
+        }
+
+        System.out.println("\n total ranking positions");
+
+        Helper.show2DArray(totalRankingPositions);
+
+
 
         /*
         aggregated matrix
@@ -118,6 +94,79 @@ public class MonteCarloHelper {
         System.out.println("\nPlacement");
         Helper.show2DArray(totalRanking);
     }
+
+
+    public static double calculateEntropy(Object[][] array) {
+        int totalElements = array.length * array[0].length;
+        Map<Integer, Integer> elementCounts = new HashMap<>();
+
+        // Zählen der Häufigkeit jedes Elements im 2D-Array
+        for (Object[] row : array) {
+            for (Object element : row) {
+                elementCounts.put((Integer)element, elementCounts.getOrDefault(element, 0) + 1);
+            }
+        }
+
+        double entropy = 0.0;
+        for (int count : elementCounts.values()) {
+            double probability = (double) count / totalElements;
+            entropy -= probability * log2(probability);
+        }
+
+        return entropy;
+    }
+
+    private static double log2(double x) {
+        return Math.log(x) / Math.log(2);
+    }
+
+    public static double calculateEntropy(double[] vector) {
+        double entropy = 0.0;
+        double sum = 0.0;
+
+        // Summiere die Werte im Vektor
+        for (double value : vector) {
+            sum += value;
+        }
+
+        // Berechne die Entropie
+        for (double value : vector) {
+            if (value != 0.0) {
+                double probability = value / sum;
+                entropy -= probability * Math.log(probability);
+            }
+        }
+
+        return entropy;
+    }
+
+    public static Object[][] getSawMatrix(ArrayList<Object>[][] aggregatedMatrix, int col, int row){
+        Object[][] sawMatrix = new Object[row][col];
+        Random random = new Random();
+
+        int rngNumber;
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                rngNumber = random.nextInt(aggregatedMatrix[i][j].size());
+                sawMatrix[i][j] = aggregatedMatrix[i][j].get(rngNumber);
+            }
+        }
+
+        return sawMatrix;
+    }
+
+    public static Object[] getSawWeights(ArrayList<Object>[] aggregatedWeights, int col){
+        Object[] sawWeights = new Object[col];
+        Random random = new Random();
+        int rngNumber;
+        for(int i = 0; i < col; i++){
+            rngNumber = random.nextInt(aggregatedWeights[i].size());
+            sawWeights[i] = aggregatedWeights[i].get(rngNumber);
+        }
+
+        return sawWeights;
+    }
+
 
     @NotNull
     public static ArrayList<Object>[][] generateAggregatedMatrix(@NotNull ArrayList<Object[][]> dMList){
@@ -209,15 +258,18 @@ public class MonteCarloHelper {
         return dMList;
     }
 
+    public static void addRanking(Object[][] totalRanking, Object[] newRanking){
+        Integer i1;
+        int x;
+        for(int i = 0; i < newRanking.length; i++){
+            x = (Integer) newRanking[i] - 1;
+            i1 = (Integer)totalRanking[i][x];
+            i1 += 1;
+            totalRanking[i][x] = i1;
+        }
 
 
-    /*-------------------------------*/
-
-//    public static void addRanking(Object[][] totalRanking, Object[] newRanking){
-//        for(int i = 0; i < totalRanking.length; i++){
-//            totalRanking[i][(Integer) newRanking[i] - 1] += 1;
-//        }
-//    }
+    }
 
     public static Object[] getRanksArray(Object[] array) {
         Object[] result = new Object[array.length];

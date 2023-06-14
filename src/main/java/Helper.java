@@ -41,6 +41,7 @@ public class Helper {
                     FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
                     FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
                     sum += (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
+                    sums[i][j] = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
                 } else if (Integer.class.equals(clazz)) {
                     sum = sum + (Integer)matrix[i][j] * (Double)weights[j];
                     sums[i][j] = (Integer)matrix[i][j] * (Double)weights[j];
@@ -100,7 +101,7 @@ public class Helper {
     public static void show1DArray(Object[] array) {
         System.out.print(array[0]);
 
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 1; i < array.length; i++) {
             System.out.print(" | " + array[i]);
         }
         System.out.println();
