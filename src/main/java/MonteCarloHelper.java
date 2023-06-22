@@ -89,41 +89,45 @@ public class MonteCarloHelper {
         fillPotentialAggregatedWeightsRangingMap(aggregatedWeightsRankingMap, potentialAggregatedWeightsRankingMap);
         System.out.println("\npotentialAggregatedWeightsRankingMap");
         Helper.show1DArray(potentialAggregatedWeightsRankingMap);
+        Map<Object, Double>[][] entropyMatrix = getEntropyMatrix(potentialAggregatedMatrixRankingMap);
+        System.out.println("\nentropyMatrix");
+        Helper.show2DArray(entropyMatrix);
 
     }
 
-    public static Object[][] getEntropyMatrix(Map<Object, Map<Integer, Double>>[][] potentialAggregatedMatrixRankingMap){
-        Double integer;
-        Object[][] entropyMatrix = new Object[potentialAggregatedMatrixRankingMap.length][potentialAggregatedMatrixRankingMap.length];
+    public static  Map<Object, Double>[][] getEntropyMatrix(Map<Object, Map<Integer, Double>>[][] potentialAggregatedMatrixRankingMap){
+        Map<Object, Double>[][] entropyMatrix = new Map[potentialAggregatedMatrixRankingMap.length][potentialAggregatedMatrixRankingMap.length];
         Double[] vektor;
         for(int i = 0; i < potentialAggregatedMatrixRankingMap.length; i++){
             for(int j = 0; j < potentialAggregatedMatrixRankingMap[i].length; j++){
+                entropyMatrix[i][j] = new HashMap<>();
                 for (Map.Entry<Object, Map<Integer, Double>> entry : potentialAggregatedMatrixRankingMap[i][j].entrySet()) {
-                    vektor = new Double[potentialAggregatedMatrixRankingMap[0][0].get(entry.getKey()).size()];
+                    vektor = new Double[potentialAggregatedMatrixRankingMap[i][j].get(entry.getKey()).size()];
                     int counter = 0;
                     for (Map.Entry<Integer, Double> rankingEntry : potentialAggregatedMatrixRankingMap[i][j].get(entry.getKey()).entrySet()) {
                         vektor[counter] = rankingEntry.getValue();
                         counter++;
                     }
+                    entropyMatrix[i][j].put(entry.getKey(), calculateEntropy(vektor));
                 }
             }
         }
-        return null;
+        return entropyMatrix;
     }
 
-    public static double calculateEntropy(double[] vector) {
-        double entropy = 0.0;
-        double sum = 0.0;
+    public static Double calculateEntropy(Double[] vector) {
+        Double entropy = 0.0;
+        Double sum = 0.0;
 
         // Summiere die Werte im Vektor
-        for (double value : vector) {
+        for (Double value : vector) {
             sum += value;
         }
 
         // Berechne die Entropie
-        for (double value : vector) {
+        for (Double value : vector) {
             if (value != 0.0) {
-                double probability = value / sum;
+                Double probability = value / sum;
                 entropy -= probability * Math.log(probability);
             }
         }
