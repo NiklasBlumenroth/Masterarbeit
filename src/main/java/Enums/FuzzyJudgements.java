@@ -1,13 +1,13 @@
 package Enums;
 
 public enum FuzzyJudgements {
-    SEHRSCHLECHT    (0, 1, 2),
-    SCHLECHT        (1, 2, 3),
-    EHERSCHLECHT    (2, 3.5, 5),
-    MITTEL          (4, 5, 6),
-    EHERGUT         (5, 6.5, 8),
-    GUT             (7, 8, 9),
-    SEHRGUT         (8, 9, 10);
+    VP    (0, 1, 2),
+    P        (1, 2, 3),
+    MP    (2, 3.5, 5),
+    F          (4, 5, 6),
+    MG         (5, 6.5, 8),
+    G             (7, 8, 9),
+    VG         (8, 9, 10);
 
     public final double value1;
     public final double value2;
@@ -15,13 +15,13 @@ public enum FuzzyJudgements {
 
     public static FuzzyJudgements getJudgement(int Id){
         return switch (Id) {
-            case 0 -> SEHRSCHLECHT;
-            case 1 -> SCHLECHT;
-            case 2 -> EHERSCHLECHT;
-            case 3 -> MITTEL;
-            case 4 -> EHERGUT;
-            case 5 -> GUT;
-            case 6 -> SEHRGUT;
+            case 0 -> VP;
+            case 1 -> P;
+            case 2 -> MP;
+            case 3 -> F;
+            case 4 -> MG;
+            case 5 -> G;
+            case 6 -> VG;
             default -> null;
         };
     }

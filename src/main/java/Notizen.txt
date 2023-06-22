@@ -12,13 +12,13 @@ Zu Implementieren:
 + Aggregated Judgement Matrix
 - Current Entropy
 + Aggregated Preferences
-- Rank Acceptability Indices
++ Rank Acceptability Indices
 - Judgement Entropy Matrix
 - Preference Entropies
-- Current Judgement Acceptability Indices
-- Potential Judgement Acceptability Indices
-- Current Preference Acceptability Indices
-- Potential Preference Acceptability Indices
++ Current Judgement Acceptability Indices
++ Potential Judgement Acceptability Indices
++ Current Preference Acceptability Indices
++ Potential Preference Acceptability Indices
 
 Kathesisches Produkt:
 https://im-coder.com/kartesisches-produkt-beliebiger-mengen-in-java.html

@@ -1,13 +1,13 @@
 package Enums;
 
 public enum FuzzyPreferenzes {
-    SEHRUNWICHTIG     (0.0, 0.1,0.2),
-    UNWICHTIG         (0.1, 0.2,0.3),
-    EHERUNWICHTIG     (0.2, 0.35,0.5),
-    MITTEL          (0.4, 0.5,0.6),
-    EHERWICHTIG   (0.5, 0.65,0.8),
-    WICHTIG       (0.7, 0.8,0.9),
-    SEHRWICHTIG   (0.8, 0.9,1.0);
+    VL     (0.0, 0.1,0.2),
+    L         (0.1, 0.2,0.3),
+    ML     (0.2, 0.35,0.5),
+    M          (0.4, 0.5,0.6),
+    MH   (0.5, 0.65,0.8),
+    H       (0.7, 0.8,0.9),
+    VH   (0.8, 0.9,1.0);
 
     public final double value1;
     public final double value2;
@@ -15,13 +15,13 @@ public enum FuzzyPreferenzes {
 
     public static FuzzyPreferenzes getPreferenzes(int Id){
         return switch (Id) {
-            case 0 -> SEHRWICHTIG;
-            case 1 -> WICHTIG;
-            case 2 -> EHERWICHTIG;
-            case 3 -> MITTEL;
-            case 4 -> EHERUNWICHTIG;
-            case 5 -> UNWICHTIG;
-            case 6 -> SEHRUNWICHTIG;
+            case 0 -> VH;
+            case 1 -> H;
+            case 2 -> MH;
+            case 3 -> M;
+            case 4 -> ML;
+            case 5 -> L;
+            case 6 -> VL;
             default -> null;
         };
     }

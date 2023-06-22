@@ -2,6 +2,8 @@ import Enums.FuzzyJudgements;
 import Enums.FuzzyPreferenzes;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 public class Helper {
@@ -30,7 +32,7 @@ public class Helper {
         }
         Double[] scores = new Double[rows];
         Double[][] sums = new Double[matrix.length][matrix[0].length];
-
+        Double value;
         // create sum for columns
         for (int i = 0; i < rows; i++) {
             Double sum = 0.0;
@@ -38,10 +40,11 @@ public class Helper {
                 if (Double.class.equals(clazz)) {
 
                 } else if (FuzzyJudgements.class.equals(clazz)) {
-                    FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
+                    FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[i];
                     FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
-                    sum += (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
-                    sums[i][j] = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
+                    value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
+                    sum += value;
+                    sums[i][j] = value;
                 } else if (Integer.class.equals(clazz)) {
                     sum = sum + (Integer)matrix[i][j] * (Double)weights[j];
                     sums[i][j] = (Integer)matrix[i][j] * (Double)weights[j];
@@ -92,7 +95,7 @@ public class Helper {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                System.out.print(matrix[j][i] + " ");
+                System.out.print(matrix[j][i] + " : ");
             }
             System.out.println();
         }
