@@ -27,3 +27,12 @@ WPM -> https://diglib.tugraz.at/download.php?id=5db292624d76a&location=browse
 PROMETHEE: PROMETHEE -> https://link.springer.com/chapter/10.1007/978-1-4939-3094-4_6
 TOPSIS: TOPSIS -> https://web.archive.org/web/20160102105303/http://www.fwl.wi.tum.de/fileadmin/Downloads/Master_Forst/TOPSIS_zur_Effizienzanalyse.pdf
 ABX-LEX -> https://www.worldscientific.com/doi/10.1142/S0219622020500431
+
+
+
+
+
+
+
+
+3
