@@ -4,11 +4,39 @@ import Enums.FuzzyPreferenzes;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
+
+import static Enums.FuzzyJudgements.*;
 
 public class Helper {
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
+    public static void main(String[] args) {
+        ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
+                {
+                        new ArrayList<>(){{add(VG);}},
+                        new ArrayList<>(){{add(VP);}},
+                        new ArrayList<>(){{add(P);}}
+                },
+                {
+                        new ArrayList<>(){{add(G);}},
+                        new ArrayList<>(){{add(VG);}},
+                        new ArrayList<>(){{add(MP);}}
+                },
+                {
+                        new ArrayList<>(){{add(VP);}},
+                        new ArrayList<>(){{add(MG);}},
+                        new ArrayList<>(){{add(F);}}
+                },
+                {
+                        new ArrayList<>(){{add(VP);}},
+                        new ArrayList<>(){{add(MG);}},
+                        new ArrayList<>(){{add(F);}}
+                }
+        };
+        show2DArray(aggregatedMatrix);
+    }
     public static void showSaw(){
         Integer[][] matrix = (Integer[][]) generate2DArray(Integer.class, 5, 5, 1, 10);
         Double[] weights = (Double[]) generate1DArray(Double.class, 5, 0, 1);
@@ -40,7 +68,7 @@ public class Helper {
                 if (Double.class.equals(clazz)) {
 
                 } else if (FuzzyJudgements.class.equals(clazz)) {
-                    FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[i];
+                    FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
                     FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
                     value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
                     sum += value;
@@ -58,8 +86,22 @@ public class Helper {
         return scores;
     }
 
-    public static void main(String[] args) {
-        showSaw();
+    public static void showRank(Map<Object, Map<Integer, Double>>[][] matrix, Integer rank){
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(" {");
+                for (Map.Entry<Object, Map<Integer, Double>> entry : matrix[j][i].entrySet()) {
+                    System.out.print(" ");
+                    for (Map.Entry<Integer, Double> rankingEntry : entry.getValue().entrySet()) {
+                        if(Objects.equals(rankingEntry.getKey(), rank)){
+                            System.out.print(entry.getKey() + "=" + rankingEntry.getValue());
+                        }
+                    }
+                }
+                System.out.print(" } ");
+            }
+            System.out.println();
+        }
     }
 
     public static Object[][] generate2DArray(Class<?> clazz, int rows, int columns, int min, int max){
@@ -92,13 +134,30 @@ public class Helper {
     public static void show2DArray(Object[][] matrix) {
         int rows = matrix.length;
         int columns = matrix[0].length;
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                System.out.print(matrix[j][i] + " : ");
+        Object[][] invert = invertArray(matrix);
+        for (Object[] objects : invert) {
+            for (Object object : objects) {
+                System.out.print(object + " : ");
             }
             System.out.println();
         }
+    }
+
+    public static Object[][] invertArray(Object[][] array) {
+        int numRows = array.length;
+        int numCols = array[0].length;
+
+        Object[][] invertedArray = new Object[numCols][numRows];
+
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                if (j < array[i].length) {
+                    invertedArray[j][i] = array[i][j];
+                }
+            }
+        }
+
+        return invertedArray;
     }
 
     public static void show1DArray(Object[] array) {

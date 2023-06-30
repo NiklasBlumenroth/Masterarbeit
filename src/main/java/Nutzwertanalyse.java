@@ -1,6 +1,5 @@
 import Enums.FuzzyJudgements;
 import Enums.FuzzyPreferenzes;
-import Model.Matrix;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +14,8 @@ public class Nutzwertanalyse {
     public static final int col = 3;
     public static final int numberOfDecisionMaker = 10;
     public static void main(String[] args) {
-        ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
-        ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
+//        ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
+//        ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
 //        ArrayList<Object>[][] aggregatedMatrix = generateAggregatedMatrix(decisionMakerList);
 //        ArrayList<Object>[] aggregatedWeights = generateAggregatedWeights(decisionMakerWeightsList);
 

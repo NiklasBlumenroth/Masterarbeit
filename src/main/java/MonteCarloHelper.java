@@ -1,15 +1,12 @@
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class MonteCarloHelper {
     public static final int monteCarloIterations = 10_000;
-    public static final int row = 3;
-    public static final int col = 3;
+    public static int row;
+    public static int col;
     private static final DecimalFormat df = new DecimalFormat("0.0000");
 
     public static void main(String[] args) {
@@ -34,16 +31,10 @@ public class MonteCarloHelper {
     }
 
     public static void showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights){
-        System.out.println("\nAggregated Matrix");
-        Helper.show2DArray(aggregatedMatrix);
+        row = aggregatedMatrix.length;
+        col = aggregatedWeights.length;
 
-        System.out.println("\nAggregated Weight");
-        Helper.show1DArray(aggregatedWeights);
 
-        Object[] monteCarloRanking = null;
-        ArrayList<Object[]> monteCarloRankings = new ArrayList<>();
-
-        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
 
         Object[][] sawMatrix;
         Object[] sawWeights;
@@ -54,23 +45,52 @@ public class MonteCarloHelper {
         //fill ranking counter with 0
         for(int i = 0; i < row; i++){
             for(int j = 0; j < col; j++){
-                rankAcceptabilityIndices[i][j] = 0;
+                rankAcceptabilityIndices[i][j] = 0.0;
             }
         }
 
         // generate map for counting
-        Map<Object, Map<Integer, Double>>[][] currentJudgementAcceptabilityIndices = new Map[row][col];
-        Map<Object, Map<Integer, Double>>[][] potentialJudgementAcceptabilityIndices = new Map[row][col];
-        Map<Object, Map<Integer, Double>>[] currentPreferenceAcceptabilityIndices = new Map[row];
-        Map<Object, Map<Integer, Double>>[] potentialPreferencesAcceptabilityIndices = new Map[row];
+        Map<Object, Object>[][] currentJudgementAcceptabilityIndices = new Map[row][col];
+        Map<Object, Object>[][] potentialJudgementAcceptabilityIndices = new Map[row][col];
+        Map<Object, Object>[] currentPreferenceAcceptabilityIndices = new Map[row];
+        Map<Object, Object>[] potentialPreferencesAcceptabilityIndices = new Map[row];
+
         //fill matrix map with 0
         fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
         fillMatrixMapWithZero(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
+
         //fill weights map with 0
         fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
         fillWeightsMapWithZero(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
 
+        //create currentJudgementAcceptabilityIndices and currentPreferenceAcceptabilityIndices
+        //create potentialJudgementAcceptabilityIndices and potentialPreferenceAcceptabilityIndices
+        ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices = new ArrayList<>();
+        ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices = new ArrayList<>();
         System.out.println("\nSaw Weights:");
+        for(int j = 0; j < row; j++){
+            objectCurrentJudgementAcceptabilityIndices.add(currentJudgementAcceptabilityIndices);
+            currentJudgementAcceptabilityIndices = new Map[row][col];
+            fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
+
+            objectPotentialJudgementAcceptabilityIndices.add(potentialJudgementAcceptabilityIndices);
+            potentialJudgementAcceptabilityIndices = new Map[row][col];
+            fillMatrixMapWithZero(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
+        }
+
+        ArrayList<Map<Object, Object>[]> objectCurrentPreferenceAcceptabilityIndices = new ArrayList<>();
+        ArrayList<Map<Object, Object>[]> objectPotentialPreferenceAcceptabilityIndices = new ArrayList<>();
+        for(int j = 0; j < row; j++){
+            objectCurrentPreferenceAcceptabilityIndices.add(currentPreferenceAcceptabilityIndices);
+            currentPreferenceAcceptabilityIndices = new Map[col];
+            fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
+
+            objectPotentialPreferenceAcceptabilityIndices.add(potentialPreferencesAcceptabilityIndices);
+            potentialPreferencesAcceptabilityIndices = new Map[col];
+            fillWeightsMapWithZero(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
+        }
+
+        //monteCarloSimulation
         for(int i = 0; i < monteCarloIterations; i++){
             sawMatrix = getSawMatrix(aggregatedMatrix, col, row);
             sawWeights = getSawWeights(aggregatedWeights, col);
@@ -84,55 +104,104 @@ public class MonteCarloHelper {
             System.out.println("\n new rankAcceptabilityIndices");
             Helper.show2DArray(rankAcceptabilityIndices);
             //sawMatrix + ranking = countingMatrixRankingMap
-            countByRankingAndDecision(rankingPosition, currentJudgementAcceptabilityIndices, sawMatrix);
+            countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
-            countByRankingAndWeights(rankingPosition, currentPreferenceAcceptabilityIndices, sawWeights);
+            countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
         }
 
-        System.out.println("\nfinal rankAcceptabilityIndices");
-        Helper.show2DArray(rankAcceptabilityIndices);
-        System.out.println("\nfinal total ranking positions normalized");
+        System.out.println("\nAggregated Matrix");
+        Helper.show2DArray(aggregatedMatrix);
 
+        System.out.println("\nAggregated Weight");
+        Helper.show1DArray(aggregatedWeights);
+
+        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
+
+        System.out.println("\nfinal rankAcceptabilityIndices normalized");
         normalizeTotalRankingPositions(rankAcceptabilityIndices);
         Helper.show2DArray(rankAcceptabilityIndices);
-        System.out.println("\ncurrentJudgementAcceptabilityIndices");
-        Helper.show2DArray(currentJudgementAcceptabilityIndices);
-        System.out.println("\nnormalized currentJudgementAcceptabilityIndices");
-//        normalizeAggregatedMatrixMap(currentJudgementAcceptabilityIndices, nomalizeArray);
-        Helper.show2DArray(currentJudgementAcceptabilityIndices);
-        System.out.println("\ncurrentPreferenceAcceptabilityIndices");
-        Helper.show1DArray(currentPreferenceAcceptabilityIndices);
-        fillPotentialAggregatedMatrixRankingMap(currentJudgementAcceptabilityIndices, potentialJudgementAcceptabilityIndices);
 
+        for(int j = 0; j < row; j++){
+            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
+            Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
+        }
 
-        System.out.println("\npotentialJudgementAcceptabilityIndices");
-        Helper.show2DArray(potentialJudgementAcceptabilityIndices);
-        fillPotentialAggregatedWeightsRangingMap(currentPreferenceAcceptabilityIndices, potentialPreferencesAcceptabilityIndices);
-        System.out.println("\npotentialPreferencesAcceptabilityIndices");
-        Helper.show1DArray(potentialPreferencesAcceptabilityIndices);
-        Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(potentialJudgementAcceptabilityIndices);
-        System.out.println("\njudgementEntropyMatrix rank 1");
+        for (int i = 0; i < col; i++){
+            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
+            Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
+        }
+
+        fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
+        normalizeAggregatedMatrixMap(objectPotentialJudgementAcceptabilityIndices);
+        for(int j = 0; j < row; j++){
+            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
+            Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
+        }
+
+        fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
+        normalizeAggregatedWeightsMap(objectPotentialPreferenceAcceptabilityIndices);
+        for (int i = 0; i < col; i++){
+            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
+            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
+        }
+
+        Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
+        System.out.println("\njudgementEntropyMatrix");
         Helper.show2DArray(judgementEntropyMatrix);
 
+        Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
+        System.out.println("\npreferenceEntropy");
+        Helper.show1DArray(preferenceEntropy);
+
+        System.out.println("\ncurrent entropy");
+        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+
+        System.out.println();
     }
 
-    public static  Map<Object, Double>[][] getEntropyMatrix(Map<Object, Map<Integer, Double>>[][] potentialAggregatedMatrixRankingMap){
-        Map<Object, Double>[][] entropyMatrix = new Map[potentialAggregatedMatrixRankingMap.length][potentialAggregatedMatrixRankingMap.length];
-        Double[] vektor;
-        for(int i = 0; i < potentialAggregatedMatrixRankingMap.length; i++){
-            for(int j = 0; j < potentialAggregatedMatrixRankingMap[i].length; j++){
-                entropyMatrix[i][j] = new HashMap<>();
-                for (Map.Entry<Object, Map<Integer, Double>> entry : potentialAggregatedMatrixRankingMap[i][j].entrySet()) {
-                    vektor = new Double[potentialAggregatedMatrixRankingMap[i][j].get(entry.getKey()).size()];
-                    int counter = 0;
-                    for (Map.Entry<Integer, Double> rankingEntry : potentialAggregatedMatrixRankingMap[i][j].get(entry.getKey()).entrySet()) {
-                        vektor[counter] = rankingEntry.getValue();
-                        counter++;
-                    }
-                    entropyMatrix[i][j].put(entry.getKey(), calculateEntropy(vektor));
+    public static Double getCurrentEntropy(Object[][] rankAcceptabilityIndices){
+        Double[] vector = new Double[rankAcceptabilityIndices.length];
+        for(int i = 0; i < rankAcceptabilityIndices.length; i++){
+            vector[i] = (Double) rankAcceptabilityIndices[i][0];
+        }
+        return calculateEntropy(vector);
+    }
+
+    public static  Map<Object, Double>[] getEntropyPreference(ArrayList<Map<Object, Object>[]> objectPotentialPreferenceAcceptabilityIndices){
+        Map<Object, Double>[] entropyMatrix = new Map[objectPotentialPreferenceAcceptabilityIndices.get(0).length];
+        Double[] vector = new Double[objectPotentialPreferenceAcceptabilityIndices.size()];
+
+        for(int i = 0; i < objectPotentialPreferenceAcceptabilityIndices.get(0).length; i++){
+            Map<Object, Double> map = new HashMap<>();
+            for (Map.Entry<Object, Object> entry : objectPotentialPreferenceAcceptabilityIndices.get(0)[i].entrySet()) {
+                for(int object = 0; object < vector.length; object++){
+                    vector[object] = (Double) objectPotentialPreferenceAcceptabilityIndices.get(object)[i].get(entry.getKey());
                 }
+                map.put(entry.getKey(), calculateEntropy(vector));
+                entropyMatrix[i] = map;
             }
         }
+
+        return entropyMatrix;
+    }
+
+    public static  Map<Object, Double>[][] getEntropyMatrix(ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices){
+        Map<Object, Double>[][] entropyMatrix = new Map[objectPotentialJudgementAcceptabilityIndices.get(0).length][objectPotentialJudgementAcceptabilityIndices.get(0).length];
+        Double[] vektor = new Double[objectPotentialJudgementAcceptabilityIndices.size()];
+
+            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(0).length; i++){
+                for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices.get(0)[i].length; j++){
+                    Map<Object, Double> map = new HashMap<>();
+                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(0)[i][j].entrySet()) {
+                        for(int object = 0; object < vektor.length; object++){
+                            vektor[object] = (Double) objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey());
+                        }
+                        map.put(entry.getKey(), calculateEntropy(vektor));
+                        entropyMatrix[i][j] = map;
+                    }
+                }
+            }
+
         return entropyMatrix;
     }
 
@@ -147,144 +216,141 @@ public class MonteCarloHelper {
         for (Double value : vector) {
             if (value != 0.0) {
                 Double probability = value / sum;
-                entropy -= probability * Math.log(probability);
+                entropy -= probability * Math.log(probability) / Math.log(2);
             }
         }
 
         return entropy;
     }
 
-    public static HashMap getNormalizeArray(Object[][] totalRankingPositions){
-        //add values in a col to get integer /= ...
-        HashMap<Integer, Integer> map = new HashMap<>();
-        Integer sum = 0;
-        for(int i = 0; i < totalRankingPositions.length; i++){
-            for(int j = 0; j < totalRankingPositions[i].length; j++){
-                sum += (Integer) totalRankingPositions[j][i];
-            }
-            map.put(i, sum);
-            sum = 0;
-        }
-        return map;
-    }
-
-
-        public static void normalizeAggregatedMatrixMap(Map<Object, Map<Integer, Double>>[][] aggregatedMatrixRankingMap){
-            Double integer;
-            for(int i = 0; i < aggregatedMatrixRankingMap.length; i++){
-                for(int j = 0; j < aggregatedMatrixRankingMap[i].length; j++){
-                    for (Map.Entry<Object, Map<Integer, Double>> entry : aggregatedMatrixRankingMap[i][j].entrySet()) {
-                        for (Map.Entry<Integer, Double> rankingEntry : entry.getValue().entrySet()) {
-                            integer = rankingEntry.getValue();
-                            integer /= (Integer) monteCarloIterations;
-                            aggregatedMatrixRankingMap[i][j].get(entry.getKey()).put(rankingEntry.getKey(), integer);
-                        }
+    public static void normalizeAggregatedMatrixMap(ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices){
+        Double integer;
+        for(int object = 0; object < objectPotentialJudgementAcceptabilityIndices.size(); object++){
+            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(object).length; i++){
+                for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices.get(object)[i].length; j++){
+                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].entrySet()) {
+                        integer = (Double)entry.getValue();
+                        integer /= (Integer) monteCarloIterations;
+                        entry.setValue(integer);
                     }
                 }
             }
         }
+    }
+
+    public static void normalizeAggregatedWeightsMap(ArrayList<Map<Object, Object>[]> objectPotentialJudgementAcceptabilityIndices){
+        Double integer;
+        for(int object = 0; object < objectPotentialJudgementAcceptabilityIndices.size(); object++){
+            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(object).length; i++){
+                for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(object)[i].entrySet()) {
+                    integer = (Double)entry.getValue();
+                    integer /= (Integer) monteCarloIterations;
+                    entry.setValue(integer);
+                }
+            }
+        }
+    }
 
     public static void normalizeTotalRankingPositions(Object[][] totalRankingPositions){
         //add values in a col to get integer /= ...
         Double integer;
         for(int i = 0; i < totalRankingPositions.length; i++){
             for(int j = 0; j < totalRankingPositions[i].length; j++){
-                integer = (Integer) totalRankingPositions[j][i] * 1.0;
-                integer /= (Integer) monteCarloIterations;
-                totalRankingPositions[j][i] = df.format(integer);
+                integer = (Double) totalRankingPositions[j][i] * 1.0;
+                integer /= monteCarloIterations;
+                totalRankingPositions[j][i] = integer;
             }
         }
     }
 
-    public static void fillPotentialAggregatedWeightsRangingMap(Map<Object, Map<Integer, Double>>[] aggregatedWeightsRankingMap,
-                                                                Map<Object, Map<Integer, Double>>[] potentialAggregatedWeightsRankingMap){
-        for(int j = 0; j < aggregatedWeightsRankingMap.length; j++){
-            Integer multiplicator = aggregatedWeightsRankingMap[j].size();
-            for(int k = 0; k < multiplicator; k++){
-                for (Map.Entry<Object, Map<Integer, Double>> entry : potentialAggregatedWeightsRankingMap[j].entrySet()) {
-                    for (Map.Entry<Integer, Double> rankingEntry : potentialAggregatedWeightsRankingMap[j].get(entry.getKey()).entrySet()) {
-                        potentialAggregatedWeightsRankingMap[j].get(entry.getKey()).put(
-                                rankingEntry.getKey(),
-                                aggregatedWeightsRankingMap[j].get(entry.getKey()).get(rankingEntry.getKey()) * multiplicator);
-                    }
+    public static void fillPotentialAggregatedWeightsRankingMap(ArrayList<Map<Object, Object>[]> objectCurrentPreferenceAcceptabilityIndices,
+                                                                ArrayList<Map<Object, Object>[]> objectPotentialPreferenceAcceptabilityIndices){
+        for(int object = 0; object < objectCurrentPreferenceAcceptabilityIndices.size(); object++){
+            for(int i = 0; i < objectCurrentPreferenceAcceptabilityIndices.get(object).length; i++) {
+                Integer multiplicator = objectCurrentPreferenceAcceptabilityIndices.get(object)[i].size();
+                for (Map.Entry<Object, Object> entry : objectPotentialPreferenceAcceptabilityIndices.get(object)[i].entrySet()) {
+                    entry.setValue((Double)objectCurrentPreferenceAcceptabilityIndices.get(object)[i].get(entry.getKey()) * multiplicator);
                 }
             }
         }
     }
-    public static void fillPotentialAggregatedMatrixRankingMap(Map<Object, Map<Integer, Double>>[][] aggregatedMatrixRankingMap,
-                                                               Map<Object, Map<Integer, Double>>[][] potentialAggregatedMatrixRankingMap){
-        for(int i = 0; i < aggregatedMatrixRankingMap.length; i++){
-            for(int j = 0; j < aggregatedMatrixRankingMap[i].length; j++){
-                Integer multiplicator = aggregatedMatrixRankingMap[i][j].size();
-                for(int k = 0; k < multiplicator; k++){
-                    for (Map.Entry<Object, Map<Integer, Double>> entry : potentialAggregatedMatrixRankingMap[i][j].entrySet()) {
-                        for (Map.Entry<Integer, Double> rankingEntry : potentialAggregatedMatrixRankingMap[i][j].get(entry.getKey()).entrySet()) {
-                            potentialAggregatedMatrixRankingMap[i][j].get(entry.getKey()).put(
-                                    rankingEntry.getKey(),
-                                    aggregatedMatrixRankingMap[i][j].get(entry.getKey()).get(rankingEntry.getKey()) * multiplicator);
-                        }
+
+    public static void fillPotentialJudgementAcceptabilityIndices(ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices,
+                                                                  ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices){
+        for(int object = 0; object < objectCurrentJudgementAcceptabilityIndices.size(); object++){
+            for(int i = 0; i < objectCurrentJudgementAcceptabilityIndices.get(object).length; i++){
+                for(int j = 0; j < objectCurrentJudgementAcceptabilityIndices.get(object)[i].length; j++){
+                    Integer multiplicator = objectCurrentJudgementAcceptabilityIndices.get(object)[i][j].size();
+                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].entrySet()) {
+                        entry.setValue((Double)objectCurrentJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey()) * multiplicator);
                     }
                 }
             }
         }
     }
 
-    public static void countByRankingAndDecision(Object[] rankingPosition, Map<Object, Map<Integer, Double>>[][] aggregatedMap, Object[][] sawMatrix){
+    public static void countByRankingAndDecision(Object[] rankingPosition,
+                                                 ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices,
+                                                 Object[][] sawMatrix){
+        Integer rankOne = null;
+        for(int i = 0; i < rankingPosition.length; i++){
+            if(Objects.equals(rankingPosition[i], 1)){
+                rankOne = i;
+            }
+        }
+        //add for rank one the counter for Judgements from saw by one
         for(int i = 0; i < sawMatrix.length; i++){
             for(int j = 0; j < sawMatrix[i].length; j++){
-                Double value = aggregatedMap[i][j].get(sawMatrix[i][j]).get(rankingPosition[i]);
+                //get old value
+                Double value = (Double) objectCurrentJudgementAcceptabilityIndices.get(rankOne)[i][j].get(sawMatrix[i][j]);
                 value += 1;
-                aggregatedMap[i][j].get(sawMatrix[i][j]).put((Integer)rankingPosition[i], value);
+                //set new value
+                objectCurrentJudgementAcceptabilityIndices.get(rankOne)[i][j].put(sawMatrix[i][j], value);
             }
         }
     }
 
-    public static void countByRankingAndWeights(Object[] rankingPosition, Map<Object, Map<Integer, Double>>[] aggregatedWeightsMap, Object[] sawWeights){
+    public static void countByRankingAndWeights(Object[] rankingPosition, ArrayList<Map<Object, Object>[]> currentPreferenceAcceptabilityIndices, Object[] sawWeights){
+        Integer rankOne = null;
+        for(int i = 0; i < rankingPosition.length; i++){
+            if(Objects.equals(rankingPosition[i], 1)){
+                rankOne = i;
+            }
+        }
         for(int i = 0; i < sawWeights.length; i++){
-            Double value = aggregatedWeightsMap[i].get(sawWeights[i]).get(rankingPosition[i]);
+            //get old value
+            Double value = (Double) currentPreferenceAcceptabilityIndices.get(rankOne)[i].get(sawWeights[i]);
             value += 1;
-            aggregatedWeightsMap[i].get(sawWeights[i]).put((Integer)rankingPosition[i], value);
+            //set new value
+            currentPreferenceAcceptabilityIndices.get(rankOne)[i].put(sawWeights[i], value);
         }
     }
 
-    public static void fillWeightsMapWithZero(ArrayList<Object>[] aggregatedWeights, Map<Object, Map<Integer, Double>>[] aggregatedWeightsRankingMap){
+    public static void fillWeightsMapWithZero(ArrayList<Object>[] aggregatedWeights, Map<Object, Object>[] aggregatedWeightsRankingMap){
         for(int i = 0; i < aggregatedWeights.length; i++){
             //create cell
-            Map<Object, Map<Integer, Double>> newMap = new HashMap<>();
+            Map<Object, Object> newMap = new HashMap<>();
             for(int k = 0; k < aggregatedWeights[i].size(); k++){
-                //create counting map
-                Map<Integer, Double> rankingCounter = new HashMap<>();
-                for(int l = 0; l < row; l++){
-                    rankingCounter.put(l + 1, 0.0);
-                }
                 //set countingMap to value
-                newMap.put(aggregatedWeights[i].get(k), rankingCounter);
+                newMap.put(aggregatedWeights[i].get(k), 0.0);
             }
             aggregatedWeightsRankingMap[i] = newMap;
         }
     }
 
-    public static void fillMatrixMapWithZero(ArrayList<Object>[][] aggregatedMatrix, Map<Object, Map<Integer, Double>>[][] aggregatedMatrixRankingMap){
+    public static void fillMatrixMapWithZero(ArrayList<Object>[][] aggregatedMatrix, Map<Object, Object>[][] aggregatedMatrixRankingMap){
         for(int i = 0; i < aggregatedMatrix.length; i++){
             for(int j = 0; j < aggregatedMatrix[i].length; j++){
                 //create cell
-                Map<Object, Map<Integer, Double>> newMap = new HashMap<>();
+                Map<Object, Object> newMap = new HashMap<>();
                 for(int k = 0; k < aggregatedMatrix[i][j].size(); k++){
-                    //create counting map
-                    Map<Integer, Double> rankingCounter = new HashMap<>();
-                    for(int l = 0; l < row; l++){
-                        rankingCounter.put(l + 1, 0.0);
-                    }
                     //set countingMap to value
-                    newMap.put(aggregatedMatrix[i][j].get(k), rankingCounter);
+                    newMap.put(aggregatedMatrix[i][j].get(k), 0.0);
                 }
                 aggregatedMatrixRankingMap[i][j] = newMap;
             }
         }
     }
-
-
-
 
     public static Object[][] getSawMatrix(ArrayList<Object>[][] aggregatedMatrix, int col, int row){
         Object[][] sawMatrix = new Object[row][col];
@@ -405,11 +471,11 @@ public class MonteCarloHelper {
     }
 
     public static void addRanking(Object[][] totalRanking, Object[] newRanking){
-        Integer i1;
-        int x;
+        Double i1;
+        Integer x;
         for(int i = 0; i < newRanking.length; i++){
             x = (Integer) newRanking[i] - 1;
-            i1 = (Integer)totalRanking[i][x];
+            i1 = (Double)totalRanking[i][x];
             i1 += 1;
             totalRanking[i][x] = i1;
         }
