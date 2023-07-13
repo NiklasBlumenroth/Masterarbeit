@@ -10,7 +10,7 @@ Aufgaben allgemein:
 
 Zu Implementieren:
 + Aggregated Judgement Matrix
-- Current Entropy
++ Current Entropy
 + Aggregated Preferences
 + Rank Acceptability Indices
 + Judgement Entropy Matrix
@@ -23,6 +23,7 @@ Zu Implementieren:
 
 Kathesisches Produkt:
 https://im-coder.com/kartesisches-produkt-beliebiger-mengen-in-java.html
+https://stackoverflow.com/questions/40202033/cartesian-product-of-two-arrays
 
 WPM -> https://diglib.tugraz.at/download.php?id=5db292624d76a&location=browse
 PROMETHEE: PROMETHEE -> https://link.springer.com/chapter/10.1007/978-1-4939-3094-4_6

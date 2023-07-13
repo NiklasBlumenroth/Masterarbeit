@@ -1,13 +1,12 @@
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class MonteCarloHelper {
-    public static final int monteCarloIterations = 10_000;
+    public static int monteCarloIterations = 10_000;
+    public static int iteration;
     public static int row;
     public static int col;
-    private static final DecimalFormat df = new DecimalFormat("0.0000");
 
     public static void main(String[] args) {
         Map<Integer, Integer> list = new HashMap<>();
@@ -30,17 +29,24 @@ public class MonteCarloHelper {
         System.out.println(list);
     }
 
-    public static void showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights){
+    public static Map<String, Object> showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full){
         row = aggregatedMatrix.length;
         col = aggregatedWeights.length;
 
+        System.out.println("\nAggregated Matrix");
+        Helper.show2DArray(aggregatedMatrix);
 
+        System.out.println("\nAggregated Weight");
+        Helper.show1DArray(aggregatedWeights);
 
-        Object[][] sawMatrix;
-        Object[] sawWeights;
+        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
+
+        Object[][] sawMatrix = null;
+        Object[] sawWeights = null;
         Object[] rankingTotalPoints;
         Object[] rankingPosition;
         Object[][] rankAcceptabilityIndices = new Object[row][col];
+        ArrayList<SawFullIterationObject> fullIterations = null;
 
         //fill ranking counter with 0
         for(int i = 0; i < row; i++){
@@ -91,18 +97,30 @@ public class MonteCarloHelper {
         }
 
         //monteCarloSimulation
-        for(int i = 0; i < monteCarloIterations; i++){
-            sawMatrix = getSawMatrix(aggregatedMatrix, col, row);
-            sawWeights = getSawWeights(aggregatedWeights, col);
+        iteration = (full) ? getIteration(aggregatedMatrix, aggregatedWeights) : monteCarloIterations;
+
+        if (full){
+            fullIterations = getSawFullIterationObjects(aggregatedMatrix, aggregatedWeights);
+        }
+
+        for(int i = 0; i < iteration; i++){
+            if(full){
+                sawMatrix = fullIterations.get(i).getSawMatrix();
+                sawWeights = fullIterations.get(i).getSawWeights();
+            }else{
+                sawMatrix = getSawMatrix(aggregatedMatrix, col, row);
+                sawWeights = getSawWeights(aggregatedWeights, col);
+            }
+
             rankingTotalPoints = Helper.saw(sawMatrix, sawWeights);
-            System.out.println("\n Ranking total points");
-            Helper.show1DArray(rankingTotalPoints);
+//            System.out.println("\n Ranking total points");
+//            Helper.show1DArray(rankingTotalPoints);
             rankingPosition = getRanksArray(rankingTotalPoints);
-            System.out.println("\n Ranking positions");
-            Helper.show1DArray(rankingPosition);
+//            System.out.println("\n Ranking positions");
+//            Helper.show1DArray(rankingPosition);
             addRanking(rankAcceptabilityIndices, rankingPosition);
-            System.out.println("\n new rankAcceptabilityIndices");
-            Helper.show2DArray(rankAcceptabilityIndices);
+//            System.out.println("\n new rankAcceptabilityIndices");
+//            Helper.show2DArray(rankAcceptabilityIndices);
             //sawMatrix + ranking = countingMatrixRankingMap
             countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
@@ -156,8 +174,119 @@ public class MonteCarloHelper {
         System.out.println("\ncurrent entropy");
         System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
 
-        System.out.println();
+
+        return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
+
+
+    public static Map<String, Object> getLowestValue(Map<Object, Double>[][] judgementEntropyMatrix, Map<Object, Double>[] preferenceEntropy){
+        Map<String, Object> map = new HashMap<>();
+        Double lowestValue = 1000.0;
+        Object lowestKey = null;
+        Integer lowestI = judgementEntropyMatrix.length;
+        Integer lowestJ = judgementEntropyMatrix.length;
+        Boolean lowestValueIsJudgement = null;
+
+        for (int i = 0; i < judgementEntropyMatrix.length; i++) {
+            for(int j = 0; j < judgementEntropyMatrix[i].length; j++){
+                for (Object key: judgementEntropyMatrix[i][j].keySet()) {
+                    if(judgementEntropyMatrix[i][j].get(key) < lowestValue){
+                        lowestValue = judgementEntropyMatrix[i][j].get(key);
+                        lowestKey = key;
+                        lowestI = i;
+                        lowestJ = j;
+                        lowestValueIsJudgement = true;
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < preferenceEntropy.length; i++){
+            for (Object key: preferenceEntropy[i].keySet()) {
+                if(preferenceEntropy[i].get(key) < lowestValue){
+                    lowestValue = preferenceEntropy[i].get(key);
+                    lowestKey = key;
+                    lowestI = i;
+                    lowestValueIsJudgement = false;
+                }
+            }
+        }
+        map.put("lowestValue", lowestValue);
+        map.put("lowestKey", lowestKey);
+        map.put("lowestI", lowestI);
+        map.put("lowestJ", lowestJ);
+        map.put("lowestValueIsJudgement", lowestValueIsJudgement);
+        return map;
+    }
+
+    private static ArrayList<SawFullIterationObject> getSawFullIterationObjects(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights) {
+        //aggregatedMatrix
+        List<List<Object>> fullIterationObjects = new ArrayList<>();
+        for(int i = 0; i < aggregatedMatrix.length; i++){
+            fullIterationObjects.addAll(Arrays.asList(aggregatedMatrix[i]));
+        }
+        List<List<Object>> cartesianProduct = CartesianProduct.cartesianProduct(fullIterationObjects);
+        for (List<Object> product : cartesianProduct) {
+            System.out.println(product);
+        }
+        //aggregatedWeights
+        List<List<Object>> fullIterationObjects2 = new ArrayList<>();
+        fullIterationObjects2.addAll(Arrays.asList(aggregatedWeights));
+
+        List<List<Object>> cartesianProduct2 = CartesianProduct.cartesianProduct(fullIterationObjects2);
+        for (List<Object> product : cartesianProduct2) {
+            System.out.println(product);
+        }
+        System.out.println();
+
+        ArrayList<SawFullIterationObject> iterations = new ArrayList<>();
+        for(List<Object> var : cartesianProduct){
+            for(List<Object> var2 : cartesianProduct2){
+                SawFullIterationObject sawFullIterationObject = new SawFullIterationObject();
+                sawFullIterationObject.setSawMatrix(listToMatrix(var, aggregatedMatrix.length));
+                sawFullIterationObject.setSawWeights(listToWeights(var2, aggregatedWeights.length));
+                iterations.add(sawFullIterationObject);
+            }
+        }
+        System.out.println();
+
+        return iterations;
+    }
+
+    public static Object[] listToWeights(List<Object> list, int matrixLength){
+        Object[] weight = new Object[matrixLength];
+        for(int i = 0; i < list.size(); i++){
+            weight[i] = list.get(i);
+        }
+        return weight;
+    }
+
+    public static Object[][] listToMatrix(List<Object> list, int matrixLength){
+        Object[][] matrix = new Object[matrixLength][list.size() / matrixLength];
+        int counter = 0;
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[i].length; j++){
+                matrix[i][j] = list.get(counter);
+                counter++;
+            }
+        }
+        return matrix;
+    }
+
+    private static int getIteration(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights) {
+        int iteration = 1;
+        for(ArrayList<Object>[] rows : aggregatedMatrix){
+            for(ArrayList<Object> cols : rows){
+                iteration *= cols.size();
+            }
+        }
+
+        for(ArrayList<Object> cols : aggregatedWeights){
+            iteration *= cols.size();
+        }
+        return iteration;
+    }
+
 
     public static Double getCurrentEntropy(Object[][] rankAcceptabilityIndices){
         Double[] vector = new Double[rankAcceptabilityIndices.length];
@@ -230,7 +359,7 @@ public class MonteCarloHelper {
                 for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices.get(object)[i].length; j++){
                     for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].entrySet()) {
                         integer = (Double)entry.getValue();
-                        integer /= (Integer) monteCarloIterations;
+                        integer /= (Integer) iteration;
                         entry.setValue(integer);
                     }
                 }
@@ -244,7 +373,7 @@ public class MonteCarloHelper {
             for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(object).length; i++){
                 for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(object)[i].entrySet()) {
                     integer = (Double)entry.getValue();
-                    integer /= (Integer) monteCarloIterations;
+                    integer /= (Integer) iteration;
                     entry.setValue(integer);
                 }
             }
@@ -257,7 +386,7 @@ public class MonteCarloHelper {
         for(int i = 0; i < totalRankingPositions.length; i++){
             for(int j = 0; j < totalRankingPositions[i].length; j++){
                 integer = (Double) totalRankingPositions[j][i] * 1.0;
-                integer /= monteCarloIterations;
+                integer /= iteration;
                 totalRankingPositions[j][i] = integer;
             }
         }

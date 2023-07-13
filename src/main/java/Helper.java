@@ -81,8 +81,8 @@ public class Helper {
             }
             scores[i] = sum;
         }
-        System.out.println("\nshow SAW");
-        Helper.show2DArray(sums);
+//        System.out.println("\nshow SAW");
+//        Helper.show2DArray(sums);
         return scores;
     }
 
