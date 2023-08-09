@@ -116,15 +116,24 @@ public class MonteCarloHelper {
 //            System.out.println("\n Ranking total points");
 //            Helper.show1DArray(rankingTotalPoints);
             rankingPosition = getRanksArray(rankingTotalPoints);
+            if(doubleOne(rankingPosition)){
+
+            }
+//            System.out.println("\n Ranking total points");
+//            Helper.show1DArray(rankingTotalPoints);
+//            System.out.println("\nMatrix");
+//            Helper.show2DArray(sawMatrix);
+//            System.out.println("\nWeight");
+//            Helper.show1DArray(sawWeights);
 //            System.out.println("\n Ranking positions");
 //            Helper.show1DArray(rankingPosition);
-            addRanking(rankAcceptabilityIndices, rankingPosition);
+//            addRanking(rankAcceptabilityIndices, rankingPosition);
 //            System.out.println("\n new rankAcceptabilityIndices");
 //            Helper.show2DArray(rankAcceptabilityIndices);
             //sawMatrix + ranking = countingMatrixRankingMap
-            countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
+//            countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
-            countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
+//            countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
         }
 
         System.out.println("\nAggregated Matrix");
@@ -137,7 +146,7 @@ public class MonteCarloHelper {
 
         System.out.println("\nfinal rankAcceptabilityIndices normalized");
         normalizeTotalRankingPositions(rankAcceptabilityIndices);
-        Helper.show2DArray(rankAcceptabilityIndices);
+        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
         for(int j = 0; j < row; j++){
             System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
@@ -178,6 +187,19 @@ public class MonteCarloHelper {
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
+    public static boolean doubleOne(Object[] ranking){
+        int counter = 0;
+        for(int i = 0; i < ranking.length; i++){
+            if((Integer)ranking[i] == 1){
+                counter++;
+            }
+        }
+
+        if(counter == 2){
+            return true;
+        }
+        return false;
+    }
 
     public static Map<String, Object> getLowestValue(Map<Object, Double>[][] judgementEntropyMatrix, Map<Object, Double>[] preferenceEntropy){
         Map<String, Object> map = new HashMap<>();
@@ -226,18 +248,18 @@ public class MonteCarloHelper {
             fullIterationObjects.addAll(Arrays.asList(aggregatedMatrix[i]));
         }
         List<List<Object>> cartesianProduct = CartesianProduct.cartesianProduct(fullIterationObjects);
-        for (List<Object> product : cartesianProduct) {
-            System.out.println(product);
-        }
+//        for (List<Object> product : cartesianProduct) {
+//            System.out.println(product);
+//        }
         //aggregatedWeights
         List<List<Object>> fullIterationObjects2 = new ArrayList<>();
         fullIterationObjects2.addAll(Arrays.asList(aggregatedWeights));
 
         List<List<Object>> cartesianProduct2 = CartesianProduct.cartesianProduct(fullIterationObjects2);
-        for (List<Object> product : cartesianProduct2) {
-            System.out.println(product);
-        }
-        System.out.println();
+//        for (List<Object> product : cartesianProduct2) {
+//            System.out.println(product);
+//        }
+//        System.out.println();
 
         ArrayList<SawFullIterationObject> iterations = new ArrayList<>();
         for(List<Object> var : cartesianProduct){
@@ -248,7 +270,7 @@ public class MonteCarloHelper {
                 iterations.add(sawFullIterationObject);
             }
         }
-        System.out.println();
+//        System.out.println();
 
         return iterations;
     }

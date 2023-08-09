@@ -1,11 +1,11 @@
 import Enums.FuzzyJudgements;
 import Enums.FuzzyPreferenzes;
+import Enums.LexJudgements;
+import Enums.LexPreferenzes;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static Enums.FuzzyJudgements.*;
 
@@ -50,7 +50,41 @@ public class Helper {
         Helper.show1DArray(scores);
     }
 
+    public static Map<Integer, String> sortByValue(Map<Integer, String> unsortedMap) {
+        // Konvertiere die Map in eine Liste von Einträgen
+        List<Map.Entry<Integer, String>> entryList = new ArrayList<>(unsortedMap.entrySet());
+
+        // Sortiere die Liste der Einträge nach dem Value (String)
+        entryList.sort(Map.Entry.comparingByValue());
+
+        // Erstelle eine neue LinkedHashMap, um die sortierten Einträge beizubehalten
+        Map<Integer, String> sortedMap = new LinkedHashMap<>();
+
+        // Füge die sortierten Einträge zur neuen Map hinzu
+        for (Map.Entry<Integer, String> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
+
     public static Double[] saw(Object[][] matrix, Object[] weights) {
+        Map<Integer, String> weightsMap = new HashMap<>();
+        Integer counter = 0;
+
+        //put all values in map and use counter as key
+        for(int i = 0; i < weights.length; i++){
+            weightsMap.put(counter, String.valueOf(weights[i]));
+            counter++;
+        }
+
+        weightsMap = sortByValue(weightsMap);
+        counter = 0;
+        for (Map.Entry<Integer, String> entry : weightsMap.entrySet()) {
+            weights[counter] = entry.getValue();
+            counter++;
+        }
+
         int rows = matrix.length;
         int cols = matrix[0].length;
         Class<?> clazz = matrix[0][0].getClass();
@@ -59,11 +93,13 @@ public class Helper {
             throw new IllegalArgumentException("ERROR: Matrix length:" + cols + " | Weights :" + weights.length );
         }
         Double[] scores = new Double[rows];
+        String[] lexScores = new String[rows];
         Double[][] sums = new Double[matrix.length][matrix[0].length];
         Double value;
         // create sum for columns
         for (int i = 0; i < rows; i++) {
             Double sum = 0.0;
+            String lexSum = "";
             for (int j = 0; j < cols; j++) {
                 if (Double.class.equals(clazz)) {
 
@@ -76,10 +112,13 @@ public class Helper {
                 } else if (Integer.class.equals(clazz)) {
                     sum = sum + (Integer)matrix[i][j] * (Double)weights[j];
                     sums[i][j] = (Integer)matrix[i][j] * (Double)weights[j];
-                }
+                } else if (LexJudgements.class.equals(clazz)) {
+                    lexSum = lexSum + matrix[i][j] + weights[j];
+            }
 
             }
             scores[i] = sum;
+            lexScores[i] = lexSum;
         }
 //        System.out.println("\nshow SAW");
 //        Helper.show2DArray(sums);
@@ -132,10 +171,17 @@ public class Helper {
     }
 
     public static void show2DArray(Object[][] matrix) {
-        int rows = matrix.length;
-        int columns = matrix[0].length;
         Object[][] invert = invertArray(matrix);
         for (Object[] objects : invert) {
+            for (Object object : objects) {
+                System.out.print(object + " : ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void showAcceptabilityIndices(Object[][] matrix) {
+        for (Object[] objects : matrix) {
             for (Object object : objects) {
                 System.out.print(object + " : ");
             }

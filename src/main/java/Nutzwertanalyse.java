@@ -5,42 +5,42 @@ import java.util.*;
 
 import static Enums.FuzzyJudgements.*;
 import static Enums.FuzzyPreferenzes.*;
-import static Enums.FuzzyPreferenzes.L;
+import static Enums.LexPreferenzes.*;
+import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
     public static final int row = 3;
     public static final int col = 3;
     public static final int numberOfDecisionMaker = 10;
     public static void main(String[] args) {
-//        ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
+        ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
 //        ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
 //        ArrayList<Object>[][] aggregatedMatrix = generateAggregatedMatrix(decisionMakerList);
 //        ArrayList<Object>[] aggregatedWeights = generateAggregatedWeights(decisionMakerWeightsList);
 
+
         ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
                 {
-                        new ArrayList<>(){{add(MP); add(P);}},
-                        new ArrayList<>(){{add(F); add(G);}},
-                        new ArrayList<>(){{add(MG); add(VG);}}
+                        new ArrayList<>(){{add(JA); add(JC);}},
+                        new ArrayList<>(){{add(JE); add(JG);}},
+                        new ArrayList<>(){{add(JB); add(JD);}}
                 },
                 {
-                        new ArrayList<>(){{add(MP); add(VG);}},
-                        new ArrayList<>(){{add(F); add(MG);}},
-                        new ArrayList<>(){{add(F); add(G);}}
+                        new ArrayList<>(){{add(JF); add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JF); add(JG);}}
                 },
                 {
-                        new ArrayList<>(){{add(MG); add(P); add(VG);}},
-
-//                        new ArrayList<>(){{add(P);}},//current entropie müsste somit 1.08... betragen siehe excel
-                        new ArrayList<>(){{add(G); add(P);}},
-                        new ArrayList<>(){{add(F); add(P);}}
+                        new ArrayList<>(){{add(JC); add(JA); add(JE);}},
+                        new ArrayList<>(){{add(JB); add(JD);}},
+                        new ArrayList<>(){{add(JE); add(JF);}}
                 }
         };
 
         ArrayList<Object>[] aggregatedWeights = new ArrayList[]{
-                new ArrayList<>(){{add(H); add(ML); add(L);}},
-                new ArrayList<>(){{add(L); add(MH);}},
-                new ArrayList<>(){{add(M); add(H); add(L);}}
+                new ArrayList<>(){{add(PA); add(PC); add(PD);}},
+                new ArrayList<>(){{add(PE); add(PF);}},
+                new ArrayList<>(){{add(PF); add(PE); add(PG);}}
         };
 
         Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
@@ -58,25 +58,27 @@ public class Nutzwertanalyse {
 
 
         /*
-        zielvereinbarung 1/2
-        Vollrechnung
-        kriterien eindeutig beschreiben
+        27.07. 10 Uhr
 
-        konsenspfadhäuristig:
-           1. aus judgementEntropie und preference den kleinsten wert suchen -> done
-           2. ist es judgement oder preferences? und an welcher Stelle(Koordinaten) -> done
-        Automatisierung: ziel wäre 0
-        für WIP einmal idialfall und einmal würfeln -> both done
+        -> Formular in Google formular übernehmen
+        -> Miro board erstellen und tabellen übernehmen
+        -> Zielvereinbarungen überarbeiten -> Beispiel von Jana ansehen
+        -> lexikografisches Entscheidungsmodell : Schlüko
 
-        Freitag 9 Uhr 07.07. online
+         */
 
-        Zielvereinbarung noch einmal durchlesen
 
-        13.07. 14 Uhr
 
-        Plan für Case Study machen
-        Zielvereinbarung 2/2
-        Vollrechnung
+        /*
+            -> lexikografisches Entscheidungsmodell : Schlüko
+            -> pfadlängen bestimmen für mehrere durchläufe(simulationen)
+
+            -> Formular für Fragen danach
+            -> Formular Judgements
+            -> Formular Titel (Alles selbsterklärend)
+
+            -> erster Testlauf
+            17.8. 10:30 Uhr
          */
     }
 
