@@ -92,21 +92,23 @@ public class Helper {
         Object[] sortedWeights = Helper.clone1DArray(weights);
         Object[][] sortedMatrix = Helper.clone2DArray(matrix);
 
+        System.out.println("\nmatrix: ");
+        show2DArray(sortedMatrix);
+        System.out.println("\nweights: ");
+        show1DArray(weights);
+
         List <Object> sortedWeightsList = new ArrayList<>();
         sortedWeightsList.addAll(Arrays.asList(weights));
         Class<?> clazz = sortedMatrix[0][0].getClass();
         if (LexJudgements.class.equals(clazz)) {
-            Arrays.sort(sortedWeights);
+            Arrays.sort(weights);
             sortJudgementsByPreferences(sortedMatrix, weights, sortedWeightsList);
         }
-        System.out.println("\nmatrix");
-        Helper.show2DArray(matrix);
-        System.out.println("\nweights");
-        Helper.show1DArray(weights);
-        System.out.println("\nsortedMatrix");
-        Helper.show2DArray(sortedMatrix);
-        System.out.println("\nsortedWeights");
-        Helper.show1DArray(sortedWeights);
+
+        System.out.println("\nsortedMatrix: ");
+        show2DArray(sortedMatrix);
+        System.out.println("\nsortedWeights: ");
+        show1DArray(weights);
 
         int rows = sortedMatrix.length;
         int cols = sortedMatrix[0].length;
@@ -138,7 +140,7 @@ public class Helper {
                     sum = sum + (Integer)sortedMatrix[i][j] * (Double)weights[j];
                     sums[i][j] = (Integer)sortedMatrix[i][j] * (Double)weights[j];
                 } else if (LexJudgements.class.equals(clazz)) {
-                    lexSum = lexSum + sortedMatrix[i][j];
+                    lexSum = lexSum + weights[j] + sortedMatrix[i][j];
                     lexSums[i][j] = lexSum ;
                 }
 
@@ -175,12 +177,12 @@ public class Helper {
             //get old position in weiths
             int position = getPositionInOldWeights(weights, sortedWeights.get(i));
             //change position in matrix from old to new
-            Object[] temp = matrix[i];
-            matrix[i] = matrix[position];
-            matrix[position] = temp;
-            Object ob = weights[i];
-            weights[i] = weights[position];
-            weights[position] = ob;
+            for(int j = 0; j < matrix.length; j++){
+                Object temp = matrix[j][i];
+                matrix[j][i] = matrix[j][position];
+                matrix[j][position] = temp;
+            }
+            Collections.swap(sortedWeights, i, position);
         }
     }
 

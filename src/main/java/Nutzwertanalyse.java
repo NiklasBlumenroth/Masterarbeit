@@ -25,12 +25,12 @@ public class Nutzwertanalyse {
                         new ArrayList<>(){{add(JB); add(JD);}}
                 },
                 {
-                        new ArrayList<>(){{add(JF); add(JA);}},
+                        new ArrayList<>(){{add(JD); add(JA);}},
                         new ArrayList<>(){{add(JA); add(JB);}},
                         new ArrayList<>(){{add(JF); add(JG);}}
                 },
                 {
-                        new ArrayList<>(){{add(JC); add(JA); add(JE);}},
+                        new ArrayList<>(){{add(JC); add(JA); add(JB);}},
                         new ArrayList<>(){{add(JB); add(JD);}},
                         new ArrayList<>(){{add(JE); add(JF);}}
                 }

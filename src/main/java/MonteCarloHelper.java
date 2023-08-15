@@ -114,8 +114,8 @@ public class MonteCarloHelper {
 
             rankingTotalPoints = Helper.saw(sawMatrix, sawWeights);
 
-//            System.out.println("\n Ranking total points");
-//            Helper.show1DArray(rankingTotalPoints);
+            System.out.println("\n Ranking total points");
+            Helper.show1DArray(rankingTotalPoints);
             rankingPosition = getRanksArray(rankingTotalPoints);
             if(doubleOne(rankingPosition)){
 
@@ -616,12 +616,12 @@ public class MonteCarloHelper {
     public static ArrayList<Object[][]> generateDecisionMakerList(Class<?> clazz, int number, int row, int col, int min, int max){
         ArrayList<Object[][]> dMList = new ArrayList<>();
         Object[][] matrix;
-        System.out.println("Generates decisionMakerWeightsList: ");
+//        System.out.println("Generates decisionMakerWeightsList: ");
 
         for(int i = 0; i < number; i++){
             matrix = Helper.generate2DArray(clazz, row, col, min, max);
-            Helper.show2DArray(matrix);
-            System.out.println(" ");
+//            Helper.show2DArray(matrix);
+//            System.out.println(" ");
             dMList.add(matrix);
         }
 
