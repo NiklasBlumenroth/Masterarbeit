@@ -1,34 +1,50 @@
 package Enums;
 
+import lombok.Getter;
+
 public enum LexPreferenzes {
-    PA    ("A"),
-    PB        ("B"),
-    PC    ("C"),
-    PD          ("D"),
-    PE         ("E"),
-    PF             ("F"),
-    PG         ("G");
+    PA    ("A", 0),
+    PB        ("B", 1),
+    PC    ("C", 2),
+    PD          ("D", 3),
+    PE         ("E", 4),
+    PF             ("F", 5),
+    PG         ("G", 6);
 
+    @Getter
     public final String value;
+    @Getter
+    public final int id;
 
-    public static LexPreferenzes getJudgement(int Id){
-        return switch (Id) {
-            case 0 -> PA;
-            case 1 -> PB;
-            case 2 -> PC;
-            case 3 -> PD;
-            case 4 -> PE;
-            case 5 -> PF;
-            case 6 -> PG;
-            default -> null;
-        };
+    LexPreferenzes(String value, int id){
+        this.value = value;
+        this.id = id;
     }
-
-    public String getValue(){
-        return this.value;
-    }
-
     LexPreferenzes(String value) {
         this.value = value;
+        this.id = getLexIdByValue(value);
+    }
+
+    LexPreferenzes(int id){
+        this.id = id;
+        this.value = getLexValueById(id);
+    }
+
+    public static String getLexValueById(int id){
+        for (LexPreferenzes u : LexPreferenzes.values()){
+            if (id == u.getId()){
+                return u.getValue();
+            }
+        }
+        return null;
+    }
+
+    public static int getLexIdByValue(String value){
+        for (LexPreferenzes u : LexPreferenzes.values()){
+            if (value.equals(u.getValue())){
+                return u.getId();
+            }
+        }
+        return -1;
     }
 }

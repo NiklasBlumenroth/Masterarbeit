@@ -18,7 +18,6 @@ public class Nutzwertanalyse {
 //        ArrayList<Object>[][] aggregatedMatrix = generateAggregatedMatrix(decisionMakerList);
 //        ArrayList<Object>[] aggregatedWeights = generateAggregatedWeights(decisionMakerWeightsList);
 
-
         ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
                 {
                         new ArrayList<>(){{add(JA); add(JC);}},
@@ -42,6 +41,7 @@ public class Nutzwertanalyse {
                 new ArrayList<>(){{add(PE); add(PF);}},
                 new ArrayList<>(){{add(PF); add(PE); add(PG);}}
         };
+
 
         Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
         for (Object key: lowestValue.keySet()) {
@@ -134,6 +134,32 @@ ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
                 new ArrayList<>(){{add(M); add(H); add(L);}}
         };
  */
+    /*
+    ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
+                {
+                        new ArrayList<>(){{add(JA); add(JC);}},
+                        new ArrayList<>(){{add(JE); add(JG);}},
+                        new ArrayList<>(){{add(JB); add(JD);}}
+                },
+                {
+                        new ArrayList<>(){{add(JF); add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JF); add(JG);}}
+                },
+                {
+                        new ArrayList<>(){{add(JC); add(JA); add(JE);}},
+                        new ArrayList<>(){{add(JB); add(JD);}},
+                        new ArrayList<>(){{add(JE); add(JF);}}
+                }
+        };
+
+        ArrayList<Object>[] aggregatedWeights = new ArrayList[]{
+                new ArrayList<>(){{add(PA); add(PC); add(PD);}},
+                new ArrayList<>(){{add(PE); add(PF);}},
+                new ArrayList<>(){{add(PF); add(PE); add(PG);}}
+        };
+
+     */
 }
 /*
 ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{

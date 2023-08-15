@@ -50,6 +50,25 @@ public class Helper {
         Helper.show1DArray(scores);
     }
 
+    public static Object[][] clone2DArray(Object[][] array){
+        Object[][] newArray = new Object[array.length][array.length];
+        for(int i = 0; i < array.length; i++){
+            for(int j = 0; j < array[i].length; j++){
+                newArray[i][j] = array[i][j];
+            }
+        }
+
+        return newArray;
+    }
+
+    public static Object[] clone1DArray(Object[] array){
+        Object[] newArray = new Object[array.length];
+        for(int j = 0; j < array.length; j++){
+            newArray[j] = array[j];
+        }
+        return newArray;
+    }
+
     public static Map<Integer, String> sortByValue(Map<Integer, String> unsortedMap) {
         // Konvertiere die Map in eine Liste von Einträgen
         List<Map.Entry<Integer, String>> entryList = new ArrayList<>(unsortedMap.entrySet());
@@ -69,32 +88,38 @@ public class Helper {
     }
 
     public static Double[] saw(Object[][] matrix, Object[] weights) {
-        Map<Integer, String> weightsMap = new HashMap<>();
-        Integer counter = 0;
+        //die sortierfunktionen ändern auch die originale
+        Object[] sortedWeights = Helper.clone1DArray(weights);
+        Object[][] sortedMatrix = Helper.clone2DArray(matrix);
 
-        //put all values in map and use counter as key
-        for(int i = 0; i < weights.length; i++){
-            weightsMap.put(counter, String.valueOf(weights[i]));
-            counter++;
+        List <Object> sortedWeightsList = new ArrayList<>();
+        sortedWeightsList.addAll(Arrays.asList(weights));
+        Class<?> clazz = sortedMatrix[0][0].getClass();
+        if (LexJudgements.class.equals(clazz)) {
+            Arrays.sort(sortedWeights);
+            sortJudgementsByPreferences(sortedMatrix, weights, sortedWeightsList);
         }
+        System.out.println("\nmatrix");
+        Helper.show2DArray(matrix);
+        System.out.println("\nweights");
+        Helper.show1DArray(weights);
+        System.out.println("\nsortedMatrix");
+        Helper.show2DArray(sortedMatrix);
+        System.out.println("\nsortedWeights");
+        Helper.show1DArray(sortedWeights);
 
-        weightsMap = sortByValue(weightsMap);
-        counter = 0;
-        for (Map.Entry<Integer, String> entry : weightsMap.entrySet()) {
-            weights[counter] = entry.getValue();
-            counter++;
-        }
-
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        Class<?> clazz = matrix[0][0].getClass();
+        int rows = sortedMatrix.length;
+        int cols = sortedMatrix[0].length;
         // check if matrix and weights fit
         if (cols != weights.length) {
             throw new IllegalArgumentException("ERROR: Matrix length:" + cols + " | Weights :" + weights.length );
         }
         Double[] scores = new Double[rows];
         String[] lexScores = new String[rows];
-        Double[][] sums = new Double[matrix.length][matrix[0].length];
+
+        Double[][] sums = new Double[matrix.length][sortedMatrix[0].length];
+        String[][] lexSums = new String[sortedMatrix.length][sortedMatrix.length];
+
         Double value;
         // create sum for columns
         for (int i = 0; i < rows; i++) {
@@ -105,24 +130,67 @@ public class Helper {
 
                 } else if (FuzzyJudgements.class.equals(clazz)) {
                     FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
-                    FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
+                    FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) sortedMatrix[i][j];
                     value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
                     sum += value;
                     sums[i][j] = value;
                 } else if (Integer.class.equals(clazz)) {
-                    sum = sum + (Integer)matrix[i][j] * (Double)weights[j];
-                    sums[i][j] = (Integer)matrix[i][j] * (Double)weights[j];
+                    sum = sum + (Integer)sortedMatrix[i][j] * (Double)weights[j];
+                    sums[i][j] = (Integer)sortedMatrix[i][j] * (Double)weights[j];
                 } else if (LexJudgements.class.equals(clazz)) {
-                    lexSum = lexSum + matrix[i][j] + weights[j];
-            }
+                    lexSum = lexSum + sortedMatrix[i][j];
+                    lexSums[i][j] = lexSum ;
+                }
 
             }
             scores[i] = sum;
             lexScores[i] = lexSum;
         }
-//        System.out.println("\nshow SAW");
-//        Helper.show2DArray(sums);
+        if (LexJudgements.class.equals(clazz)) {
+            String[] temp = new String[rows];
+            for(int i = 0; i < temp.length; i++){
+                temp[i] = lexScores[i];
+            }
+            Arrays.sort(temp);
+            for(int i = 0; i < temp.length; i++){
+                scores[i] = getPlacement(temp, lexScores[i]) * 1.0 + 1;
+            }
+        }
+        System.out.println("\nshow SAW");
+        Helper.show2DArray(lexSums);
         return scores;
+    }
+
+    public static int getPlacement(String[] temp, String object){
+        for(int i = 0; i < temp.length; i++){
+            if(object.equals(temp[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static void sortJudgementsByPreferences(Object[][] matrix, Object[] weights, List<Object> sortedWeights){
+        for(int i = 0; i < sortedWeights.size(); i++){
+            //get old position in weiths
+            int position = getPositionInOldWeights(weights, sortedWeights.get(i));
+            //change position in matrix from old to new
+            Object[] temp = matrix[i];
+            matrix[i] = matrix[position];
+            matrix[position] = temp;
+            Object ob = weights[i];
+            weights[i] = weights[position];
+            weights[position] = ob;
+        }
+    }
+
+    public static int getPositionInOldWeights(Object[] weights, Object object){
+        for(int i = 0; i < weights.length; i++){
+            if(object.equals(weights[i])){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static void showRank(Map<Object, Map<Integer, Double>>[][] matrix, Integer rank){

@@ -64,7 +64,6 @@ public class MonteCarloHelper {
         //fill matrix map with 0
         fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
         fillMatrixMapWithZero(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
-
         //fill weights map with 0
         fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
         fillWeightsMapWithZero(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
@@ -72,6 +71,7 @@ public class MonteCarloHelper {
         //create currentJudgementAcceptabilityIndices and currentPreferenceAcceptabilityIndices
         //create potentialJudgementAcceptabilityIndices and potentialPreferenceAcceptabilityIndices
         ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices = new ArrayList<>();
+        //[index for ai is winning][row][col][map for possible decisions]
         ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices = new ArrayList<>();
         System.out.println("\nSaw Weights:");
         for(int j = 0; j < row; j++){
@@ -113,6 +113,7 @@ public class MonteCarloHelper {
             }
 
             rankingTotalPoints = Helper.saw(sawMatrix, sawWeights);
+
 //            System.out.println("\n Ranking total points");
 //            Helper.show1DArray(rankingTotalPoints);
             rankingPosition = getRanksArray(rankingTotalPoints);
@@ -127,13 +128,13 @@ public class MonteCarloHelper {
 //            Helper.show1DArray(sawWeights);
 //            System.out.println("\n Ranking positions");
 //            Helper.show1DArray(rankingPosition);
-//            addRanking(rankAcceptabilityIndices, rankingPosition);
-//            System.out.println("\n new rankAcceptabilityIndices");
-//            Helper.show2DArray(rankAcceptabilityIndices);
+            addRanking(rankAcceptabilityIndices, rankingPosition);
+            System.out.println("\n new rankAcceptabilityIndices");
+            Helper.show2DArray(rankAcceptabilityIndices);
             //sawMatrix + ranking = countingMatrixRankingMap
-//            countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
+            countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
-//            countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
+            countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
         }
 
         System.out.println("\nAggregated Matrix");
@@ -145,7 +146,7 @@ public class MonteCarloHelper {
         System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
 
         System.out.println("\nfinal rankAcceptabilityIndices normalized");
-        normalizeTotalRankingPositions(rankAcceptabilityIndices);
+//        normalizeTotalRankingPositions(rankAcceptabilityIndices);
         Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
         for(int j = 0; j < row; j++){
@@ -443,13 +444,19 @@ public class MonteCarloHelper {
     public static void countByRankingAndDecision(Object[] rankingPosition,
                                                  ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices,
                                                  Object[][] sawMatrix){
-        Integer rankOne = null;
         for(int i = 0; i < rankingPosition.length; i++){
             if(Objects.equals(rankingPosition[i], 1)){
-                rankOne = i;
+                //add for rank one the counter for Judgements from saw by one
+                addRankOneToCJAI(i, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             }
         }
-        //add for rank one the counter for Judgements from saw by one
+
+
+    }
+
+    public static void addRankOneToCJAI(Integer rankOne,
+                                        ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices,
+                                        Object[][] sawMatrix){
         for(int i = 0; i < sawMatrix.length; i++){
             for(int j = 0; j < sawMatrix[i].length; j++){
                 //get old value
