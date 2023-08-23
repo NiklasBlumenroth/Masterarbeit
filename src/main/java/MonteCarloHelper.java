@@ -1,3 +1,4 @@
+import Enums.LexJudgements;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -73,7 +74,6 @@ public class MonteCarloHelper {
         ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices = new ArrayList<>();
         //[index for ai is winning][row][col][map for possible decisions]
         ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices = new ArrayList<>();
-        System.out.println("\nSaw Weights:");
         for(int j = 0; j < row; j++){
             objectCurrentJudgementAcceptabilityIndices.add(currentJudgementAcceptabilityIndices);
             currentJudgementAcceptabilityIndices = new Map[row][col];
@@ -114,8 +114,8 @@ public class MonteCarloHelper {
 
             rankingTotalPoints = Helper.saw(sawMatrix, sawWeights);
 
-            System.out.println("\n Ranking total points");
-            Helper.show1DArray(rankingTotalPoints);
+//            System.out.println("\n Ranking total points");
+//            Helper.show1DArray(rankingTotalPoints);
             rankingPosition = getRanksArray(rankingTotalPoints);
             if(doubleOne(rankingPosition)){
 
@@ -126,27 +126,40 @@ public class MonteCarloHelper {
 //            Helper.show2DArray(sawMatrix);
 //            System.out.println("\nWeight");
 //            Helper.show1DArray(sawWeights);
-//            System.out.println("\n Ranking positions");
-//            Helper.show1DArray(rankingPosition);
+            if((int)rankingPosition[1] == 1){
+                System.out.println("\n Ranking positions");
+                Helper.show1DArray(rankingPosition);
+                System.out.println("\nmatrix: ");
+                Helper.show2DArray(sawMatrix);
+                System.out.println("\nweights: ");
+                Helper.show1DArray(sawWeights);
+                if(sawMatrix[0][0] == LexJudgements.JC){
+                    System.out.println("hier");
+                }
+            }
             addRanking(rankAcceptabilityIndices, rankingPosition);
-            System.out.println("\n new rankAcceptabilityIndices");
-            Helper.show2DArray(rankAcceptabilityIndices);
+//            System.out.println("\n new rankAcceptabilityIndices");
+//            Helper.show2DArray(rankAcceptabilityIndices);
             //sawMatrix + ranking = countingMatrixRankingMap
             countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
         }
 
-        System.out.println("\nAggregated Matrix");
-        Helper.show2DArray(aggregatedMatrix);
-
-        System.out.println("\nAggregated Weight");
-        Helper.show1DArray(aggregatedWeights);
-
-        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
+//        System.out.println("\nAggregated Matrix");
+//        Helper.show2DArray(aggregatedMatrix);
+//
+//        System.out.println("\nAggregated Weight");
+//        Helper.show1DArray(aggregatedWeights);
+//
+//        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
+//
+        System.out.println("\nfinal rankAcceptabilityIndices ");
+//        normalizeTotalRankingPositions(rankAcceptabilityIndices);
+        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
         System.out.println("\nfinal rankAcceptabilityIndices normalized");
-//        normalizeTotalRankingPositions(rankAcceptabilityIndices);
+        normalizeTotalRankingPositions(rankAcceptabilityIndices);
         Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
         for(int j = 0; j < row; j++){
@@ -602,10 +615,10 @@ public class MonteCarloHelper {
     public static ArrayList<Object[]> generateDecisionMakerWeightList(Class<?> clazz, int number, int length, int min, int max){
         ArrayList<Object[]> dMWList = new ArrayList<>();
         Object[] matrix;
-        System.out.println("Generates decisionMakerWeightList: ");
+//        System.out.println("Generates decisionMakerWeightList: ");
         for(int i = 0; i < number; i++){
             matrix = Helper.generate1DArray(clazz, length, min, max);
-            Helper.show1DArray(matrix);
+//            Helper.show1DArray(matrix);
             dMWList.add(matrix);
         }
 

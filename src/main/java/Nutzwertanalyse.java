@@ -11,67 +11,86 @@ import static Enums.LexJudgements.*;
 public class Nutzwertanalyse {
     public static final int row = 3;
     public static final int col = 3;
-    public static final int numberOfDecisionMaker = 10;
-    public static void main(String[] args) {
-        ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
-//        ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
-//        ArrayList<Object>[][] aggregatedMatrix = generateAggregatedMatrix(decisionMakerList);
-//        ArrayList<Object>[] aggregatedWeights = generateAggregatedWeights(decisionMakerWeightsList);
+    public static final int numberOfDecisionMaker = 3;
 
-        ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
+    public static ArrayList<Object>[][] getMatrix(){
+        return new ArrayList[][]{
                 {
                         new ArrayList<>(){{add(JA); add(JC);}},
                         new ArrayList<>(){{add(JE); add(JG);}},
                         new ArrayList<>(){{add(JB); add(JD);}}
                 },
                 {
-                        new ArrayList<>(){{add(JD); add(JA);}},
+                        new ArrayList<>(){{add(JB); add(JA);}},
                         new ArrayList<>(){{add(JA); add(JB);}},
                         new ArrayList<>(){{add(JF); add(JG);}}
                 },
                 {
-                        new ArrayList<>(){{add(JC); add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JC); add(JA); add(JE);}},
                         new ArrayList<>(){{add(JB); add(JD);}},
                         new ArrayList<>(){{add(JE); add(JF);}}
                 }
         };
+    }
 
-        ArrayList<Object>[] aggregatedWeights = new ArrayList[]{
+    public static ArrayList<Object>[] getWeights(){
+        return new ArrayList[]{
                 new ArrayList<>(){{add(PA); add(PC); add(PD);}},
                 new ArrayList<>(){{add(PE); add(PF);}},
                 new ArrayList<>(){{add(PF); add(PE); add(PG);}}
         };
+    }
+
+    public static void main(String[] args) {
 
 
-        Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
-        for (Object key: lowestValue.keySet()) {
-            System.out.println(key + " : " + lowestValue.get(key));
-        }
+        ArrayList<Object>[][] aggregatedMatrix = getMatrix();
 
-        while ((Double)lowestValue.get("lowestValue") != 0){
-            getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue);
-            lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
-            for (Object key: lowestValue.keySet()) {
-                System.out.println(key + " : " + lowestValue.get(key));
+        ArrayList<Object>[] aggregatedWeights = getWeights();
+
+        Date startDate = new Date();
+        Date endDate = new Date();
+        System.out.println("Start: " + startDate);
+        for(int l = 0; l < 10; l++){
+//            ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
+//            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
+//            ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+//            ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+            int counter = 0;
+            double sum = 0;
+            int durchlaeufe = 100;
+            for(int k = 0; k < durchlaeufe; k++){
+                counter = 0;
+                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+                counter ++;
+//                for (Object key: lowestValue.keySet()) {
+//                    System.out.println(key + " : " + lowestValue.get(key));
+//                }
+
+                while ((Double)lowestValue.get("lowestValue") != 0){
+                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
+                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+                    counter++;
+//                    for (Object key: lowestValue.keySet()) {
+//                        System.out.println(key + " : " + lowestValue.get(key));
+//                    }
+                }
+//                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+//                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+                aggregatedMatrix = getMatrix();
+                aggregatedWeights = getWeights();
+                sum += counter;
             }
+            endDate = new Date();
+            System.out.println(l + " Durchschnittliche Pfadlänge = " + sum/durchlaeufe + " : " + endDate);
         }
-
-
-        /*
-        27.07. 10 Uhr
-
-        -> Formular in Google formular übernehmen
-        -> Miro board erstellen und tabellen übernehmen
-        -> Zielvereinbarungen überarbeiten -> Beispiel von Jana ansehen
-        -> lexikografisches Entscheidungsmodell : Schlüko
-
-         */
+        System.out.println("End: " + endDate);
 
 
 
         /*
             -> lexikografisches Entscheidungsmodell : Schlüko
-            -> pfadlängen bestimmen für mehrere durchläufe(simulationen)
+            -> pfadlängen bestimmen für mehrere durchläufe(simulationen) ->done
 
             -> Formular für Fragen danach
             -> Formular Judgements
@@ -79,6 +98,15 @@ public class Nutzwertanalyse {
 
             -> erster Testlauf
             17.8. 10:30 Uhr
+         */
+
+        /*
+            23.08 14 Uhr R214
+            100-1000 pfaden mit 1000 problemen durchrechnen
+                - mit monteCarlo simulation -> 0,52 Sekunden pro durchlauf (100.000 -> 14,6h)
+                - es wird nicht einbezogen, dass keine Entscheidung gefällt werden kann
+            lex
+            formulare
          */
     }
 
@@ -152,7 +180,7 @@ ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
                         new ArrayList<>(){{add(JE); add(JF);}}
                 }
         };
-
+// aufpassen beim auflösen von Problemen in den Diskussionen
         ArrayList<Object>[] aggregatedWeights = new ArrayList[]{
                 new ArrayList<>(){{add(PA); add(PC); add(PD);}},
                 new ArrayList<>(){{add(PE); add(PF);}},

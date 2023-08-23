@@ -92,10 +92,10 @@ public class Helper {
         Object[] sortedWeights = Helper.clone1DArray(weights);
         Object[][] sortedMatrix = Helper.clone2DArray(matrix);
 
-        System.out.println("\nmatrix: ");
-        show2DArray(sortedMatrix);
-        System.out.println("\nweights: ");
-        show1DArray(weights);
+//        System.out.println("\nmatrix: ");
+//        show2DArray(sortedMatrix);
+//        System.out.println("\nweights: ");
+//        show1DArray(weights);
 
         List <Object> sortedWeightsList = new ArrayList<>();
         sortedWeightsList.addAll(Arrays.asList(weights));
@@ -105,10 +105,10 @@ public class Helper {
             sortJudgementsByPreferences(sortedMatrix, weights, sortedWeightsList);
         }
 
-        System.out.println("\nsortedMatrix: ");
-        show2DArray(sortedMatrix);
-        System.out.println("\nsortedWeights: ");
-        show1DArray(weights);
+//        System.out.println("\nsortedMatrix: ");
+//        show2DArray(sortedMatrix);
+//        System.out.println("\nsortedWeights: ");
+//        show1DArray(weights);
 
         int rows = sortedMatrix.length;
         int cols = sortedMatrix[0].length;
@@ -158,8 +158,8 @@ public class Helper {
                 scores[i] = getPlacement(temp, lexScores[i]) * 1.0 + 1;
             }
         }
-        System.out.println("\nshow SAW");
-        Helper.show2DArray(lexSums);
+//        System.out.println("\nshow SAW");
+//        Helper.show2DArray(lexSums);
         return scores;
     }
 
