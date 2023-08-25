@@ -5,7 +5,6 @@ import Enums.LexPreferenzes;
 
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
 import static Enums.FuzzyJudgements.*;
 
@@ -87,31 +86,46 @@ public class Helper {
         return sortedMap;
     }
 
-    public static Double[] saw(Object[][] matrix, Object[] weights) {
-        //die sortierfunktionen ändern auch die originale
-        Object[] sortedWeights = Helper.clone1DArray(weights);
-        Object[][] sortedMatrix = Helper.clone2DArray(matrix);
+    public static int[] getSortingVectorAndSortWeights(Object[] weights){
+        List <Object> unSortedWeightsList = new ArrayList<>();
+        unSortedWeightsList.addAll(Arrays.asList(weights));
+        Arrays.sort(weights);
 
-//        System.out.println("\nmatrix: ");
-//        show2DArray(sortedMatrix);
-//        System.out.println("\nweights: ");
-//        show1DArray(weights);
-
-        List <Object> sortedWeightsList = new ArrayList<>();
-        sortedWeightsList.addAll(Arrays.asList(weights));
-        Class<?> clazz = sortedMatrix[0][0].getClass();
-        if (LexJudgements.class.equals(clazz)) {
-            Arrays.sort(weights);
-            sortJudgementsByPreferences(sortedMatrix, weights, sortedWeightsList);
+        Map<Object, Integer> indexMapping = new HashMap<>();
+        for (int i = 0; i < weights.length; i++) {
+            indexMapping.put(unSortedWeightsList.get(i), i);
         }
 
-//        System.out.println("\nsortedMatrix: ");
-//        show2DArray(sortedMatrix);
-//        System.out.println("\nsortedWeights: ");
-//        show1DArray(weights);
+        int[] sortingVector = new int[weights.length];
+        for (int i = 0; i < weights.length; i++) {
+            sortingVector[i] = indexMapping.get(weights[i]);
+        }
 
-        int rows = sortedMatrix.length;
-        int cols = sortedMatrix[0].length;
+        return sortingVector;
+    }
+
+    public static Double[] saw(Object[][] matrix, Object[] weights) {
+        int[] sortingVector = null;
+
+        System.out.println("\nsawMatrix: ");
+        show2DArray(matrix);
+        System.out.println("\nsawWeights: ");
+        show1DArray(weights);
+
+        Class<?> clazz = matrix[0][0].getClass();
+        if (LexJudgements.class.equals(clazz)) {
+            //sort weights, matrix and generate sortingVector
+            sortingVector = getSortingVectorAndSortWeights(weights);
+            sortJudgementsByPreferences(matrix, sortingVector, true);
+        }
+
+        System.out.println("\nsortedMatrix: ");
+        show2DArray(matrix);
+        System.out.println("\nsortedWeights: ");
+        show1DArray(weights);
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
         // check if matrix and weights fit
         if (cols != weights.length) {
             throw new IllegalArgumentException("ERROR: Matrix length:" + cols + " | Weights :" + weights.length );
@@ -119,8 +133,8 @@ public class Helper {
         Double[] scores = new Double[rows];
         String[] lexScores = new String[rows];
 
-        Double[][] sums = new Double[matrix.length][sortedMatrix[0].length];
-        String[][] lexSums = new String[sortedMatrix.length][sortedMatrix.length];
+        Double[][] sums = new Double[matrix.length][matrix[0].length];
+        String[][] lexSums = new String[matrix.length][matrix.length];
 
         Double value;
         // create sum for columns
@@ -132,15 +146,15 @@ public class Helper {
 
                 } else if (FuzzyJudgements.class.equals(clazz)) {
                     FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
-                    FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) sortedMatrix[i][j];
+                    FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
                     value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
                     sum += value;
                     sums[i][j] = value;
                 } else if (Integer.class.equals(clazz)) {
-                    sum = sum + (Integer)sortedMatrix[i][j] * (Double)weights[j];
-                    sums[i][j] = (Integer)sortedMatrix[i][j] * (Double)weights[j];
+                    sum = sum + (Integer)matrix[i][j] * (Double)weights[j];
+                    sums[i][j] = (Integer)matrix[i][j] * (Double)weights[j];
                 } else if (LexJudgements.class.equals(clazz)) {
-                    lexSum = lexSum + weights[j] + sortedMatrix[i][j];
+                    lexSum = lexSum + weights[j] + matrix[i][j];
                     lexSums[i][j] = lexSum ;
                 }
 
@@ -157,9 +171,23 @@ public class Helper {
             for(int i = 0; i < temp.length; i++){
                 scores[i] = getPlacement(temp, lexScores[i]) * 1.0 + 1;
             }
+            //unsort matrix, weights, scores
+            sortJudgementsByPreferences(matrix, sortingVector, false);
+            Object[] newWeights = sort(weights, sortingVector, false);
+            for(int i = 0; i < newWeights.length; i++){
+                weights[i] = newWeights[i];
+            }
+            System.out.println("scores unsorted");
+            show1DArray(scores);
+            Object[] arr = sort(scores, sortingVector, false);
+            for(int i = 0; i < arr.length; i++){
+                scores[i] = (Double)arr[i];
+            }
+            System.out.println("scores sorted");
+            show1DArray(scores);
         }
-//        System.out.println("\nshow SAW");
-//        Helper.show2DArray(lexSums);
+        //System.out.println("\nshow SAW");
+        //Helper.show2DArray(lexSums);
         return scores;
     }
 
@@ -172,27 +200,25 @@ public class Helper {
         return -1;
     }
 
-    public static void sortJudgementsByPreferences(Object[][] matrix, Object[] weights, List<Object> sortedWeights){
-        for(int i = 0; i < sortedWeights.size(); i++){
-            //get old position in weiths
-            int position = getPositionInOldWeights(weights, sortedWeights.get(i));
-            //change position in matrix from old to new
-            for(int j = 0; j < matrix.length; j++){
-                Object temp = matrix[j][i];
-                matrix[j][i] = matrix[j][position];
-                matrix[j][position] = temp;
-            }
-            Collections.swap(sortedWeights, i, position);
+    public static void sortJudgementsByPreferences(Object[][] matrix, int[] sortingVector, boolean sort){
+        for(int i = 0; i < matrix.length; i++){
+            matrix[i] = sort(matrix[i], sortingVector, sort);
         }
     }
 
-    public static int getPositionInOldWeights(Object[] weights, Object object){
-        for(int i = 0; i < weights.length; i++){
-            if(object.equals(weights[i])){
-                return i;
+    public static Object[] sort(Object[] array, int[] sortingVector, boolean sort){
+        Object[] newArray = new Object[array.length];
+
+        for(int i = 0; i < array.length; i++){
+            if(sort){
+                //sortedArray[i] = arrayToSort[sortingVector[i]];
+                newArray[i] = array[sortingVector[i]];
+            }else{
+                //restoredArray[sortingVector[i]] = sortedArray[i];
+                newArray[sortingVector[i]] = array[i];
             }
         }
-        return -1;
+        return newArray;
     }
 
     public static void showRank(Map<Object, Map<Integer, Double>>[][] matrix, Integer rank){
@@ -214,10 +240,8 @@ public class Helper {
     }
 
     public static Object[][] generate2DArray(Class<?> clazz, int rows, int columns, int min, int max){
-        Object[][] newObject = null;
-        Integer[][] matrix = new Integer[rows][columns];
+        Object[][] matrix = new Object[rows][columns];
         Random random = new Random();
-        FuzzyJudgements[][] fuzzyMatrix = new FuzzyJudgements[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -225,19 +249,14 @@ public class Helper {
                     matrix[i][j] = random.nextInt(max - min + 1);
 
                 } else if (FuzzyJudgements.class.equals(clazz)) {
-                    fuzzyMatrix[i][j] = FuzzyJudgements.getJudgement(random.nextInt(FuzzyJudgements.values().length));
+                    matrix[i][j] = FuzzyJudgements.getJudgement(random.nextInt(FuzzyJudgements.values().length));
+                } else if (LexJudgements.class.equals(clazz)) {
+                    matrix[i][j] = LexJudgements.getJudgement(random.nextInt(LexJudgements.values().length));
                 }
             }
         }
 
-        if (Integer.class.equals(clazz)) {
-            newObject = matrix;
-
-        } else if (FuzzyJudgements.class.equals(clazz)) {
-            newObject = fuzzyMatrix;
-        }
-
-        return newObject;
+        return matrix;
     }
 
     public static void show2DArray(Object[][] matrix) {
@@ -287,29 +306,18 @@ public class Helper {
 
 
     public static Object[] generate1DArray(Class<?> clazz, int size, int minValue, int maxValue) {
-        Double[] doubleMatrix = new Double[size];
-        Integer[] integerMatrix = new Integer[size];
-        Object[] randomArray = null;
+        Object[] randomArray = new Object[size];
         Random random = new Random();
-        FuzzyPreferenzes[] fuzzyMatrix = new FuzzyPreferenzes[size];
         //set values to right array
         for (int j = 0; j < size; j++) {
             if (Double.class.equals(clazz)) {
-                doubleMatrix[j] = Math.round((random.nextDouble() * (maxValue - minValue) + minValue) * 10.0) / 10.0;
+                randomArray[j] = Math.round((random.nextDouble() * (maxValue - minValue) + minValue) * 10.0) / 10.0;
             } else if (FuzzyPreferenzes.class.equals(clazz)) {
-                fuzzyMatrix[j] = FuzzyPreferenzes.getPreferenzes(random.nextInt(FuzzyPreferenzes.values().length));
+                randomArray[j] = FuzzyPreferenzes.getPreferenzes(random.nextInt(FuzzyPreferenzes.values().length));
             } else if (Integer.class.equals(clazz)) {
-                integerMatrix[j] = random.nextInt(maxValue - minValue + 1) + maxValue;
-            }
-        }
-        //set right array for return
-        for (int i = 0; i < size; i++) {
-            if (Integer.class.equals(clazz)) {
-                randomArray = integerMatrix;
-            } else if (FuzzyPreferenzes.class.equals(clazz)) {
-                randomArray = fuzzyMatrix;
-            } else if (Double.class.equals(clazz)) {
-                randomArray = doubleMatrix;
+                randomArray[j] = random.nextInt(maxValue - minValue + 1) + maxValue;
+            } else if (LexPreferenzes.class.equals(clazz)) {
+                randomArray[j] = LexPreferenzes.getLexValueById(random.nextInt(LexPreferenzes.values().length));
             }
         }
 

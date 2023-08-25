@@ -20,20 +20,11 @@ public enum LexPreferenzes {
         this.value = value;
         this.id = id;
     }
-    LexPreferenzes(String value) {
-        this.value = value;
-        this.id = getLexIdByValue(value);
-    }
 
-    LexPreferenzes(int id){
-        this.id = id;
-        this.value = getLexValueById(id);
-    }
-
-    public static String getLexValueById(int id){
+    public static LexPreferenzes getLexValueById(int id){
         for (LexPreferenzes u : LexPreferenzes.values()){
             if (id == u.getId()){
-                return u.getValue();
+                return u;
             }
         }
         return null;

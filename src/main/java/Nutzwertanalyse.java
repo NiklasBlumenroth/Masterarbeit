@@ -1,5 +1,7 @@
 import Enums.FuzzyJudgements;
 import Enums.FuzzyPreferenzes;
+import Enums.LexJudgements;
+import Enums.LexPreferenzes;
 
 import java.util.*;
 
@@ -12,57 +14,64 @@ public class Nutzwertanalyse {
     public static final int row = 3;
     public static final int col = 3;
     public static final int numberOfDecisionMaker = 3;
+    public static final Class jugClazz = LexJudgements.class;
+    public static final Class prefClazz = LexPreferenzes.class;
 
     public static ArrayList<Object>[][] getMatrix(){
         return new ArrayList[][]{
                 {
-                        new ArrayList<>(){{add(JA); add(JC);}},
-                        new ArrayList<>(){{add(JE); add(JG);}},
-                        new ArrayList<>(){{add(JB); add(JD);}}
+                        new ArrayList<>(){{add(MP); add(P);}},
+                        new ArrayList<>(){{add(F); add(G);}},
+                        new ArrayList<>(){{add(MG); add(VG);}}
                 },
                 {
-                        new ArrayList<>(){{add(JB); add(JA);}},
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JF); add(JG);}}
+                        new ArrayList<>(){{add(MP); add(VG);}},
+                        new ArrayList<>(){{add(F); add(MG);}},
+                        new ArrayList<>(){{add(F); add(G);}}
                 },
                 {
-                        new ArrayList<>(){{add(JC); add(JA); add(JE);}},
-                        new ArrayList<>(){{add(JB); add(JD);}},
-                        new ArrayList<>(){{add(JE); add(JF);}}
+                        new ArrayList<>(){{add(MG); add(P); add(VG);}},
+                        new ArrayList<>(){{add(G); add(P);}},
+                        new ArrayList<>(){{add(F); add(P);}}
                 }
         };
     }
 
     public static ArrayList<Object>[] getWeights(){
         return new ArrayList[]{
-                new ArrayList<>(){{add(PA); add(PC); add(PD);}},
-                new ArrayList<>(){{add(PE); add(PF);}},
-                new ArrayList<>(){{add(PF); add(PE); add(PG);}}
+                new ArrayList<>(){{add(H); add(ML); add(L);}},
+                new ArrayList<>(){{add(L); add(MH);}},
+                new ArrayList<>(){{add(M); add(H); add(L);}}
         };
     }
 
     public static void main(String[] args) {
 
 
-        ArrayList<Object>[][] aggregatedMatrix = getMatrix();
+        //ArrayList<Object>[][] aggregatedMatrix = getMatrix();
 
-        ArrayList<Object>[] aggregatedWeights = getWeights();
+        //ArrayList<Object>[] aggregatedWeights = getWeights();
 
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
         for(int l = 0; l < 10; l++){
-//            ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
-//            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
-//            ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-//            ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            int counter = 0;
+            ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, row, col, 1, 10);
+            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, row, 0, 1);
+            ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+            ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+
+            int indivCounter = 0;
             double sum = 0;
             int durchlaeufe = 100;
             for(int k = 0; k < durchlaeufe; k++){
-                counter = 0;
+                //System.out.println("\nAggregated Matrix");
+                //Helper.show2DArray(aggregatedMatrix);
+
+                //System.out.println("\nAggregated Weight");
+                //Helper.show1DArray(aggregatedWeights);
                 Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
-                counter ++;
+                indivCounter++;
 //                for (Object key: lowestValue.keySet()) {
 //                    System.out.println(key + " : " + lowestValue.get(key));
 //                }
@@ -70,43 +79,55 @@ public class Nutzwertanalyse {
                 while ((Double)lowestValue.get("lowestValue") != 0){
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
-                    counter++;
+                    indivCounter++;
 //                    for (Object key: lowestValue.keySet()) {
 //                        System.out.println(key + " : " + lowestValue.get(key));
 //                    }
                 }
-//                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-//                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                aggregatedMatrix = getMatrix();
-                aggregatedWeights = getWeights();
-                sum += counter;
+                System.out.println("Pfadlänge: " + indivCounter);
+                sum += indivCounter;
+                indivCounter = 0;
+                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+                //aggregatedMatrix = getMatrix();
+                //aggregatedWeights = getWeights();
             }
+            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
+            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
+            aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+            aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum/durchlaeufe + " : " + endDate);
+            sum = 0;
         }
         System.out.println("End: " + endDate);
 
-
-
         /*
-            -> lexikografisches Entscheidungsmodell : Schlüko
-            -> pfadlängen bestimmen für mehrere durchläufe(simulationen) ->done
+        31.8. 14 Uhr
+        - überlegen was für die probe case study noch fehlt
+            - wo liegt der fokus?
 
-            -> Formular für Fragen danach
-            -> Formular Judgements
-            -> Formular Titel (Alles selbsterklärend)
+        - wenn dimensionen steigen sollte pfadlängen steigen
+        + random listen von entscheidungen generieren überarbeiten
+        - lex zeilen vertauscht obwohl nicht nötig
+        - überprüfen von lex alg mit janas berechnung
 
-            -> erster Testlauf
-            17.8. 10:30 Uhr
+        - Meilensteine festlegen
+            - individualprojekt selbst als entwurf festlegen(zeitraum 5monate)
+            - masterarbeit (maxigliederung, 8 Wochen später vorversion der arbeit, 4 wochen später abgabe)
+
+        - vokabular für bewertungen in firma erfragen
+        - nachfragen ob es bewertungsbogen für bewerber gibt
          */
-
         /*
-            23.08 14 Uhr R214
-            100-1000 pfaden mit 1000 problemen durchrechnen
-                - mit monteCarlo simulation -> 0,52 Sekunden pro durchlauf (100.000 -> 14,6h)
-                - es wird nicht einbezogen, dass keine Entscheidung gefällt werden kann
-            lex
-            formulare
+         Fragen an Jana:
+         Wie kann es sein dass in der neuen Excel bei Individual preference vectors D1 bei
+         Preferences mehrere Werte in einer Zelle angegeben sind. Es sollte doch eine eindeutige
+         Zuordnung jedes Elementes geben sodass eine Reihenfolge entsteht.
+
+         Bei der zufälligen Auswahl der Wichtungen in der monteCarlo Simulation
+         ist ja auch wichtig, dass nicht mehrfach die gleiche Wichtung auftaucht(zb zwei mal A)
+         hierbei muss ja die Auswahl welches Element davon Rang "A" erhält zufällig erfolgen oder?
          */
     }
 
@@ -149,8 +170,6 @@ ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
                 },
                 {
                         new ArrayList<>(){{add(MG); add(P); add(VG);}},
-
-//                        new ArrayList<>(){{add(P);}},//current entropie müsste somit 1.08... betragen siehe excel
                         new ArrayList<>(){{add(G); add(P);}},
                         new ArrayList<>(){{add(F); add(P);}}
                 }
