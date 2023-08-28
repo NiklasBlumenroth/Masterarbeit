@@ -35,21 +35,23 @@ public class MonteCarloHelper {
         row = aggregatedMatrix.length;
         col = aggregatedWeights.length;
 
-        System.out.println("\nAggregated Matrix");
-        Helper.show2DArray(aggregatedMatrix);
+        ArrayList<SawFullIterationObject> fullIterations = null;
+        fullIterations = getSawFullIterationObjects(aggregatedMatrix, aggregatedWeights);
 
-        System.out.println("\nAggregated Weight");
-        Helper.show1DArray(aggregatedWeights);
+        //System.out.println("\nAggregated Matrix");
+        //Helper.show2DArray(aggregatedMatrix);
 
-        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
+        //System.out.println("\nAggregated Weight");
+        //Helper.show1DArray(aggregatedWeights);
+
+        //System.out.println("\nAggregated K: " + fullIterations.size());
+        //TODO ist k = anzahl fulliterations? also für lex ohne doppelte weights
 
         Object[][] sawMatrix = null;
         Object[] sawWeights = null;
         Object[] rankingTotalPoints;
         Object[] rankingPosition;
         Object[][] rankAcceptabilityIndices = new Object[row][col];
-        ArrayList<SawFullIterationObject> fullIterations = null;
-
         //fill ranking counter with 0
         for(int i = 0; i < row; i++){
             for(int j = 0; j < col; j++){
@@ -100,17 +102,15 @@ public class MonteCarloHelper {
         //monteCarloSimulation
         iteration = (full) ? getIteration(aggregatedMatrix, aggregatedWeights) : monteCarloIterations;
 
-        if (full){
-            fullIterations = getSawFullIterationObjects(aggregatedMatrix, aggregatedWeights);
-        }
-
         for(int i = 0; i < iteration; i++){
             if(full){
                 sawMatrix = fullIterations.get(i).getSawMatrix();
                 sawWeights = fullIterations.get(i).getSawWeights();
             }else{
-                sawMatrix = getSawMatrix(aggregatedMatrix, col, row);
-                sawWeights = getSawWeights(aggregatedWeights, col);
+                Random random = new Random();
+                int rngNumber = random.nextInt(fullIterations.size());
+                sawMatrix = fullIterations.get(rngNumber).getSawMatrix();
+                sawWeights = fullIterations.get(rngNumber).getSawWeights();
             }
 
             rankingTotalPoints = Helper.saw(sawMatrix, sawWeights);
@@ -119,24 +119,23 @@ public class MonteCarloHelper {
             if(doubleOne(rankingPosition)){
 
             }
-            System.out.println("\n Ranking total points");
-            Helper.show1DArray(rankingTotalPoints);
-            System.out.println("\nMatrix");
-            Helper.show2DArray(sawMatrix);
-            System.out.println("\nWeight");
-            Helper.show1DArray(sawWeights);
-            if((int)rankingPosition[1] == 1){
+            //System.out.println("\n Ranking total points");
+            //Helper.show1DArray(rankingTotalPoints);
+            //System.out.println("\nMatrix");
+            //Helper.show2DArray(sawMatrix);
+            //System.out.println("\nWeight");
+            //Helper.show1DArray(sawWeights);
+            if((int)rankingPosition[1] == 9){
                 System.out.println("Extra");
             }
             addRanking(rankAcceptabilityIndices, rankingPosition);
-            System.out.println("\n new rankAcceptabilityIndices");
-            Helper.show2DArray(rankAcceptabilityIndices);
+            //System.out.println("\n new rankAcceptabilityIndices");
+            //Helper.show2DArray(rankAcceptabilityIndices);
             //sawMatrix + ranking = countingMatrixRankingMap
             //countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
-            if(countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights)){
-                System.out.println();
-            }
+            countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
+
         }
 
 //        System.out.println("\nAggregated Matrix");
@@ -255,18 +254,11 @@ public class MonteCarloHelper {
             fullIterationObjects.addAll(Arrays.asList(aggregatedMatrix[i]));
         }
         List<List<Object>> cartesianProduct = CartesianProduct.cartesianProduct(fullIterationObjects);
-//        for (List<Object> product : cartesianProduct) {
-//            System.out.println(product);
-//        }
         //aggregatedWeights
         List<List<Object>> fullIterationObjects2 = new ArrayList<>();
         fullIterationObjects2.addAll(Arrays.asList(aggregatedWeights));
 
         List<List<Object>> cartesianProduct2 = CartesianProduct.cartesianProduct(fullIterationObjects2);
-//        for (List<Object> product : cartesianProduct2) {
-//            System.out.println(product);
-//        }
-//        System.out.println();
 
         ArrayList<SawFullIterationObject> iterations = new ArrayList<>();
         for(List<Object> var : cartesianProduct){
@@ -277,9 +269,34 @@ public class MonteCarloHelper {
                 iterations.add(sawFullIterationObject);
             }
         }
-//        System.out.println();
-
+        if(aggregatedWeights[0].get(0).getClass().equals(LexPreferenzes.class)){
+            cutInvalidIterationsForLex(iterations);
+        }
         return iterations;
+    }
+
+    public static void cutInvalidIterationsForLex(ArrayList<SawFullIterationObject> iterations){
+        ArrayList<SawFullIterationObject> listOfDouble = new ArrayList<>();
+        for(int i = 0; i < iterations.size(); i++){
+            if(hasDouble(iterations.get(i).getSawWeights())){
+                iterations.remove(i);
+                i--;
+            }
+        }
+
+    }
+
+    public static boolean hasDouble(Object[] arr){
+        for(int j = 0; j < arr.length; j++){
+            Object elem = arr[j];
+            for(int i = j + 1; i < arr.length; i++){
+                if(arr[i].equals(elem)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public static Object[] listToWeights(List<Object> list, int matrixLength){
@@ -474,7 +491,7 @@ public class MonteCarloHelper {
         }
     }
 
-    public static boolean countByRankingAndWeights(Object[] rankingPosition, ArrayList<Map<Object, Object>[]> currentPreferenceAcceptabilityIndices, Object[] sawWeights){
+    public static void countByRankingAndWeights(Object[] rankingPosition, ArrayList<Map<Object, Object>[]> currentPreferenceAcceptabilityIndices, Object[] sawWeights){
         Integer rankOne = null;
         for(int i = 0; i < rankingPosition.length; i++){
             if(Objects.equals(rankingPosition[i], 1)){
@@ -484,15 +501,10 @@ public class MonteCarloHelper {
         for(int i = 0; i < sawWeights.length; i++){
             //get old value
             Double value = (Double) currentPreferenceAcceptabilityIndices.get(rankOne)[i].get(sawWeights[i]);
-            if(value == null){
-                return true;
-            }else {
-                value += 1;
-            }
+            value += 1;
             //set new value
             currentPreferenceAcceptabilityIndices.get(rankOne)[i].put(sawWeights[i], value);
         }
-        return false;
     }
 
     public static void fillWeightsMapWithZero(ArrayList<Object>[] aggregatedWeights, Map<Object, Object>[] aggregatedWeightsRankingMap){
@@ -521,55 +533,6 @@ public class MonteCarloHelper {
         }
     }
 
-    public static Object[][] getSawMatrix(ArrayList<Object>[][] aggregatedMatrix, int col, int row){
-        Object[][] sawMatrix = new Object[row][col];
-        Random random = new Random();
-
-        int rngNumber;
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                rngNumber = random.nextInt(aggregatedMatrix[i][j].size());
-                sawMatrix[i][j] = aggregatedMatrix[i][j].get(rngNumber);
-            }
-        }
-
-        return sawMatrix;
-    }
-
-    public static Object[] getSawWeights(ArrayList<Object>[] aggregatedWeights, int col){
-        //if lex no double values
-        Object[] sawWeights = new Object[col];
-        Random random = new Random();
-        int rngValue;
-        int rngPos;
-        for(int i = 0; i < col; i++){
-            if(aggregatedWeights[i].get(0).getClass().equals(LexPreferenzes.class)){
-                do{
-                    rngPos = random.nextInt(col);
-                }while(sawWeights[rngPos] != null);
-
-                do{
-                    rngValue = random.nextInt(aggregatedWeights[i].size());
-                }while(contains(sawWeights, aggregatedWeights[i].get(rngValue)));
-            }else{
-                rngPos = random.nextInt(col);
-                rngValue = random.nextInt(aggregatedWeights[i].size());
-            }
-            sawWeights[rngPos] = aggregatedWeights[i].get(rngValue);
-        }
-        return sawWeights;
-    }
-
-    public static boolean contains(Object[] sawWeights, Object ob){
-        for(int i = 0; i < sawWeights.length; i++){
-            if(sawWeights[i] != null){
-                if(sawWeights[i].equals(ob)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
     @NotNull
     public static ArrayList<Object>[][] generateAggregatedMatrix(@NotNull ArrayList<Object[][]> dMList){
         ArrayList<Object>[][] aggregatedMatrix = new ArrayList[dMList.get(0).length][dMList.get(0)[0].length];

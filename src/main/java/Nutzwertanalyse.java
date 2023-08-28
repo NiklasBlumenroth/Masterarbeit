@@ -65,11 +65,11 @@ public class Nutzwertanalyse {
             double sum = 0;
             int durchlaeufe = 100;
             for(int k = 0; k < durchlaeufe; k++){
-                //System.out.println("\nAggregated Matrix");
-                //Helper.show2DArray(aggregatedMatrix);
+                System.out.println("\nAggregated Matrix");
+                Helper.show2DArray(aggregatedMatrix);
 
-                //System.out.println("\nAggregated Weight");
-                //Helper.show1DArray(aggregatedWeights);
+                System.out.println("\nAggregated Weight");
+                Helper.show1DArray(aggregatedWeights);
                 Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
                 indivCounter++;
 //                for (Object key: lowestValue.keySet()) {
@@ -119,16 +119,7 @@ public class Nutzwertanalyse {
         - vokabular für bewertungen in firma erfragen
         - nachfragen ob es bewertungsbogen für bewerber gibt
          */
-        /*
-         Fragen an Jana:
-         Wie kann es sein dass in der neuen Excel bei Individual preference vectors D1 bei
-         Preferences mehrere Werte in einer Zelle angegeben sind. Es sollte doch eine eindeutige
-         Zuordnung jedes Elementes geben sodass eine Reihenfolge entsteht.
 
-         Bei der zufälligen Auswahl der Wichtungen in der monteCarlo Simulation
-         ist ja auch wichtig, dass nicht mehrfach die gleiche Wichtung auftaucht(zb zwei mal A)
-         hierbei muss ja die Auswahl welches Element davon Rang "A" erhält zufällig erfolgen oder?
-         */
     }
 
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue){
