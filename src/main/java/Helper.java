@@ -107,10 +107,10 @@ public class Helper {
     public static Double[] saw(Object[][] matrix, Object[] weights) {
         int[] sortingVector = null;
 
-        //System.out.println("\nsawMatrix: ");
-        //show2DArray(matrix);
-        //System.out.println("\nsawWeights: ");
-        //show1DArray(weights);
+//        System.out.println("\nsawMatrix: ");
+//        show2DArray(matrix);
+//        System.out.println("\nsawWeights: ");
+//        show1DArray(weights);
 
         Class<?> clazz = matrix[0][0].getClass();
         if (LexJudgements.class.equals(clazz)) {
@@ -119,10 +119,10 @@ public class Helper {
             sortJudgementsByPreferences(matrix, sortingVector, true);
         }
 
-        //System.out.println("\nsortedMatrix: ");
-        //show2DArray(matrix);
-        //System.out.println("\nsortedWeights: ");
-        //show1DArray(weights);
+//        System.out.println("\nsortedMatrix: ");
+//        show2DArray(matrix);
+//        System.out.println("\nsortedWeights: ");
+//        show1DArray(weights);
 
         int rows = matrix.length;
         int cols = matrix[0].length;
@@ -177,13 +177,11 @@ public class Helper {
             for(int i = 0; i < newWeights.length; i++){
                 weights[i] = newWeights[i];
             }
-            Object[] arr = sort(scores, sortingVector, false);
-            for(int i = 0; i < arr.length; i++){
-                scores[i] = (Double)arr[i];
-            }
+//            System.out.println("scores unsorted");
+//            show1DArray(scores);
         }
-        //System.out.println("\nshow SAW");
-        //Helper.show2DArray(lexSums);
+//        System.out.println("\nshow SAW");
+//        Helper.show2DArray(lexSums);
         return scores;
     }
 

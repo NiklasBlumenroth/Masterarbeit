@@ -18,30 +18,52 @@ public class Nutzwertanalyse {
     public static final Class prefClazz = LexPreferenzes.class;
 
     public static ArrayList<Object>[][] getMatrix(){
+//        return new ArrayList[][]{
+//                {
+//                        new ArrayList<>(){{add(MP); add(P);}},
+//                        new ArrayList<>(){{add(F); add(G);}},
+//                        new ArrayList<>(){{add(MG); add(VG);}}
+//                },
+//                {
+//                        new ArrayList<>(){{add(MP); add(VG);}},
+//                        new ArrayList<>(){{add(F); add(MG);}},
+//                        new ArrayList<>(){{add(F); add(G);}}
+//                },
+//                {
+//                        new ArrayList<>(){{add(MG); add(P); add(VG);}},
+//                        new ArrayList<>(){{add(G); add(P);}},
+//                        new ArrayList<>(){{add(F); add(P);}}
+//                }
+//        };
         return new ArrayList[][]{
                 {
-                        new ArrayList<>(){{add(MP); add(P);}},
-                        new ArrayList<>(){{add(F); add(G);}},
-                        new ArrayList<>(){{add(MG); add(VG);}}
+                        new ArrayList<>(){{add(JA); add(JC);}},
+                        new ArrayList<>(){{add(JE); add(JG);}},
+                        new ArrayList<>(){{add(JB); add(JD);}}
                 },
                 {
-                        new ArrayList<>(){{add(MP); add(VG);}},
-                        new ArrayList<>(){{add(F); add(MG);}},
-                        new ArrayList<>(){{add(F); add(G);}}
+                        new ArrayList<>(){{add(JF); add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JF); add(JG);}}
                 },
                 {
-                        new ArrayList<>(){{add(MG); add(P); add(VG);}},
-                        new ArrayList<>(){{add(G); add(P);}},
-                        new ArrayList<>(){{add(F); add(P);}}
+                        new ArrayList<>(){{add(JC); add(JA); add(JE);}},
+                        new ArrayList<>(){{add(JB); add(JD);}},
+                        new ArrayList<>(){{add(JE); add(JF);}}
                 }
         };
     }
 
     public static ArrayList<Object>[] getWeights(){
+//        return new ArrayList[]{
+//                new ArrayList<>(){{add(H); add(ML); add(L);}},
+//                new ArrayList<>(){{add(L); add(MH);}},
+//                new ArrayList<>(){{add(M); add(H); add(L);}}
+//        };
         return new ArrayList[]{
-                new ArrayList<>(){{add(H); add(ML); add(L);}},
-                new ArrayList<>(){{add(L); add(MH);}},
-                new ArrayList<>(){{add(M); add(H); add(L);}}
+                new ArrayList<>(){{add(PA); add(PC); add(PD);}},
+                new ArrayList<>(){{add(PE); add(PF);}},
+                new ArrayList<>(){{add(PF); add(PE); add(PG);}}
         };
     }
 
@@ -65,11 +87,11 @@ public class Nutzwertanalyse {
             double sum = 0;
             int durchlaeufe = 100;
             for(int k = 0; k < durchlaeufe; k++){
-                System.out.println("\nAggregated Matrix");
-                Helper.show2DArray(aggregatedMatrix);
+                //System.out.println("\nAggregated Matrix");
+                //Helper.show2DArray(aggregatedMatrix);
 
-                System.out.println("\nAggregated Weight");
-                Helper.show1DArray(aggregatedWeights);
+                //System.out.println("\nAggregated Weight");
+                //Helper.show1DArray(aggregatedWeights);
                 Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
                 indivCounter++;
 //                for (Object key: lowestValue.keySet()) {
@@ -89,8 +111,8 @@ public class Nutzwertanalyse {
                 indivCounter = 0;
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                //aggregatedMatrix = getMatrix();
-                //aggregatedWeights = getWeights();
+//                aggregatedMatrix = getMatrix();
+//                aggregatedWeights = getWeights();
             }
             decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
             decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
@@ -107,19 +129,18 @@ public class Nutzwertanalyse {
         - überlegen was für die probe case study noch fehlt
             - wo liegt der fokus?
 
-        - wenn dimensionen steigen sollte pfadlängen steigen
+        + wenn dimensionen steigen sollte pfadlängen steigen
         + random listen von entscheidungen generieren überarbeiten
-        - lex zeilen vertauscht obwohl nicht nötig
+        + lex zeilen vertauscht obwohl nicht nötig
         - überprüfen von lex alg mit janas berechnung
 
         - Meilensteine festlegen
             - individualprojekt selbst als entwurf festlegen(zeitraum 5monate)
             - masterarbeit (maxigliederung, 8 Wochen später vorversion der arbeit, 4 wochen später abgabe)
 
-        - vokabular für bewertungen in firma erfragen
-        - nachfragen ob es bewertungsbogen für bewerber gibt
+        + vokabular für bewertungen in firma erfragen
+        + nachfragen ob es bewertungsbogen für bewerber gibt
          */
-
     }
 
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue){

@@ -35,6 +35,13 @@ public class MonteCarloHelper {
         row = aggregatedMatrix.length;
         col = aggregatedWeights.length;
 
+//        System.out.println("\nAggregated Matrix");
+//        Helper.show2DArray(aggregatedMatrix);
+//
+//        System.out.println("\nAggregated Weight");
+//        Helper.show1DArray(aggregatedWeights);
+//
+//        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
         ArrayList<SawFullIterationObject> fullIterations = null;
         fullIterations = getSawFullIterationObjects(aggregatedMatrix, aggregatedWeights);
 
@@ -119,23 +126,22 @@ public class MonteCarloHelper {
             if(doubleOne(rankingPosition)){
 
             }
-            //System.out.println("\n Ranking total points");
-            //Helper.show1DArray(rankingTotalPoints);
-            //System.out.println("\nMatrix");
-            //Helper.show2DArray(sawMatrix);
-            //System.out.println("\nWeight");
-            //Helper.show1DArray(sawWeights);
+//            System.out.println("\n Ranking total points");
+//            Helper.show1DArray(rankingTotalPoints);
+//            System.out.println("\nMatrix");
+//            Helper.show2DArray(sawMatrix);
+//            System.out.println("\nWeight");
+//            Helper.show1DArray(sawWeights);
             if((int)rankingPosition[1] == 9){
                 System.out.println("Extra");
             }
             addRanking(rankAcceptabilityIndices, rankingPosition);
-            //System.out.println("\n new rankAcceptabilityIndices");
-            //Helper.show2DArray(rankAcceptabilityIndices);
+//            System.out.println("\n new rankAcceptabilityIndices");
+//            Helper.show2DArray(rankAcceptabilityIndices);
             //sawMatrix + ranking = countingMatrixRankingMap
-            //countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
+            countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
-
         }
 
 //        System.out.println("\nAggregated Matrix");
@@ -143,51 +149,51 @@ public class MonteCarloHelper {
 //
 //        System.out.println("\nAggregated Weight");
 //        Helper.show1DArray(aggregatedWeights);
-//
+
 //        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
 //
-        //System.out.println("\nfinal rankAcceptabilityIndices ");
+//        System.out.println("\nfinal rankAcceptabilityIndices ");
 //        normalizeTotalRankingPositions(rankAcceptabilityIndices);
-        //Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+//        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
-        //System.out.println("\nfinal rankAcceptabilityIndices normalized");
+//        System.out.println("\nfinal rankAcceptabilityIndices normalized");
         normalizeTotalRankingPositions(rankAcceptabilityIndices);
-        //Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+//        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
         for(int j = 0; j < row; j++){
-            //System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
-            //Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
+//            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
+//            Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
         }
 
         for (int i = 0; i < col; i++){
-            //System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
-            //Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
+//            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
+//            Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
         }
 
         fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
         normalizeAggregatedMatrixMap(objectPotentialJudgementAcceptabilityIndices);
         for(int j = 0; j < row; j++){
-            //System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
-            //Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
+//            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
+//            Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
         }
 
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
         normalizeAggregatedWeightsMap(objectPotentialPreferenceAcceptabilityIndices);
         for (int i = 0; i < col; i++){
-            //System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
-            //Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
+//            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
+//            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
         }
 
         Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
-        //System.out.println("\njudgementEntropyMatrix");
-        //Helper.show2DArray(judgementEntropyMatrix);
+//        System.out.println("\njudgementEntropyMatrix");
+//        Helper.show2DArray(judgementEntropyMatrix);
 
         Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
-        //System.out.println("\npreferenceEntropy");
-        //Helper.show1DArray(preferenceEntropy);
+//        System.out.println("\npreferenceEntropy");
+//        Helper.show1DArray(preferenceEntropy);
 
-        //System.out.println("\ncurrent entropy");
-        //System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+//        System.out.println("\ncurrent entropy");
+//        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
 
 
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
