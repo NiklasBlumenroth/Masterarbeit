@@ -9,6 +9,7 @@ public class MonteCarloHelper {
     public static int iteration;
     public static int row;
     public static int col;
+    public static long size = 0;
 
     public static void main(String[] args) {
         Map<Integer, Integer> list = new HashMap<>();
@@ -44,7 +45,7 @@ public class MonteCarloHelper {
         //System.out.println("\nAggregated Weight");
         //Helper.show1DArray(aggregatedWeights);
 
-        //System.out.println("\nAggregated K: " + fullIterations.size());
+        System.out.println("\nAggregated K: " + fullIterations.size());
 
         Object[][] sawMatrix = null;
         Object[] sawWeights = null;
@@ -99,7 +100,7 @@ public class MonteCarloHelper {
         }
 
         //monteCarloSimulation
-        iteration = (full) ? getIteration(aggregatedMatrix, aggregatedWeights) : monteCarloIterations;
+        iteration = (full) ? fullIterations.size() : monteCarloIterations;
 
         for(int i = 0; i < iteration - 1; i++){
             if(full){
@@ -146,7 +147,7 @@ public class MonteCarloHelper {
         System.out.println("\nAggregated Weight");
         Helper.show1DArray(aggregatedWeights);
 
-        System.out.println("\nAggregated K: " + getMatrixK(aggregatedMatrix, aggregatedWeights));
+        System.out.println("\nAggregated K: " + fullIterations.size());
 
         System.out.println("\nfinal rankAcceptabilityIndices ");
         normalizeTotalRankingPositions(rankAcceptabilityIndices);
@@ -326,21 +327,6 @@ public class MonteCarloHelper {
         }
         return matrix;
     }
-
-    private static int getIteration(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights) {
-        int iteration = 1;
-        for(ArrayList<Object>[] rows : aggregatedMatrix){
-            for(ArrayList<Object> cols : rows){
-                iteration *= cols.size();
-            }
-        }
-
-        for(ArrayList<Object> cols : aggregatedWeights){
-            iteration *= cols.size();
-        }
-        return iteration;
-    }
-
 
     public static Double getCurrentEntropy(Object[][] rankAcceptabilityIndices){
         Double[] vector = new Double[rankAcceptabilityIndices.length];
@@ -563,21 +549,6 @@ public class MonteCarloHelper {
             }
         }
         return aggregatedMatrix;
-    }
-
-    public static int getMatrixK(@NotNull ArrayList<Object>[][] matrix, ArrayList<Object>[] weights){
-        int k = 1;
-
-        for (ArrayList<Object>[] arrayLists : matrix) {
-            for (ArrayList<Object> arrayList : arrayLists) {
-                k *= arrayList.size();
-            }
-        }
-        for(ArrayList<Object> arrayList : weights){
-            k *= arrayList.size();
-        }
-
-        return k;
     }
 
     @NotNull
