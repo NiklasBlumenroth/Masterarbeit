@@ -37,19 +37,51 @@ public class Nutzwertanalyse {
 //        };
         return new ArrayList[][]{
                 {
-                        new ArrayList<>(){{add(JA); add(JC);}},
-                        new ArrayList<>(){{add(JE); add(JG);}},
-                        new ArrayList<>(){{add(JB); add(JD);}}
-                },
-                {
-                        new ArrayList<>(){{add(JF); add(JA);}},
                         new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JF); add(JG);}}
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JC);}}
                 },
                 {
-                        new ArrayList<>(){{add(JC); add(JA); add(JE);}},
-                        new ArrayList<>(){{add(JB); add(JD);}},
-                        new ArrayList<>(){{add(JE); add(JF);}}
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JB); add(JC);}},
+                },
+                {
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JC);}},
+                },
+                {
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA);}}
+                },
+                {
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}}
+                },
+                {
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JC); add(JB);}},
+                        new ArrayList<>(){{add(JB);}}
                 }
         };
     }
@@ -61,19 +93,22 @@ public class Nutzwertanalyse {
 //                new ArrayList<>(){{add(M); add(H); add(L);}}
 //        };
         return new ArrayList[]{
-                new ArrayList<>(){{add(PA); add(PC); add(PD);}},
-                new ArrayList<>(){{add(PE); add(PF);}},
-                new ArrayList<>(){{add(PF); add(PE); add(PG);}}
+                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PD); add(PE);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PC);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PF);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
+                new ArrayList<>(){{add(PD); add(PE); add(PF);}}
         };
     }
 
     public static void main(String[] args) {
-
+        System.out.println(Runtime.getRuntime().maxMemory());
 
         //ArrayList<Object>[][] aggregatedMatrix = getMatrix();
 
         //ArrayList<Object>[] aggregatedWeights = getWeights();
-
+//4.276.092.928
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
@@ -82,7 +117,8 @@ public class Nutzwertanalyse {
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, row, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-
+                aggregatedMatrix = getMatrix();
+                aggregatedWeights = getWeights();
             int indivCounter = 0;
             double sum = 0;
             int durchlaeufe = 100;
@@ -92,7 +128,7 @@ public class Nutzwertanalyse {
 
                 //System.out.println("\nAggregated Weight");
                 //Helper.show1DArray(aggregatedWeights);
-                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
                 indivCounter++;
 //                for (Object key: lowestValue.keySet()) {
 //                    System.out.println(key + " : " + lowestValue.get(key));
@@ -100,7 +136,7 @@ public class Nutzwertanalyse {
 
                 while ((Double)lowestValue.get("lowestValue") != 0){
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
                     indivCounter++;
 //                    for (Object key: lowestValue.keySet()) {
 //                        System.out.println(key + " : " + lowestValue.get(key));
@@ -125,21 +161,12 @@ public class Nutzwertanalyse {
         System.out.println("End: " + endDate);
 
         /*
-        31.8. 14 Uhr
-        - überlegen was für die probe case study noch fehlt
-            - wo liegt der fokus?
-
-        + wenn dimensionen steigen sollte pfadlängen steigen
-        + random listen von entscheidungen generieren überarbeiten
-        + lex zeilen vertauscht obwohl nicht nötig
-        - überprüfen von lex alg mit janas berechnung
-
-        - Meilensteine festlegen
-            - individualprojekt selbst als entwurf festlegen(zeitraum 5monate)
-            - masterarbeit (maxigliederung, 8 Wochen später vorversion der arbeit, 4 wochen später abgabe)
-
-        + vokabular für bewertungen in firma erfragen
-        + nachfragen ob es bewertungsbogen für bewerber gibt
+        06.09 13 Uhr
+        - Kriterien formulieren(darauf achten, dass jeder weiß was genau bewertet wird)
+        - Sammeln von Daten in den laufenden Bewerbungsgesprächen (bevor besprochen wird ob der Bewerber weiter kommt bzw eingestellt wird)
+        - Dokument für Masterarbeit erstellen, gliederung hereinkopieren aus Vorlage und langsam füllen
+        - lex: pref vorher cutten bevor jugdements berücksichtigt werden
+        - nach optimierung lex beispiel durchrechnen
          */
     }
 
