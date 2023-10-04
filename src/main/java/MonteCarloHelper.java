@@ -242,6 +242,8 @@ public class MonteCarloHelper {
     }
 
     public static boolean doubleOne(Object[] ranking){
+
+        System.out.println("\ncurrent entropy");
         int counter = 0;
         for(int i = 0; i < ranking.length; i++){
             if((Integer)ranking[i] == 1){
