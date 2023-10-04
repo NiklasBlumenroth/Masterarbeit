@@ -18,91 +18,91 @@ public class Nutzwertanalyse {
     public static final Class prefClazz = LexPreferenzes.class;
 
     public static ArrayList<Object>[][] getMatrix(){
-        return new ArrayList[][]{
-                {
-                        new ArrayList<>(){{add(MP); add(P);}},
-                        new ArrayList<>(){{add(F); add(G);}},
-                        new ArrayList<>(){{add(MG); add(VG);}}
-                },
-                {
-                        new ArrayList<>(){{add(MP); add(VG);}},
-                        new ArrayList<>(){{add(F); add(MG);}},
-                        new ArrayList<>(){{add(F); add(G);}}
-                },
-                {
-                        new ArrayList<>(){{add(MG); add(P); add(VG);}},
-                        new ArrayList<>(){{add(G); add(P);}},
-                        new ArrayList<>(){{add(F); add(P);}}
-                }
-        };
-
 //        return new ArrayList[][]{
 //                {
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JB);}},
-//                        new ArrayList<>(){{add(JC);}},
-//                        new ArrayList<>(){{add(JA);}}
+//                        new ArrayList<>(){{add(MP); add(P);}},
+//                        new ArrayList<>(){{add(F); add(G);}},
+//                        new ArrayList<>(){{add(MG); add(VG);}}
 //                },
 //                {
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
-//                        new ArrayList<>(){{add(JB);}},
-//                        new ArrayList<>(){{add(JB); add(JC);}},
+//                        new ArrayList<>(){{add(MP); add(VG);}},
+//                        new ArrayList<>(){{add(F); add(MG);}},
+//                        new ArrayList<>(){{add(F); add(G);}}
 //                },
 //                {
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JC);}},
-//                },
-//                {
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JB);}},
-//                        new ArrayList<>(){{add(JB); add(JC);}},
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JA);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JB);}},
-//                        new ArrayList<>(){{add(JB);}},
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(JB);}},
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JA); add(JB);}},
-//                        new ArrayList<>(){{add(JA);}},
-//                        new ArrayList<>(){{add(JC); add(JB);}},
-//                        new ArrayList<>(){{add(JB);}}
+//                        new ArrayList<>(){{add(MG); add(P); add(VG);}},
+//                        new ArrayList<>(){{add(G); add(P);}},
+//                        new ArrayList<>(){{add(F); add(P);}}
 //                }
 //        };
+
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JC);}},
+                        new ArrayList<>(){{add(JA);}}
+                },
+                {
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JB); add(JC);}},
+                },
+                {
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JC);}},
+                },
+                {
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JB); add(JC);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA);}}
+                },
+                {
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA); add(JB);}}
+                },
+                {
+                        new ArrayList<>(){{add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JA); add(JB);}},
+                        new ArrayList<>(){{add(JA);}},
+                        new ArrayList<>(){{add(JC); add(JB);}},
+                        new ArrayList<>(){{add(JB);}}
+                }
+        };
     }
 
     public static ArrayList<Object>[] getWeights(){
-        return new ArrayList[]{
-                new ArrayList<>(){{add(H); add(ML); add(L);}},
-                new ArrayList<>(){{add(L); add(MH);}},
-                new ArrayList<>(){{add(M); add(H); add(L);}}
-        };
-
 //        return new ArrayList[]{
-//                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PD); add(PE);}},
-//                new ArrayList<>(){{add(PA); add(PB); add(PC);}},
-//                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PF);}},
-//                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
-//                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
-//                new ArrayList<>(){{add(PD); add(PE); add(PF);}}
+//                new ArrayList<>(){{add(H); add(ML); add(L);}},
+//                new ArrayList<>(){{add(L); add(MH);}},
+//                new ArrayList<>(){{add(M); add(H); add(L);}}
 //        };
+
+        return new ArrayList[]{
+                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PD); add(PE);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PC);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PF);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
+                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
+                new ArrayList<>(){{add(PD); add(PE); add(PF);}}
+        };
     }
 
     public static void main(String[] args) {

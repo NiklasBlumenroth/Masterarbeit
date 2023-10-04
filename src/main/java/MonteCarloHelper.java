@@ -128,7 +128,7 @@ public class MonteCarloHelper {
                 sawWeights = preferenceCombinationList.get(rngNumberW).toArray();
             }
 
-            if(i < 100){
+            if(i > 38928000){
                 rankingTotalPoints = Helper.saw(sawMatrix, sawWeights, false);
             }else {
                 rankingTotalPoints = Helper.saw(sawMatrix, sawWeights, false);
@@ -136,18 +136,6 @@ public class MonteCarloHelper {
 
 
             rankingPosition = getRanksArray(rankingTotalPoints);
-            if((int)rankingPosition[0] == 1){
-                System.out.println("\nMatrix");
-                Helper.show2DArray(sawMatrix);
-                System.out.println("\nWeight");
-                Helper.show1DArray(sawWeights);
-                System.out.println("\n Ranking total points");
-                Helper.show1DArray(rankingTotalPoints);
-                System.out.println("\n new rankAcceptabilityIndices");
-                Helper.show2DArray(rankAcceptabilityIndices);
-                System.out.println("\n1currentJudgementAcceptabilityIndex for a" + 0);
-                Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(0));
-            }
             addRanking(rankAcceptabilityIndices, rankingPosition);
 
             //sawMatrix + ranking = countingMatrixRankingMap
@@ -155,22 +143,19 @@ public class MonteCarloHelper {
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
 
-
-            if((int)rankingPosition[0] == 1){
-                System.out.println("\n2currentJudgementAcceptabilityIndex for a" + 0);
-                Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(0));
-
-            }
-
-            if(i < 100){
+            if(i > 38928000){
                 System.out.println("\nMatrix");
                 Helper.show2DArray(sawMatrix);
                 System.out.println("\nWeight");
                 Helper.show1DArray(sawWeights);
-                System.out.println("\n Ranking total points");
+                System.out.println("\n rankingTotalPoints");
                 Helper.show1DArray(rankingTotalPoints);
+                System.out.println("\n rankingPosition");
+                Helper.show1DArray(rankingPosition);
                 System.out.println("\n new rankAcceptabilityIndices");
                 Helper.show2DArray(rankAcceptabilityIndices);
+                System.out.println("\n new objectCurrentJudgementAcceptabilityIndices");
+                Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(0));
 //                for(int j = 0; j < row; j++){
 //                    System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
 //                    Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));

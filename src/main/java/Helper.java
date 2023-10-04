@@ -134,7 +134,7 @@ public class Helper {
             }
             Arrays.sort(temp);
             for(int i = 0; i < temp.length; i++){
-                scores[i] = getPlacement(temp, lexScores[i]) * 1.0 + 1;
+                scores[i] = temp.length / (getPlacement(temp, lexScores[i]) * 1.0 + 1);
             }
             //unsort matrix, weights, scores
             sortJudgementsByPreferences(matrix, sortingVector, false);
@@ -142,15 +142,10 @@ public class Helper {
             for(int i = 0; i < newWeights.length; i++){
                 weights[i] = newWeights[i];
             }
-            if(show){
-            System.out.println("scores");
-            show1DArray(scores);
-            }
+
         }
-        if(show){
-        System.out.println("\nshow SAW");
-        Helper.show2DArray(lexSums);
-        }
+//        System.out.println("\nshow SAW");
+//        Helper.show2DArray(lexSums);
         return scores;
     }
 
