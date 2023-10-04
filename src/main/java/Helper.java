@@ -44,46 +44,9 @@ public class Helper {
         Helper.show2DArray(matrix);
         System.out.println("\nWichtung:");
         Helper.show1DArray(weights);
-        Double[] scores = saw(matrix, weights);
+        Double[] scores = saw(matrix, weights, true);
         System.out.println("\nErgebnisse der Nutzwertanalyse:");
         Helper.show1DArray(scores);
-    }
-
-    public static Object[][] clone2DArray(Object[][] array){
-        Object[][] newArray = new Object[array.length][array.length];
-        for(int i = 0; i < array.length; i++){
-            for(int j = 0; j < array[i].length; j++){
-                newArray[i][j] = array[i][j];
-            }
-        }
-
-        return newArray;
-    }
-
-    public static Object[] clone1DArray(Object[] array){
-        Object[] newArray = new Object[array.length];
-        for(int j = 0; j < array.length; j++){
-            newArray[j] = array[j];
-        }
-        return newArray;
-    }
-
-    public static Map<Integer, String> sortByValue(Map<Integer, String> unsortedMap) {
-        // Konvertiere die Map in eine Liste von Einträgen
-        List<Map.Entry<Integer, String>> entryList = new ArrayList<>(unsortedMap.entrySet());
-
-        // Sortiere die Liste der Einträge nach dem Value (String)
-        entryList.sort(Map.Entry.comparingByValue());
-
-        // Erstelle eine neue LinkedHashMap, um die sortierten Einträge beizubehalten
-        Map<Integer, String> sortedMap = new LinkedHashMap<>();
-
-        // Füge die sortierten Einträge zur neuen Map hinzu
-        for (Map.Entry<Integer, String> entry : entryList) {
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-
-        return sortedMap;
     }
 
     public static int[] getSortingVectorAndSortWeights(Object[] weights){
@@ -104,13 +67,14 @@ public class Helper {
         return sortingVector;
     }
 
-    public static Double[] saw(Object[][] matrix, Object[] weights) {
+    public static Double[] saw(Object[][] matrix, Object[] weights, boolean show) {
         int[] sortingVector = null;
-
-//        System.out.println("\nsawMatrix: ");
-//        show2DArray(matrix);
-//        System.out.println("\nsawWeights: ");
-//        show1DArray(weights);
+        if(show){
+        System.out.println("\nsawMatrix: ");
+        show2DArray(matrix);
+        System.out.println("\nsawWeights: ");
+        show1DArray(weights);
+        }
 
         Class<?> clazz = matrix[0][0].getClass();
         if (LexJudgements.class.equals(clazz)) {
@@ -118,11 +82,12 @@ public class Helper {
             sortingVector = getSortingVectorAndSortWeights(weights);
             sortJudgementsByPreferences(matrix, sortingVector, true);
         }
-
-//        System.out.println("\nsortedMatrix: ");
-//        show2DArray(matrix);
-//        System.out.println("\nsortedWeights: ");
-//        show1DArray(weights);
+        if(show){
+        System.out.println("\nsortedMatrix: ");
+        show2DArray(matrix);
+        System.out.println("\nsortedWeights: ");
+        show1DArray(weights);
+        }
 
         int rows = matrix.length;
         int cols = matrix[0].length;
@@ -177,11 +142,15 @@ public class Helper {
             for(int i = 0; i < newWeights.length; i++){
                 weights[i] = newWeights[i];
             }
-//            System.out.println("scores unsorted");
-//            show1DArray(scores);
+            if(show){
+            System.out.println("scores");
+            show1DArray(scores);
+            }
         }
-//        System.out.println("\nshow SAW");
-//        Helper.show2DArray(lexSums);
+        if(show){
+        System.out.println("\nshow SAW");
+        Helper.show2DArray(lexSums);
+        }
         return scores;
     }
 
@@ -215,24 +184,6 @@ public class Helper {
         return newArray;
     }
 
-    public static void showRank(Map<Object, Map<Integer, Double>>[][] matrix, Integer rank){
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(" {");
-                for (Map.Entry<Object, Map<Integer, Double>> entry : matrix[j][i].entrySet()) {
-                    System.out.print(" ");
-                    for (Map.Entry<Integer, Double> rankingEntry : entry.getValue().entrySet()) {
-                        if(Objects.equals(rankingEntry.getKey(), rank)){
-                            System.out.print(entry.getKey() + "=" + rankingEntry.getValue());
-                        }
-                    }
-                }
-                System.out.print(" } ");
-            }
-            System.out.println();
-        }
-    }
-
     public static Object[][] generate2DArray(Class<?> clazz, int rows, int columns, int min, int max){
         Object[][] matrix = new Object[rows][columns];
         Random random = new Random();
@@ -256,9 +207,10 @@ public class Helper {
     public static void show2DArray(Object[][] matrix) {
         Object[][] invert = invertArray(matrix);
         for (Object[] objects : invert) {
-            for (Object object : objects) {
-                System.out.print(object + " : ");
+            for (int i = 0; i < objects.length - 1; i++) {
+                System.out.print(objects[i] + " : ");
             }
+            System.out.print(objects[objects.length - 1]);
             System.out.println();
         }
     }

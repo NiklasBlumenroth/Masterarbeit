@@ -35,48 +35,48 @@ public class Nutzwertanalyse {
                         new ArrayList<>(){{add(F); add(P);}}
                 }
         };
-        /*
-        return new ArrayList[][]{
-                {
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JA);}},
-                        new ArrayList<>(){{add(JB);}},
-                        new ArrayList<>(){{add(JC);}},
-//                        new ArrayList<>(){{add(JA);}}
-                },
-                {
-                        new ArrayList<>(){{add(JA);}},
-                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
-                        new ArrayList<>(){{add(JB);}},
-//                        new ArrayList<>(){{add(JB); add(JC);}},
-                },
-                {
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
-                        new ArrayList<>(){{add(JA);}},
+
+//        return new ArrayList[][]{
+//                {
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JA);}},
+//                        new ArrayList<>(){{add(JB);}},
 //                        new ArrayList<>(){{add(JC);}},
-                },
-                {
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JA); add(JB);}},
-                        new ArrayList<>(){{add(JB);}},
-                        new ArrayList<>(){{add(JB); add(JC);}},
-                        new ArrayList<>(){{add(JA);}},
 //                        new ArrayList<>(){{add(JA);}}
-                },
-                {
-                        new ArrayList<>(){{add(JA);}},
-                        new ArrayList<>(){{add(JB);}},
-                        new ArrayList<>(){{add(JB);}},
-                        new ArrayList<>(){{add(JA);}},
-                        new ArrayList<>(){{add(JA); add(JB);}},
+//                },
+//                {
+//                        new ArrayList<>(){{add(JA);}},
+//                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+//                        new ArrayList<>(){{add(JB);}},
+//                        new ArrayList<>(){{add(JB); add(JC);}},
+//                },
+//                {
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JA); add(JB); add(JC);}},
+//                        new ArrayList<>(){{add(JA);}},
+//                        new ArrayList<>(){{add(JC);}},
+//                },
+//                {
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JA); add(JB);}},
+//                        new ArrayList<>(){{add(JB);}},
+//                        new ArrayList<>(){{add(JB); add(JC);}},
+//                        new ArrayList<>(){{add(JA);}},
+//                        new ArrayList<>(){{add(JA);}}
+//                },
+//                {
+//                        new ArrayList<>(){{add(JA);}},
+//                        new ArrayList<>(){{add(JB);}},
+//                        new ArrayList<>(){{add(JB);}},
+//                        new ArrayList<>(){{add(JA);}},
+//                        new ArrayList<>(){{add(JA); add(JB);}},
 //                        new ArrayList<>(){{add(JA); add(JB);}}
-                },
+//                },
 //                {
 //                        new ArrayList<>(){{add(JB);}},
 //                        new ArrayList<>(){{add(JA);}},
@@ -85,7 +85,7 @@ public class Nutzwertanalyse {
 //                        new ArrayList<>(){{add(JC); add(JB);}},
 //                        new ArrayList<>(){{add(JB);}}
 //                }
-        };*/
+//        };
     }
 
     public static ArrayList<Object>[] getWeights(){
@@ -94,24 +94,18 @@ public class Nutzwertanalyse {
                 new ArrayList<>(){{add(L); add(MH);}},
                 new ArrayList<>(){{add(M); add(H); add(L);}}
         };
-        /*
-        return new ArrayList[]{
-                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PD); add(PE);}},
-                new ArrayList<>(){{add(PA); add(PB); add(PC);}},
-                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PF);}},
-                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
-                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
-//                new ArrayList<>(){{add(PD); add(PE); add(PF);}}
-        };
-        */
 
+//        return new ArrayList[]{
+//                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PD); add(PE);}},
+//                new ArrayList<>(){{add(PA); add(PB); add(PC);}},
+//                new ArrayList<>(){{add(PA); add(PB); add(PC); add(PF);}},
+//                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
+//                new ArrayList<>(){{add(PA); add(PB); add(PD); add(PE); add(PF);}},
+//                new ArrayList<>(){{add(PD); add(PE); add(PF);}}
+//        };
     }
 
     public static void main(String[] args) {
-        //ArrayList<Object>[][] aggregatedMatrix = getMatrix();
-
-        //ArrayList<Object>[] aggregatedWeights = getWeights();
-
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
@@ -164,13 +158,31 @@ public class Nutzwertanalyse {
         System.out.println("End: " + endDate);
 
         /*
-        06.09 13 Uhr
-        - Kriterien formulieren(darauf achten, dass jeder weiß was genau bewertet wird)
-        + Sammeln von Daten in den laufenden Bewerbungsgesprächen (bevor besprochen wird ob der Bewerber weiter kommt bzw eingestellt wird)
-        + Dokument für Masterarbeit erstellen, gliederung hereinkopieren aus Vorlage und langsam füllen
-        + lex: pref vorher cutten bevor jugdements berücksichtigt werden
-        - nach optimierung lex beispiel durchrechnen
-        //Java heap space
+        14.09 Probeplanung 10Uhr
+        - gruppe zusammenbekommen
+        + nochmal über Formulare schauen + Kriterien formulieren(darauf achten, dass jeder weiß was genau bewertet wird)
+        - Maxigliederung weiter arbeiten
+         + nur pref aufstellen udn jug rng generieren wenn benötigt
+         + montecarlo erst ab 1mio nutzen
+         - vollrechnung nach optimierung
+
+         // wie lange dauert es die vollrechnung zu machen? ein paar minuten
+
+
+         Themen Probeexperimant:
+         Restaurant
+         Aktivitäten planen
+         */
+
+        /*
+        5.10. 10 Uhr Uni
+         Themen Probeexperiment:
+         Restaurant
+         Aktivitäten planen
+
+        Formulare bearbeiten
+
+         Formulare fürs anmelden WIP + Masterarbeit ausfüllen und ausdrucken
          */
     }
 
