@@ -176,13 +176,15 @@ public class Nutzwertanalyse {
 
         /*
         5.10. 10 Uhr Uni
-         Themen Probeexperiment:
-         Restaurant
-         Aktivitäten planen
+        + bugfixing
 
-        Formulare bearbeiten
+        Themen Probeexperiment:
+         + Restaurant
+         + Aktivitäten planen
 
-         Formulare fürs anmelden WIP + Masterarbeit ausfüllen und ausdrucken
+         + Formulare bearbeiten
+
+         - Formulare fürs anmelden WIP + Masterarbeit ausfüllen und ausdrucken
          */
     }
 
