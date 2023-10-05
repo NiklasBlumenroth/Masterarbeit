@@ -39,16 +39,16 @@ public class MonteCarloHelper {
 //        ArrayList<SawFullIterationObject> fullIterations = null;
 //        fullIterations = getSawFullIterationObjects(aggregatedMatrix, aggregatedWeights);
 
-        System.out.println("\nAggregated Matrix");
-        Helper.show2DArray(aggregatedMatrix);
+//        System.out.println("\nAggregated Matrix");
+//        Helper.show2DArray(aggregatedMatrix);
         List<List<Object>> judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
 
-        System.out.println("\nAggregated Weight");
-        Helper.show1DArray(aggregatedWeights);
+//        System.out.println("\nAggregated Weight");
+//        Helper.show1DArray(aggregatedWeights);
         List<List<Object>> preferenceCombinationList = getPreferenceCombinations(aggregatedWeights);
 
         k = judgementCombinationList.size() * preferenceCombinationList.size();
-        System.out.println("\nAggregated K: " + k);
+//        System.out.println("\nAggregated K: " + k);
 
         Object[][] sawMatrix = null;
         Object[] sawWeights = null;
@@ -160,59 +160,59 @@ public class MonteCarloHelper {
 
         }
 
-        System.out.println("\nAggregated Matrix");
-        Helper.show2DArray(aggregatedMatrix);
-
-        System.out.println("\nAggregated Weight");
-        Helper.show1DArray(aggregatedWeights);
-
-        System.out.println("\nAggregated K: " + k);
-
-        System.out.println("\nfinal rankAcceptabilityIndices ");
-        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
-
-        System.out.println("\nfinal rankAcceptabilityIndices scaled");
+//        System.out.println("\nAggregated Matrix");
+//        Helper.show2DArray(aggregatedMatrix);
+//
+//        System.out.println("\nAggregated Weight");
+//        Helper.show1DArray(aggregatedWeights);
+//
+//        System.out.println("\nAggregated K: " + k);
+//
+//        System.out.println("\nfinal rankAcceptabilityIndices ");
+//        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+//
+//        System.out.println("\nfinal rankAcceptabilityIndices scaled");
         normalizeTotalRankingPositions(rankAcceptabilityIndices);
-        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+//        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
         scaleAggregatedMatrixMap(objectCurrentJudgementAcceptabilityIndices);
-        for(int j = 0; j < row; j++){
-            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
-            Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
-        }
+//        for(int j = 0; j < row; j++){
+//            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
+//            Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
+//        }
 
         scaleAggregatedWeightsMap(objectCurrentPreferenceAcceptabilityIndices);
-        for (int i = 0; i < col; i++){
-            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
-            Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
-        }
+//        for (int i = 0; i < col; i++){
+//            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
+//            Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
+//        }
 
         fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
 //        scaleAggregatedMatrixMap(objectPotentialJudgementAcceptabilityIndices);
-        for(int j = 0; j < row; j++){
-            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
-            Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
-        }
+//        for(int j = 0; j < row; j++){
+//            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
+//            Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
+//        }
 
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
 //        scaleAggregatedWeightsMap(objectPotentialPreferenceAcceptabilityIndices);
-        for (int i = 0; i < col; i++){
-            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
-            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
-        }
+//        for (int i = 0; i < col; i++){
+//            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
+//            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
+//        }
 
         Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
-        System.out.println("\njudgementEntropyMatrix");
-        Helper.show2DArray(judgementEntropyMatrix);
+//        System.out.println("\njudgementEntropyMatrix");
+//        Helper.show2DArray(judgementEntropyMatrix);
 
         Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
-        System.out.println("\npreferenceEntropy");
-        Helper.show1DArray(preferenceEntropy);
+//        System.out.println("\npreferenceEntropy");
+//        Helper.show1DArray(preferenceEntropy);
 
-        System.out.println("\ncurrent entropy");
-        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
-        Date date = new Date();
-        System.out.println("Date end: " + date);
+//        System.out.println("\ncurrent entropy");
+//        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+//        Date date = new Date();
+//        System.out.println("Date end: " + date);
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
@@ -287,7 +287,7 @@ public class MonteCarloHelper {
     private static List<List<Object>> getJudgementCombinations(ArrayList<Object>[][] aggregatedMatrix){
         //aggregatedMatrix
         Date date = new Date();
-        System.out.println("Start iterations: " + date);
+//        System.out.println("Start iterations: " + date);
         List<List<Object>> fullIterationObjects = new ArrayList<>();
         for(int i = 0; i < aggregatedMatrix.length; i++){
             fullIterationObjects.addAll(Arrays.asList(aggregatedMatrix[i]));
