@@ -135,9 +135,6 @@ public class Nutzwertanalyse {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
                     indivCounter++;
-//                    for (Object key: lowestValue.keySet()) {
-//                        System.out.println(key + " : " + lowestValue.get(key));
-//                    }
                 }
                 System.out.println("Pfadlänge: " + indivCounter);
                 sum += indivCounter;
@@ -158,23 +155,6 @@ public class Nutzwertanalyse {
         System.out.println("End: " + endDate);
 
         /*
-        14.09 Probeplanung 10Uhr
-        - gruppe zusammenbekommen
-        + nochmal über Formulare schauen + Kriterien formulieren(darauf achten, dass jeder weiß was genau bewertet wird)
-        - Maxigliederung weiter arbeiten
-         + nur pref aufstellen udn jug rng generieren wenn benötigt
-         + montecarlo erst ab 1mio nutzen
-         - vollrechnung nach optimierung
-
-         // wie lange dauert es die vollrechnung zu machen? ein paar minuten
-
-
-         Themen Probeexperimant:
-         Restaurant
-         Aktivitäten planen
-         */
-
-        /*
         5.10. 10 Uhr Uni
         + bugfixing
 
@@ -184,7 +164,33 @@ public class Nutzwertanalyse {
 
          + Formulare bearbeiten
 
-         - Formulare fürs anmelden WIP + Masterarbeit ausfüllen und ausdrucken
+         + Formulare fürs anmelden WIP + Masterarbeit ausfüllen und ausdrucken
+
+
+         */
+
+        /*
+        - adm und its
+        - nicht quadratisches problem testen
+        - berechnungszeit checken
+        Berechnung:
+            - 1 Pfad mit idealauflösung 3,5,5, 7 klassen, 1000 Probleme
+            - 100 Pfade mit zufallsauflösung
+            - wenn k unter 1000 soll voll gerechnet werden
+            - 1000 Probleme
+            - Anzahl der DM:    2,3,4,5,6
+            - Anzahl der Crit:  3,4,5,6,7,8,9,10
+            - Anzahl der Alt:   3,4,5,6
+            -
+        - zufällige pfade wählen
+        - Fuzzy 5 lex 5 als Standard
+        - danach fuzzy 3 lex 3
+        - danach fuzzy 7 lex 7
+        - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
+        Teststudie 24.10.
+        gedanken zum ersten intro machen und durchführen
+        flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
+        mit vorgesetzten sprechen für zeitlichen ablauf
          */
     }
 

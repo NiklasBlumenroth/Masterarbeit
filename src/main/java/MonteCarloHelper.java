@@ -143,7 +143,7 @@ public class MonteCarloHelper {
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
 
-            if(i > 38928000){
+            if(false){
                 System.out.println("\nMatrix");
                 Helper.show2DArray(sawMatrix);
                 System.out.println("\nWeight");
@@ -156,16 +156,6 @@ public class MonteCarloHelper {
                 Helper.show2DArray(rankAcceptabilityIndices);
                 System.out.println("\n new objectCurrentJudgementAcceptabilityIndices");
                 Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(0));
-//                for(int j = 0; j < row; j++){
-//                    System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
-//                    Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
-//                }
-//
-//                for (int j = 0; j < col; j++){
-//                    System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + j);
-//                    Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(j));
-//                }
-
             }
 
         }
@@ -221,8 +211,8 @@ public class MonteCarloHelper {
 
         System.out.println("\ncurrent entropy");
         System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
-
-
+        Date date = new Date();
+        System.out.println("Date end: " + date);
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
