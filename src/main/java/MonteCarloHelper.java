@@ -32,7 +32,7 @@ public class MonteCarloHelper {
         System.out.println(list);
     }
 
-    public static Map<String, Object> showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full){
+    public static Map<String, Object> showMonteCarloSaw(int[][] aggregatedMatrix, int[] aggregatedWeights, boolean full){
         row = aggregatedMatrix.length;
         col = aggregatedWeights.length;
 
@@ -41,7 +41,8 @@ public class MonteCarloHelper {
 
 //        System.out.println("\nAggregated Matrix");
 //        Helper.show2DArray(aggregatedMatrix);
-        List<List<Object>> judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
+
+        ArrayList<ArrayList<>> judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
 
 //        System.out.println("\nAggregated Weight");
 //        Helper.show1DArray(aggregatedWeights);
@@ -284,11 +285,10 @@ public class MonteCarloHelper {
         return cartesianProduct2;
     }
 
-    private static List<List<Object>> getJudgementCombinations(ArrayList<Object>[][] aggregatedMatrix){
-        //aggregatedMatrix
+    private static int[][] getJudgementCombinations(int[][] aggregatedMatrix){
         Date date = new Date();
 //        System.out.println("Start iterations: " + date);
-        List<List<Object>> fullIterationObjects = new ArrayList<>();
+        int[][] fullIterationObjects = new int[][];
         for(int i = 0; i < aggregatedMatrix.length; i++){
             fullIterationObjects.addAll(Arrays.asList(aggregatedMatrix[i]));
         }
@@ -530,27 +530,24 @@ public class MonteCarloHelper {
     }
 
     @NotNull
-    public static ArrayList<Object>[][] generateAggregatedMatrix(@NotNull ArrayList<Object[][]> dMList){
-        ArrayList<Object>[][] aggregatedMatrix = new ArrayList[dMList.get(0).length][dMList.get(0)[0].length];
-
-        //fill aggregated with empty lists
-        for(int i = 0; i < aggregatedMatrix.length; i++){
-            for(int j = 0; j < aggregatedMatrix[i].length; j++){
-                aggregatedMatrix[i][j] = new ArrayList<>();
-            }
-        }
+    public static ArrayList<int[][]> generateAggregatedMatrix(@NotNull ArrayList<int[][]> dMList){
+        int[][][] aggregatedMatrix = new int[dMList.length][dMList[0].length][dMList[0][0].length];
 
         //fill empty lists
-        for (Object[][] objects : dMList) {
-            for (int i = 0; i < aggregatedMatrix.length; i++) {
-                for (int j = 0; j < dMList.get(0)[0].length; j++) {
-                    if (!aggregatedMatrix[i][j].contains(objects[i][j])) {
+        for (int k = 0; k < aggregatedMatrix.length; k++) {
+            for (int i = 0; i < aggregatedMatrix[0].length; i++) {
+                for (int j = 0; j < aggregatedMatrix[0][0].length; j++) {
+                    if (ifElementContainsInArray) {
                         aggregatedMatrix[i][j].add(objects[i][j]);
                     }
                 }
             }
         }
         return aggregatedMatrix;
+    }
+
+    public static void ifElementContainsInArray(){
+
     }
 
     @NotNull
@@ -575,30 +572,20 @@ public class MonteCarloHelper {
     }
 
     @NotNull
-    public static ArrayList<Object[]> generateDecisionMakerWeightList(Class<?> clazz, int number, int length, int min, int max){
-        ArrayList<Object[]> dMWList = new ArrayList<>();
-        Object[] matrix;
-//        System.out.println("Generates decisionMakerWeightList: ");
+    public static ArrayList<int[]> generateDecisionMakerWeightList(int number, int length, int min, int max){
+        ArrayList<int[]> dMWList = new ArrayList<>();
         for(int i = 0; i < number; i++){
-            matrix = Helper.generate1DArray(clazz, length, min, max);
-//            Helper.show1DArray(matrix);
-            dMWList.add(matrix);
+            dMWList.add(Helper.generate1DArray(length, min, max));
         }
 
         return dMWList;
     }
 
     @NotNull
-    public static ArrayList<Object[][]> generateDecisionMakerList(Class<?> clazz, int number, int row, int col, int min, int max){
-        ArrayList<Object[][]> dMList = new ArrayList<>();
-        Object[][] matrix;
-//        System.out.println("Generates decisionMakerWeightsList: ");
-
+    public static ArrayList<int[][]> generateDecisionMakerList(int number, int row, int col, int min, int max){
+        ArrayList<int[][]> dMList = new ArrayList<>();
         for(int i = 0; i < number; i++){
-            matrix = Helper.generate2DArray(clazz, row, col, min, max);
-//            Helper.show2DArray(matrix);
-//            System.out.println(" ");
-            dMList.add(matrix);
+            dMList.add(Helper.generate2DArray(row, col, min, max));
         }
 
         return dMList;

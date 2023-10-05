@@ -169,10 +169,10 @@ public class Nutzwertanalyse {
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
         for (int l = 0; l < 10; l++) {
-            ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, row, col, 1, 10);
-            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, row, 0, 1);
-            ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+            ArrayList<int[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, row, col, 1, 10);
+            ArrayList<int[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, row, 0, 1);
+            ArrayList<int>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+            ArrayList<int>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             aggregatedMatrix = getMatrix();
             aggregatedWeights = getWeights();
             int indivCounter = 0;
@@ -195,7 +195,7 @@ public class Nutzwertanalyse {
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
                     indivCounter++;
                 }
-//                System.out.println("Pfadlänge: " + indivCounter);
+                System.out.println("Pfadlänge: " + indivCounter);
                 sum += indivCounter;
                 indivCounter = 0;
 //                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);

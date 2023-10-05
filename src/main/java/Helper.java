@@ -179,20 +179,13 @@ public class Helper {
         return newArray;
     }
 
-    public static Object[][] generate2DArray(Class<?> clazz, int rows, int columns, int min, int max){
-        Object[][] matrix = new Object[rows][columns];
+    public static int[][] generate2DArray(int rows, int columns, int min, int max){
+        int[][] matrix = new int[rows][columns];
         Random random = new Random();
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (Integer.class.equals(clazz)) {
-                    matrix[i][j] = random.nextInt(max - min + 1);
-
-                } else if (FuzzyJudgements.class.equals(clazz)) {
-                    matrix[i][j] = FuzzyJudgements.getJudgement(random.nextInt(FuzzyJudgements.values().length));
-                } else if (LexJudgements.class.equals(clazz)) {
-                    matrix[i][j] = LexJudgements.getJudgement(random.nextInt(LexJudgements.values().length));
-                }
+                matrix[i][j] = random.nextInt(max - min + 1);
             }
         }
 
@@ -246,20 +239,11 @@ public class Helper {
     }
 
 
-    public static Object[] generate1DArray(Class<?> clazz, int size, int minValue, int maxValue) {
-        Object[] randomArray = new Object[size];
+    public static int[] generate1DArray( int size, int minValue, int maxValue) {
+        int[] randomArray = new int[size];
         Random random = new Random();
-        //set values to right array
         for (int j = 0; j < size; j++) {
-            if (Double.class.equals(clazz)) {
-                randomArray[j] = Math.round((random.nextDouble() * (maxValue - minValue) + minValue) * 10.0) / 10.0;
-            } else if (FuzzyPreferenzes.class.equals(clazz)) {
-                randomArray[j] = FuzzyPreferenzes.getPreferenzes(random.nextInt(FuzzyPreferenzes.values().length));
-            } else if (Integer.class.equals(clazz)) {
-                randomArray[j] = random.nextInt(maxValue - minValue + 1) + maxValue;
-            } else if (LexPreferenzes.class.equals(clazz)) {
-                randomArray[j] = LexPreferenzes.getLexValueById(random.nextInt(LexPreferenzes.values().length));
-            }
+            randomArray[j] = random.nextInt(maxValue - minValue + 1) + maxValue;
         }
 
         return randomArray;
