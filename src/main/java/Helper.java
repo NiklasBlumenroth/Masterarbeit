@@ -164,8 +164,8 @@ public class Helper {
         }
     }
 
-    public static Object[] sort(Object[] array, int[] sortingVector, boolean sort){
-        Object[] newArray = new Object[array.length];
+    public static int[] sort(int[] array, int[] sortingVector, boolean sort){
+        int[] newArray = new int[array.length];
 
         for(int i = 0; i < array.length; i++){
             if(sort){
@@ -238,6 +238,19 @@ public class Helper {
         System.out.println();
     }
 
+    public static void fill3dArrayWithNegOne(int[][][] array){
+        for(int[][] array2D : array){
+            for (int[] array1D : array2D){
+                Arrays.fill(array1D, -1);
+            }
+        }
+    }
+
+    public static void fill2dArrayWithNegOne(int[][] array){
+        for(int[] array1D : array){
+            Arrays.fill(array1D, -1);
+        }
+    }
 
     public static int[] generate1DArray( int size, int minValue, int maxValue) {
         int[] randomArray = new int[size];

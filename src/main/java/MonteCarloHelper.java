@@ -32,7 +32,7 @@ public class MonteCarloHelper {
         System.out.println(list);
     }
 
-    public static Map<String, Object> showMonteCarloSaw(int[][] aggregatedMatrix, int[] aggregatedWeights, boolean full){
+    public static Map<String, Object> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full){
         row = aggregatedMatrix.length;
         col = aggregatedWeights.length;
 
@@ -530,15 +530,16 @@ public class MonteCarloHelper {
     }
 
     @NotNull
-    public static ArrayList<int[][]> generateAggregatedMatrix(@NotNull ArrayList<int[][]> dMList){
+    public static int[][][] generateAggregatedMatrix(@NotNull int[][][] dMList){
         int[][][] aggregatedMatrix = new int[dMList.length][dMList[0].length][dMList[0][0].length];
-
-        //fill empty lists
+        Helper.fill3dArrayWithNegOne(aggregatedMatrix);
         for (int k = 0; k < aggregatedMatrix.length; k++) {
             for (int i = 0; i < aggregatedMatrix[0].length; i++) {
+                int counter = 0;
                 for (int j = 0; j < aggregatedMatrix[0][0].length; j++) {
-                    if (ifElementContainsInArray) {
-                        aggregatedMatrix[i][j].add(objects[i][j]);
+                    if (!elementContainsInArray(dMList[k][i][j], aggregatedMatrix[k][i])) {
+                        aggregatedMatrix[k][i][counter] = dMList[k][i][j];
+                        counter++;
                     }
                 }
             }
@@ -546,24 +547,26 @@ public class MonteCarloHelper {
         return aggregatedMatrix;
     }
 
-    public static void ifElementContainsInArray(){
-
+    public static boolean elementContainsInArray(int elem, int[] array){
+        for(int number : array){
+            if(elem == number){
+                return true;
+            }
+        }
+        return false;
     }
 
     @NotNull
-    public static ArrayList<Object>[] generateAggregatedWeights(@NotNull ArrayList<Object[]> dMWList){
-        ArrayList<Object>[] aggregatedWeights = new ArrayList[dMWList.get(0).length];
-
-        //fill aggregated with empty lists
-        for(int j = 0; j < aggregatedWeights.length; j++){
-            aggregatedWeights[j] = new ArrayList<>();
-        }
-
+    public static int[][] generateAggregatedWeights(@NotNull int[][] dMWList){
+        int[][] aggregatedWeights = new int[dMWList.length][dMWList[0].length];
+        Helper.fill2dArrayWithNegOne(aggregatedWeights);
         //fill empty lists
-        for(int k = 0; k < dMWList.size(); k++){
-            for(int j = 0; j < dMWList.get(0).length; j++){
-                if(!aggregatedWeights[j].contains(dMWList.get(k)[j])){
-                    aggregatedWeights[j].add(dMWList.get(k)[j]);
+        for(int k = 0; k < aggregatedWeights.length; k++){
+            int counter = 0;
+            for(int j = 0; j < aggregatedWeights[k].length; j++){
+                if(!elementContainsInArray(dMWList[k][j], aggregatedWeights[k])){
+                    aggregatedWeights[k][counter] = dMWList[k][j];
+                    counter++;
                 }
             }
         }
@@ -572,20 +575,20 @@ public class MonteCarloHelper {
     }
 
     @NotNull
-    public static ArrayList<int[]> generateDecisionMakerWeightList(int number, int length, int min, int max){
-        ArrayList<int[]> dMWList = new ArrayList<>();
+    public static int[][] generateDecisionMakerWeightList(int number, int length, int min, int max){
+        int[][] dMWList = new int[number][length];
         for(int i = 0; i < number; i++){
-            dMWList.add(Helper.generate1DArray(length, min, max));
+            dMWList[i] = Helper.generate1DArray(length, min, max);
         }
 
         return dMWList;
     }
 
     @NotNull
-    public static ArrayList<int[][]> generateDecisionMakerList(int number, int row, int col, int min, int max){
-        ArrayList<int[][]> dMList = new ArrayList<>();
+    public static int[][][] generateDecisionMakerList(int number, int row, int col, int min, int max){
+        int[][][] dMList = new int[number][row][col];
         for(int i = 0; i < number; i++){
-            dMList.add(Helper.generate2DArray(row, col, min, max));
+            dMList[i] = Helper.generate2DArray(row, col, min, max);
         }
 
         return dMList;
