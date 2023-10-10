@@ -34,24 +34,13 @@ public class Helper {
                         new ArrayList<>(){{add(F);}}
                 }
         };
-        show2DArray(aggregatedMatrix);
-    }
-    public static void showSaw(){
-        Integer[][] matrix = (Integer[][]) generate2DArray(Integer.class, 5, 5, 1, 10);
-        Double[] weights = (Double[]) generate1DArray(Double.class, 5, 0, 1);
-
-        System.out.println("Matrix:");
-        Helper.show2DArray(matrix);
-        System.out.println("\nWichtung:");
-        Helper.show1DArray(weights);
-        Double[] scores = saw(matrix, weights, true);
-        System.out.println("\nErgebnisse der Nutzwertanalyse:");
-        Helper.show1DArray(scores);
     }
 
-    public static int[] getSortingVectorAndSortWeights(Object[] weights){
-        List <Object> unSortedWeightsList = new ArrayList<>();
-        unSortedWeightsList.addAll(Arrays.asList(weights));
+    public static int[] getSortingVectorAndSortWeights(int[] weights){
+        List <Integer> unSortedWeightsList = new ArrayList<>();
+        for(int integer : weights){
+            unSortedWeightsList.add(integer);
+        }
         Arrays.sort(weights);
 
         Map<Object, Integer> indexMapping = new HashMap<>();
@@ -67,7 +56,7 @@ public class Helper {
         return sortingVector;
     }
 
-    public static Double[] saw(Object[][] matrix, Object[] weights, boolean show) {
+    public static double[] saw(int[][] matrix, int[] weights, boolean show, boolean lex) {
         int[] sortingVector = null;
         if(show){
         System.out.println("\nsawMatrix: ");
@@ -76,8 +65,7 @@ public class Helper {
         show1DArray(weights);
         }
 
-        Class<?> clazz = matrix[0][0].getClass();
-        if (LexJudgements.class.equals(clazz)) {
+        if (lex) {
             //sort weights, matrix and generate sortingVector
             sortingVector = getSortingVectorAndSortWeights(weights);
             sortJudgementsByPreferences(matrix, sortingVector, true);
@@ -95,7 +83,7 @@ public class Helper {
         if (cols != weights.length) {
             throw new IllegalArgumentException("ERROR: Matrix length:" + cols + " | Weights :" + weights.length );
         }
-        Double[] scores = new Double[rows];
+        double[] scores = new double[rows];
         String[] lexScores = new String[rows];
 
         Double[][] sums = new Double[matrix.length][matrix[0].length];
@@ -107,19 +95,14 @@ public class Helper {
             Double sum = 0.0;
             String lexSum = "";
             for (int j = 0; j < cols; j++) {
-                if (Double.class.equals(clazz)) {
-
-                } else if (FuzzyJudgements.class.equals(clazz)) {
-                    FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
-                    FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
+                if (!lex){
+                    FuzzyPreferenzes fuzzyPreferenzes =  FuzzyPreferenzes.getPreferenzes(weights[j]);
+                    FuzzyJudgements fuzzyJudgements = FuzzyJudgements.getJudgement(matrix[i][j]);
                     value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
                     sum += value;
                     sums[i][j] = value;
-                } else if (Integer.class.equals(clazz)) {
-                    sum = sum + (Integer)matrix[i][j] * (Double)weights[j];
-                    sums[i][j] = (Integer)matrix[i][j] * (Double)weights[j];
-                } else if (LexJudgements.class.equals(clazz)) {
-                    lexSum = lexSum + weights[j] + matrix[i][j];
+                } else{
+                    lexSum = lexSum + LexPreferenzes.getLexValueById(weights[j]) + LexJudgements.getJudgement(matrix[i][j]);
                     lexSums[i][j] = lexSum ;
                 }
 
@@ -127,7 +110,7 @@ public class Helper {
             scores[i] = sum;
             lexScores[i] = lexSum;
         }
-        if (LexJudgements.class.equals(clazz)) {
+        if (lex) {
             String[] temp = new String[rows];
             for(int i = 0; i < temp.length; i++){
                 temp[i] = lexScores[i];
@@ -138,14 +121,8 @@ public class Helper {
             }
             //unsort matrix, weights, scores
             sortJudgementsByPreferences(matrix, sortingVector, false);
-            Object[] newWeights = sort(weights, sortingVector, false);
-            for(int i = 0; i < newWeights.length; i++){
-                weights[i] = newWeights[i];
-            }
 
         }
-//        System.out.println("\nshow SAW");
-//        Helper.show2DArray(lexSums);
         return scores;
     }
 
@@ -158,7 +135,7 @@ public class Helper {
         return -1;
     }
 
-    public static void sortJudgementsByPreferences(Object[][] matrix, int[] sortingVector, boolean sort){
+    public static void sortJudgementsByPreferences(int[][] matrix, int[] sortingVector, boolean sort){
         for(int i = 0; i < matrix.length; i++){
             matrix[i] = sort(matrix[i], sortingVector, sort);
         }
@@ -192,9 +169,9 @@ public class Helper {
         return matrix;
     }
 
-    public static void show2DArray(Object[][] matrix) {
-        Object[][] invert = invertArray(matrix);
-        for (Object[] objects : invert) {
+    public static void show2DArray(int[][] matrix) {
+        int[][] invert = invertArray(matrix);
+        for (int[] objects : invert) {
             for (int i = 0; i < objects.length - 1; i++) {
                 System.out.print(objects[i] + " : ");
             }
@@ -212,16 +189,16 @@ public class Helper {
         }
     }
 
-    public static Object[][] invertArray(Object[][] array) {
+    public static int[][] invertArray(int[][] array) {
         int numRows = array.length;
         int numCols = array[0].length;
 
-        Object[][] invertedArray = new Object[numCols][numRows];
+        int[][] invertedArray = new int[numCols][numRows];
 
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
                 if (j < array[i].length) {
-                    invertedArray[j][i] = array[i][j];
+                    invertedArray[j][i] = (int)array[i][j];
                 }
             }
         }
@@ -229,7 +206,7 @@ public class Helper {
         return invertedArray;
     }
 
-    public static void show1DArray(Object[] array) {
+    public static void show1DArray(int[] array) {
         System.out.print(array[0]);
 
         for (int i = 1; i < array.length; i++) {

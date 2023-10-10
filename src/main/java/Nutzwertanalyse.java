@@ -1,21 +1,12 @@
-import Enums.FuzzyJudgements;
-import Enums.FuzzyPreferenzes;
-import Enums.LexJudgements;
-import Enums.LexPreferenzes;
-
 import java.util.*;
-
-import static Enums.FuzzyJudgements.*;
-import static Enums.FuzzyPreferenzes.*;
-import static Enums.LexPreferenzes.*;
-import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
     public static final int row = 3;
     public static final int col = 3;
     public static final int numberOfDecisionMaker = 2;
-    public static final Class jugClazz = LexJudgements.class;
-    public static final Class prefClazz = LexPreferenzes.class;
+    public static final boolean useStaticProblem = true;
+    public static final boolean lex = true;
+    public static final boolean full = true;
 
     public static ArrayList<Object>[][] getMatrix() {
 //        return new ArrayList[][]{
@@ -38,111 +29,52 @@ public class Nutzwertanalyse {
 
         return new ArrayList[][]{
                 {
-                        new ArrayList<>() {{add(JA);add(JB);}},
-                        new ArrayList<>() {{add(JA);add(JB);}},
-                        new ArrayList<>() {{add(JA);}},
-                        new ArrayList<>() {{add(JB);}},
-                        new ArrayList<>() {{add(JC);}},
-                        new ArrayList<>() {{add(JA);}}
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(3);}},
+                        new ArrayList<>() {{add(1);}}
                 },
                 {
-                        new ArrayList<>() {{add(JA);}},
-                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
-                        new ArrayList<>() {{add(JA);add(JB);}},
-                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
-                        new ArrayList<>() {{add(JB);}},
-                        new ArrayList<>() {{add(JB);add(JC);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);add(2);add(3);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);add(2);add(3);}},
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(2);add(3);}},
                 },
                 {
-                        new ArrayList<>() {{add(JA);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                            add(JC);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                        }},
-                        new ArrayList<>() {{
-                            add(JC);
-                        }},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);add(2);add(3);}},
+                        new ArrayList<>() {{ add(1);}},
+                        new ArrayList<>() {{ add(3);}},
                 },
                 {
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JB);
-                            add(JC);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                        }}
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(2);add(3);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);}}
                 },
                 {
-                        new ArrayList<>() {{
-                            add(JA);
-                        }},
-                        new ArrayList<>() {{
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                        }}
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);add(2);}}
                 },
                 {
-                        new ArrayList<>() {{
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JA);
-                        }},
-                        new ArrayList<>() {{
-                            add(JC);
-                            add(JB);
-                        }},
-                        new ArrayList<>() {{
-                            add(JB);
-                        }}
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(3);add(2);}},
+                        new ArrayList<>() {{add(2);}}
                 }
         };
     }
@@ -155,44 +87,50 @@ public class Nutzwertanalyse {
 //        };
 
         return new ArrayList[]{
-                new ArrayList<>() {{add(PA);add(PB);add(PC);add(PD);add(PE);}},
-                new ArrayList<>() {{add(PA);add(PB);add(PC);}},
-                new ArrayList<>() {{add(PA);add(PB);add(PC);add(PF);}},
-                new ArrayList<>() {{add(PA);add(PB);add(PD);add(PE);add(PF);}},
-                new ArrayList<>() {{add(PA);add(PB);add(PD);add(PE);add(PF);}},
-                new ArrayList<>() {{add(PD);add(PE);add(PF);}}
+                new ArrayList<>() {{add(1);add(2);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(1);add(2);add(3);}},
+                new ArrayList<>() {{add(1);add(2);add(3);add(6);}},
+                new ArrayList<>() {{add(1);add(2);add(4);add(5);add(6);}},
+                new ArrayList<>() {{add(1);add(2);add(4);add(5);add(6);}},
+                new ArrayList<>() {{add(4);add(5);add(6);}}
         };
     }
+
 
     public static void main(String[] args) {
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
         for (int l = 0; l < 10; l++) {
-            int[][][] decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, row, col, 1, 10);
-            int[][] decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, row, 0, 1);
-            int[][][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            int[][] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-           // aggregatedMatrix = getMatrix();
-           // aggregatedWeights = getWeights();
+            int[][][] aggregatedMatrix = null;
+            int[][] aggregatedWeights = null;
+            int[][][] decisionMakerList = null;
+            int[][] decisionMakerWeightsList = null;
+            if(useStaticProblem){
+                //gets static problem matrix
+                ArrayList<Object>[][] staticAggregatedMatrix = getMatrix();
+                ArrayList<Object>[] staticAggregatedWeights = getWeights();
+                //transfer static arraylist problem to matrix filled with judgements and -1
+                aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
+                aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
+            }else{
+                decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, row, col, 1, 10);
+                decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, row, 0, 1);
+                //generates aggregated matrix and fill with -1
+                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+            }
+
             int indivCounter = 0;
             double sum = 0;
             int durchlaeufe = 100;
             for (int k = 0; k < durchlaeufe; k++) {
-                //System.out.println("\nAggregated Matrix");
-                //Helper.show2DArray(aggregatedMatrix);
-
-                //System.out.println("\nAggregated Weight");
-                //Helper.show1DArray(aggregatedWeights);
-                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
                 indivCounter++;
-//                for (Object key: lowestValue.keySet()) {
-//                    System.out.println(key + " : " + lowestValue.get(key));
-//                }
 
                 while ((Double) lowestValue.get("lowestValue") != 0) {
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+//                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
+                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
                     indivCounter++;
                 }
                 System.out.println("Pfadlänge: " + indivCounter);
@@ -200,11 +138,11 @@ public class Nutzwertanalyse {
                 indivCounter = 0;
 //                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
 //                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                aggregatedMatrix = getMatrix();
-                aggregatedWeights = getWeights();
+//                aggregatedMatrix = getMatrix();
+//                aggregatedWeights = getWeights();
             }
-            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
-            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
+//            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
+//            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
             aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
@@ -212,26 +150,10 @@ public class Nutzwertanalyse {
             sum = 0;
         }
         System.out.println("End: " + endDate);
-
-        /*
-        5.10. 10 Uhr Uni
-        + bugfixing
-
-        Themen Probeexperiment:
-         + Restaurant
-         + Aktivitäten planen
-
-         + Formulare bearbeiten
-
-         + Formulare fürs anmelden WIP + Masterarbeit ausfüllen und ausdrucken
-
-
-         */
-
         /*
         - adm und its
         - nicht quadratisches problem testen
-        - berechnungszeit checken
+        -> berechnungszeit checken
         Berechnung:
             - 1 Pfad mit idealauflösung 3,5,5, 7 klassen, 1000 Probleme
             - 100 Pfade mit zufallsauflösung
@@ -248,7 +170,7 @@ public class Nutzwertanalyse {
         - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
         Teststudie 24.10.
         gedanken zum ersten intro machen und durchführen
-        flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
+        -> flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
         mit vorgesetzten sprechen für zeitlichen ablauf
          */
     }
@@ -261,6 +183,33 @@ public class Nutzwertanalyse {
             aggregatedWeights[(Integer) lowestValue.get("lowestI")] = new ArrayList<>();
             aggregatedWeights[(Integer) lowestValue.get("lowestI")].add(lowestValue.get("lowestKey"));
         }
+    }
+
+    public static int[][][] transferStaticAggregatedMatrixToIntArray(ArrayList<Object>[][] staticAggregatedMatrix){
+        //fill aggregatedMatrix
+        int[][][] aggregatedMatrixArray = new int[staticAggregatedMatrix.length][staticAggregatedMatrix[0].length][];
+        for(int i = 0; i < staticAggregatedMatrix.length; i++){
+            for(int j = 0; j < staticAggregatedMatrix[i].length; j++){
+                int[] var = new int[staticAggregatedMatrix[i][j].size()];
+                for(int k = 0; k < staticAggregatedMatrix[i][j].size(); k++){
+                    var[k] = (int)staticAggregatedMatrix[i][j].get(k);
+                }
+                aggregatedMatrixArray[i][j] = var;
+            }
+        }
+        return aggregatedMatrixArray;
+    }
+
+    public static int[][] transferStaticAggregatedWeightToIntArray(ArrayList<Object>[] staticAggregatedWeight){
+        int[][] aggregatedWeights = new int[staticAggregatedWeight.length][];
+        for(int i = 0; i < staticAggregatedWeight.length; i++){
+            int[] var = new int[staticAggregatedWeight[i].size()];
+            for(int k = 0; k < staticAggregatedWeight[i].size(); k++){
+                var[k] = (int)staticAggregatedWeight[i].get(k);
+            }
+            aggregatedWeights[i] = var;
+        }
+        return aggregatedWeights;
     }
 
     public static void getRandomPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
