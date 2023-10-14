@@ -12,10 +12,10 @@ import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
     public static final int row = 3;
-    public static final int col = 3;
-    public static final int numberOfDecisionMaker = 2;
-    public static final Class jugClazz = LexJudgements.class;
-    public static final Class prefClazz = LexPreferenzes.class;
+    public static final int col = 5;
+    public static final int numberOfDecisionMaker = 5;
+    public static final Class jugClazz = FuzzyJudgements.class;
+    public static final Class prefClazz = FuzzyPreferenzes.class;
 
     public static ArrayList<Object>[][] getMatrix() {
 //        return new ArrayList[][]{
@@ -168,16 +168,17 @@ public class Nutzwertanalyse {
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
-        for (int l = 0; l < 10; l++) {
+        double sum = 0;
+        int durchlaeufe = 1;
+        int probleme = 1000;
+        for (int l = 0; l < probleme; l++) {
             ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, row, col, 1, 10);
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, row, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            aggregatedMatrix = getMatrix();
-            aggregatedWeights = getWeights();
+//            aggregatedMatrix = getMatrix();
+//            aggregatedWeights = getWeights();
             int indivCounter = 0;
-            double sum = 0;
-            int durchlaeufe = 100;
             for (int k = 0; k < durchlaeufe; k++) {
                 //System.out.println("\nAggregated Matrix");
                 //Helper.show2DArray(aggregatedMatrix);
@@ -191,17 +192,17 @@ public class Nutzwertanalyse {
 //                }
 
                 while ((Double) lowestValue.get("lowestValue") != 0) {
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
+                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
                     indivCounter++;
                 }
 //                System.out.println("Pfadlänge: " + indivCounter);
                 sum += indivCounter;
                 indivCounter = 0;
-//                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-//                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                aggregatedMatrix = getMatrix();
-                aggregatedWeights = getWeights();
+                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+//                aggregatedMatrix = getMatrix();
+//                aggregatedWeights = getWeights();
             }
             decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
             decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
@@ -209,29 +210,21 @@ public class Nutzwertanalyse {
             aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-            sum = 0;
+//            sum = 0;
         }
+        System.out.println(probleme+ " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
         System.out.println("End: " + endDate);
 
         /*
-        5.10. 10 Uhr Uni
-        + bugfixing
+        19.10 13 Uhr
 
-        Themen Probeexperiment:
-         + Restaurant
-         + Aktivitäten planen
-
-         + Formulare bearbeiten
-
-         + Formulare fürs anmelden WIP + Masterarbeit ausfüllen und ausdrucken
-
-
-         */
-
-        /*
         - adm und its
         - nicht quadratisches problem testen
         - berechnungszeit checken
+            + probleme generieren, aggregierte generieren
+            + berechnungsmethode(lex, saw)
+            + kombinationen
+            - statistik Matrizen
         Berechnung:
             - 1 Pfad mit idealauflösung 3,5,5, 7 klassen, 1000 Probleme
             - 100 Pfade mit zufallsauflösung
@@ -240,16 +233,15 @@ public class Nutzwertanalyse {
             - Anzahl der DM:    2,3,4,5,6
             - Anzahl der Crit:  3,4,5,6,7,8,9,10
             - Anzahl der Alt:   3,4,5,6
-            -
         - zufällige pfade wählen
         - Fuzzy 5 lex 5 als Standard
         - danach fuzzy 3 lex 3
         - danach fuzzy 7 lex 7
         - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
         Teststudie 24.10.
-        gedanken zum ersten intro machen und durchführen
-        flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
-        mit vorgesetzten sprechen für zeitlichen ablauf
+        - gedanken zum ersten intro machen und durchführen
+        - flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
+        - mit vorgesetzten sprechen für zeitlichen ablauf
          */
     }
 
