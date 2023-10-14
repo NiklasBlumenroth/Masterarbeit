@@ -56,7 +56,7 @@ public class Helper {
         return sortingVector;
     }
 
-    public static double[] saw(int[][] matrix, int[] weights, boolean show, boolean lex) {
+    public static double[] decisionMethod(int[][] matrix, int[] weights, boolean show, boolean lex) {
         int[] sortingVector = null;
         if(show){
         System.out.println("\nsawMatrix: ");
@@ -87,41 +87,37 @@ public class Helper {
         String[] lexScores = new String[rows];
 
         Double[][] sums = new Double[matrix.length][matrix[0].length];
-        String[][] lexSums = new String[matrix.length][matrix.length];
 
         Double value;
         // create sum for columns
-        for (int i = 0; i < rows; i++) {
-            Double sum = 0.0;
-            String lexSum = "";
-            for (int j = 0; j < cols; j++) {
-                if (!lex){
+        if(lex){
+            for (int i = 0; i < rows; i++) {
+                Double sum = 0.0;
+                String lexSum = "";
+                for (int j = 0; j < weights.length; j++) {
+                    lexSum = lexSum + LexPreferenzes.getLexValueById(weights[j] - 1) + LexJudgements.getJudgement(matrix[i][weights[j] - 1]);
+                }
+                scores[i] = sum;
+                lexScores[i] = lexSum;
+            }
+        }else {
+            for (int i = 0; i < rows; i++) {
+                Double sum = 0.0;
+                for (int j = 0; j < cols; j++) {
                     FuzzyPreferenzes fuzzyPreferenzes =  FuzzyPreferenzes.getPreferenzes(weights[j]);
                     FuzzyJudgements fuzzyJudgements = FuzzyJudgements.getJudgement(matrix[i][j]);
                     value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
                     sum += value;
                     sums[i][j] = value;
-                } else{
-                    lexSum = lexSum + LexPreferenzes.getLexValueById(weights[j]) + LexJudgements.getJudgement(matrix[i][j]);
-                    lexSums[i][j] = lexSum ;
                 }
-
+                scores[i] = sum;
             }
-            scores[i] = sum;
-            lexScores[i] = lexSum;
         }
-        if (lex) {
-            String[] temp = new String[rows];
-            for(int i = 0; i < temp.length; i++){
-                temp[i] = lexScores[i];
-            }
-            Arrays.sort(temp);
-            for(int i = 0; i < temp.length; i++){
-                scores[i] = temp.length / (getPlacement(temp, lexScores[i]) * 1.0 + 1);
-            }
-            //unsort matrix, weights, scores
-            sortJudgementsByPreferences(matrix, sortingVector, false);
 
+        if (lex) {
+            for(int i = 0; i < lexScores.length; i++){
+                scores[i] = lexScores.length / (getPlacement(lexScores, lexScores[i]) * 1.0 + 1);
+            }
         }
         return scores;
     }
