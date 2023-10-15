@@ -188,25 +188,23 @@ public class MonteCarloHelper {
 //            Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
 //        }
 
-//        fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
-//        scaleAggregatedMatrixMap(objectPotentialJudgementAcceptabilityIndices);
+        fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
 //        for(int j = 0; j < row; j++){
 //            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
 //            Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
 //        }
 
-//        fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
-//        scaleAggregatedWeightsMap(objectPotentialPreferenceAcceptabilityIndices);
+        fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
 //        for (int i = 0; i < col; i++){
 //            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
 //            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
 //        }
 
-//        Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
+        Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
 //        System.out.println("\njudgementEntropyMatrix");
 //        Helper.show2DArray(judgementEntropyMatrix);
 
-//        Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
+        Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
 //        System.out.println("\npreferenceEntropy");
 //        Helper.show1DArray(preferenceEntropy);
 
@@ -216,7 +214,7 @@ public class MonteCarloHelper {
 //        System.out.println("Date end: " + date);
         date = new Date();
         System.out.println("Ende: " + date);
-        return null;//getLowestValue(judgementEntropyMatrix, preferenceEntropy);
+        return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
     public static double[][][] copyIntToDouble(int[][][] currentJudgementAcceptabilityIndices){
@@ -436,14 +434,14 @@ public class MonteCarloHelper {
         return entropyMatrix;
     }
 
-    public static  Map<Object, Double>[][] getEntropyMatrix(ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices){
-        Map<Object, Double>[][] entropyMatrix = new Map[objectPotentialJudgementAcceptabilityIndices.get(0).length][objectPotentialJudgementAcceptabilityIndices.get(0).length];
-        Double[] vektor = new Double[objectPotentialJudgementAcceptabilityIndices.size()];
+    public static  Map<Object, Double>[][] getEntropyMatrix(double[][][] objectPotentialJudgementAcceptabilityIndices){
+        Map<Object, Double>[][] entropyMatrix = new Map[objectPotentialJudgementAcceptabilityIndices[0].length][objectPotentialJudgementAcceptabilityIndices[0].length];
+        Double[] vektor = new Double[objectPotentialJudgementAcceptabilityIndices.length];
 
-            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(0).length; i++){
-                for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices.get(0)[i].length; j++){
+            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices[0].length; i++){
+                for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices[0][i].length; j++){
                     Map<Object, Double> map = new HashMap<>();
-                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(0)[i][j].entrySet()) {
+                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices[0][i][j].entrySet()) {
                         for(int object = 0; object < vektor.length; object++){
                             vektor[object] = (Double) objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey());
                         }
@@ -504,26 +502,26 @@ public class MonteCarloHelper {
         }
     }
 
-    public static void fillPotentialAggregatedWeightsRankingMap(ArrayList<Map<Object, Object>[]> objectCurrentPreferenceAcceptabilityIndices,
-                                                                ArrayList<Map<Object, Object>[]> objectPotentialPreferenceAcceptabilityIndices){
-        for(int object = 0; object < objectCurrentPreferenceAcceptabilityIndices.size(); object++){
-            for(int i = 0; i < objectCurrentPreferenceAcceptabilityIndices.get(object).length; i++) {
-                Integer multiplicator = objectCurrentPreferenceAcceptabilityIndices.get(object)[i].size();
-                for (Map.Entry<Object, Object> entry : objectPotentialPreferenceAcceptabilityIndices.get(object)[i].entrySet()) {
-                    entry.setValue((Double)objectCurrentPreferenceAcceptabilityIndices.get(object)[i].get(entry.getKey()) * multiplicator);
+    public static void fillPotentialAggregatedWeightsRankingMap(double[][][] objectCurrentPreferenceAcceptabilityIndices,
+                                                                double[][][] objectPotentialPreferenceAcceptabilityIndices){
+        for(int object = 0; object < objectCurrentPreferenceAcceptabilityIndices.length; object++){
+            for(int i = 0; i < objectCurrentPreferenceAcceptabilityIndices[object].length; i++) {
+                int multiplicator = objectCurrentPreferenceAcceptabilityIndices[object][i].length;
+                for (int k = 0; k < objectPotentialPreferenceAcceptabilityIndices[object][i].length; k++) {
+                    objectPotentialPreferenceAcceptabilityIndices[object][i][k] *= multiplicator;
                 }
             }
         }
     }
 
-    public static void fillPotentialJudgementAcceptabilityIndices(ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices,
-                                                                  ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices){
-        for(int object = 0; object < objectCurrentJudgementAcceptabilityIndices.size(); object++){
-            for(int i = 0; i < objectCurrentJudgementAcceptabilityIndices.get(object).length; i++){
-                for(int j = 0; j < objectCurrentJudgementAcceptabilityIndices.get(object)[i].length; j++){
-                    Integer multiplicator = objectCurrentJudgementAcceptabilityIndices.get(object)[i][j].size();
-                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].entrySet()) {
-                        entry.setValue((Double)objectCurrentJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey()) * multiplicator);
+    public static void fillPotentialJudgementAcceptabilityIndices(double[][][][] objectCurrentJudgementAcceptabilityIndices,
+                                                                  double[][][][] objectPotentialJudgementAcceptabilityIndices){
+        for(int object = 0; object < objectCurrentJudgementAcceptabilityIndices.length; object++){
+            for(int i = 0; i < objectCurrentJudgementAcceptabilityIndices[object].length; i++){
+                for(int j = 0; j < objectCurrentJudgementAcceptabilityIndices[object][i].length; j++){
+                    int multiplicator = objectCurrentJudgementAcceptabilityIndices[object][i][j].length;
+                    for (int k = 0; k < objectCurrentJudgementAcceptabilityIndices[object][i][j].length; k++) {
+                        objectPotentialJudgementAcceptabilityIndices[object][i][j][k] *= multiplicator;
                     }
                 }
             }
