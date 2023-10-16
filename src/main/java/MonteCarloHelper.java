@@ -200,21 +200,21 @@ public class MonteCarloHelper {
 //            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
 //        }
 
-        Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
+        double[][][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
 //        System.out.println("\njudgementEntropyMatrix");
 //        Helper.show2DArray(judgementEntropyMatrix);
 
-        Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
+        double[][] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
 //        System.out.println("\npreferenceEntropy");
 //        Helper.show1DArray(preferenceEntropy);
 
 //        System.out.println("\ncurrent entropy");
-//        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
 //        Date date = new Date();
 //        System.out.println("Date end: " + date);
         date = new Date();
         System.out.println("Ende: " + date);
-        return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
+        return null;//getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
     public static double[][][] copyIntToDouble(int[][][] currentJudgementAcceptabilityIndices){
@@ -408,53 +408,77 @@ public class MonteCarloHelper {
         return matrix;
     }
 
-    public static Double getCurrentEntropy(Object[][] rankAcceptabilityIndices){
-        Double[] vector = new Double[rankAcceptabilityIndices.length];
+    public static double getCurrentEntropy(double[][] rankAcceptabilityIndices){
+        double[] vector = new double[rankAcceptabilityIndices.length];
         for(int i = 0; i < rankAcceptabilityIndices.length; i++){
-            vector[i] = (Double) rankAcceptabilityIndices[i][0];
+            vector[i] = rankAcceptabilityIndices[i][0];
         }
         return calculateEntropy(vector);
     }
 
-    public static  Map<Object, Double>[] getEntropyPreference(ArrayList<Map<Object, Object>[]> objectPotentialPreferenceAcceptabilityIndices){
-        Map<Object, Double>[] entropyMatrix = new Map[objectPotentialPreferenceAcceptabilityIndices.get(0).length];
-        Double[] vector = new Double[objectPotentialPreferenceAcceptabilityIndices.size()];
-
-        for(int i = 0; i < objectPotentialPreferenceAcceptabilityIndices.get(0).length; i++){
-            Map<Object, Double> map = new HashMap<>();
-            for (Map.Entry<Object, Object> entry : objectPotentialPreferenceAcceptabilityIndices.get(0)[i].entrySet()) {
-                for(int object = 0; object < vector.length; object++){
-                    vector[object] = (Double) objectPotentialPreferenceAcceptabilityIndices.get(object)[i].get(entry.getKey());
-                }
-                map.put(entry.getKey(), calculateEntropy(vector));
-                entropyMatrix[i] = map;
-            }
-        }
-
-        return entropyMatrix;
-    }
-
-    public static  Map<Object, Double>[][] getEntropyMatrix(double[][][] objectPotentialJudgementAcceptabilityIndices){
-        Map<Object, Double>[][] entropyMatrix = new Map[objectPotentialJudgementAcceptabilityIndices[0].length][objectPotentialJudgementAcceptabilityIndices[0].length];
-        Double[] vektor = new Double[objectPotentialJudgementAcceptabilityIndices.length];
-
-            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices[0].length; i++){
-                for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices[0][i].length; j++){
-                    Map<Object, Double> map = new HashMap<>();
-                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices[0][i][j].entrySet()) {
-                        for(int object = 0; object < vektor.length; object++){
-                            vektor[object] = (Double) objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey());
-                        }
-                        map.put(entry.getKey(), calculateEntropy(vektor));
-                        entropyMatrix[i][j] = map;
+    public static  double[][] getEntropyPreference(double[][][] objectPotentialPreferenceAcceptabilityIndices){
+        double[][] entropyMatrixArray = new double[objectPotentialPreferenceAcceptabilityIndices[0].length][];
+        double[] vectorArray = new double[objectPotentialPreferenceAcceptabilityIndices.length];
+        for(int i = 0; i < objectPotentialPreferenceAcceptabilityIndices[0].length; i++){
+            double[] cellArray = new double[objectPotentialPreferenceAcceptabilityIndices[0][i].length];
+            for(int k = 0; k < objectPotentialPreferenceAcceptabilityIndices[0][i].length; k++){
+                int entropyCounter = 0;
+                for(int object = 0; object < vectorArray.length; object++){
+                    if(objectPotentialPreferenceAcceptabilityIndices[object][i][k] != -1){
+                        vectorArray[object] = objectPotentialPreferenceAcceptabilityIndices[object][i][k];
+                        entropyCounter++;
+                    }else {
+                        vectorArray[object] = -1;
                     }
                 }
+                double[] entropyArray = new double[entropyCounter];
+                entropyCounter = 0;
+                for(int l = 0; l < vectorArray.length; l++){
+                    if(vectorArray[entropyCounter] != -1){
+                        entropyArray[entropyCounter] = vectorArray[l];
+                        entropyCounter++;
+                    }
+                }
+                cellArray[k] = calculateEntropy(entropyArray);
+                entropyMatrixArray[i] = cellArray;
             }
-
-        return entropyMatrix;
+        }
+        return entropyMatrixArray;
     }
 
-    public static Double calculateEntropy(Double[] vector) {
+    public static double[][][] getEntropyMatrix(double[][][][] objectPotentialJudgementAcceptabilityIndices){
+        double[][][] entropyMatrixArray = new double[objectPotentialJudgementAcceptabilityIndices[0].length][objectPotentialJudgementAcceptabilityIndices[0].length][];
+        double[] vectorArray = new double[objectPotentialJudgementAcceptabilityIndices.length];
+        for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices[0].length; i++){
+            for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices[0][i].length; j++){
+                double[] cellArray = new double[objectPotentialJudgementAcceptabilityIndices[0][i][j].length];
+                for(int k = 0; k < objectPotentialJudgementAcceptabilityIndices[0][i][j].length; k++){
+                    int entropyCounter = 0;
+                    for(int object = 0; object < vectorArray.length; object++){
+                        if(objectPotentialJudgementAcceptabilityIndices[object][i][j][k] != -1){
+                            vectorArray[object] = objectPotentialJudgementAcceptabilityIndices[object][i][j][k];
+                            entropyCounter++;
+                        }else {
+                            vectorArray[object] = -1;
+                        }
+                    }
+                    double[] entropyArray = new double[entropyCounter];
+                    entropyCounter = 0;
+                    for(int l = 0; l < vectorArray.length; l++){
+                        if(vectorArray[entropyCounter] != -1){
+                            entropyArray[entropyCounter] = vectorArray[l];
+                            entropyCounter++;
+                        }
+                    }
+                    cellArray[k] = calculateEntropy(entropyArray);
+                    entropyMatrixArray[i][j] = cellArray;
+                }
+            }
+        }
+        return entropyMatrixArray;
+    }
+
+    public static double calculateEntropy(double[] vector) {
         Double entropy = 0.0;
         Double sum = 0.0;
 
@@ -471,6 +495,9 @@ public class MonteCarloHelper {
 
         return entropy;
     }
+
+
+
 
     public static void scaleAggregatedMatrixMap(double[][][][] objectPotentialJudgementAcceptabilityIndices){
         for(int object = 0; object < objectPotentialJudgementAcceptabilityIndices.length; object++){
@@ -547,7 +574,11 @@ public class MonteCarloHelper {
         for(int i = 0; i < sawMatrix.length; i++){
             for(int j = 0; j < sawMatrix[i].length; j++){
                 //get old value
-                objectCurrentJudgementAcceptabilityIndices[rankOne][i][j][sawMatrix[i][j]]++;
+                try{
+                    objectCurrentJudgementAcceptabilityIndices[rankOne][i][j][sawMatrix[i][j]]++;
+                }catch(Exception e){
+                    System.out.println();
+                }
             }
         }
     }
@@ -573,6 +604,7 @@ public class MonteCarloHelper {
                     highest = aggregatedWeights[j][k];
                 }
             }
+            highest++;
             aggregatedWeightsRankingMap[j] = new double[highest];
             //fill array with 0 or -1
             for(int k = 0; k < highest; k++){
@@ -589,7 +621,9 @@ public class MonteCarloHelper {
 
     public static void fillMatrixMapWithZero(int[][][] aggregatedMatrix, double[][][] aggregatedMatrixRankingMap){
         for(int i = 0; i < aggregatedMatrix.length; i++){
+            aggregatedMatrixRankingMap[i] = new double[aggregatedMatrix.length][];
             for(int j = 0; j < aggregatedMatrix[i].length; j++){
+                aggregatedMatrixRankingMap[i][j] = new double[aggregatedMatrix[i].length];
                 //get highest number
                 int highest = 0;
                 for(int k = 0; k < aggregatedMatrix[i][j].length; k++){
@@ -597,6 +631,7 @@ public class MonteCarloHelper {
                         highest = aggregatedMatrix[i][j][k];
                     }
                 }
+                highest++;
                 aggregatedMatrixRankingMap[i][j] = new double[highest];
                 //fill array with 0 or -1
                 for(int k = 0; k < highest; k++){
