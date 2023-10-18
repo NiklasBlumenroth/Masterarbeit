@@ -51,17 +51,18 @@ public class MonteCarloHelper {
         alternative = aggregatedMatrix.length;
         criteria = aggregatedWeights.length;
 
-//        System.out.println("\nAggregated Matrix");
-//        Helper.show2DArray(aggregatedMatrix);
+        System.out.println("\nAggregated Matrix");
+        Helper.show3DArray(aggregatedMatrix);
+
+        System.out.println("\nAggregated Weight");
+        Helper.show2DArray(aggregatedWeights);
 
         int[][] judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
 
-//        System.out.println("\nAggregated Weight");
-//        Helper.show1DArray(aggregatedWeights);
         int[][] preferenceCombinationList = getPreferenceCombinations(aggregatedWeights, lex);
 
         k = judgementCombinationList.length * preferenceCombinationList.length;
-//        System.out.println("\nAggregated K: " + k);
+        System.out.println("\nAggregated K: " + k);
 
         int[][] sawMatrix = null;
         int[] sawWeights = null;
@@ -83,11 +84,11 @@ public class MonteCarloHelper {
         double[][] potentialPreferencesAcceptabilityIndices = new double[alternative][];
 
         //fill matrix map with 0 or -1 if not existed
-        fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
-        fillMatrixMapWithZero(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
+        initMatrixMap(aggregatedMatrix, currentJudgementAcceptabilityIndices);
+        initMatrixMap(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
 ////        //fill weights map with 0
-        fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
-        fillWeightsMapWithZero(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
+        initWeightsMap(aggregatedWeights, currentPreferenceAcceptabilityIndices);
+        initWeightsMap(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
 
         //create currentJudgementAcceptabilityIndices and currentPreferenceAcceptabilityIndices
         //create potentialJudgementAcceptabilityIndices and potentialPreferenceAcceptabilityIndices
@@ -97,12 +98,14 @@ public class MonteCarloHelper {
         for(int j = 0; j < alternative; j++){
             //add one matrix for each possible winner
             objectCurrentJudgementAcceptabilityIndices[j] = currentJudgementAcceptabilityIndices.clone();
+            objectPotentialJudgementAcceptabilityIndices[j] = currentJudgementAcceptabilityIndices.clone();
         }
 
         double[][][] objectCurrentPreferenceAcceptabilityIndices = new double[alternative][][];
         double[][][] objectPotentialPreferenceAcceptabilityIndices = new double[alternative][][];
         for(int j = 0; j < alternative; j++){
             objectCurrentPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices.clone();
+            objectPotentialPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices.clone();
         }
 
         //monteCarloSimulation
@@ -110,6 +113,9 @@ public class MonteCarloHelper {
         int prefCounter = 0;
         int jugCounter = 0;
         for(int i = 0; i < iteration - 1; i++){
+            if(i%100000 == 0){
+                System.out.println(i);
+            }
             if(full){
                 if(jugCounter == judgementCombinationList.length){
                     jugCounter = 0;
@@ -130,7 +136,7 @@ public class MonteCarloHelper {
             }
 
             if(i > 38928000){
-                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, false, lex);
+                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
             }else {
                 rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, false, lex);
             }
@@ -144,69 +150,54 @@ public class MonteCarloHelper {
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
 
-            if(false){
-//                System.out.println("\nMatrix");
-//                Helper.show2DArray(sawMatrix);
-//                System.out.println("\nWeight");
-//                Helper.show1DArray(sawWeights);
-//                System.out.println("\n rankingTotalPoints");
-//                Helper.show1DArray(rankingTotalPoints);
-//                System.out.println("\n rankingPosition");
-//                Helper.show1DArray(rankingPosition);
-//                System.out.println("\n new rankAcceptabilityIndices");
-//                Helper.show2DArray(rankAcceptabilityIndices);
-//                System.out.println("\n new objectCurrentJudgementAcceptabilityIndices");
-//                Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(0));
-            }
-
         }
 
-//        System.out.println("\nAggregated Matrix");
-//        Helper.show2DArray(aggregatedMatrix);
-//
-//        System.out.println("\nAggregated Weight");
-//        Helper.show1DArray(aggregatedWeights);
-//
-//        System.out.println("\nAggregated K: " + k);
-//
-//        System.out.println("\nfinal rankAcceptabilityIndices ");
-//        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
-//
-//        System.out.println("\nfinal rankAcceptabilityIndices scaled");
+        System.out.println("\nAggregated Matrix");
+        Helper.show3DArray(aggregatedMatrix);
+
+        System.out.println("\nAggregated Weight");
+        Helper.show2DArray(aggregatedWeights);
+
+        System.out.println("\nAggregated K: " + k);
+
+        System.out.println("\nfinal rankAcceptabilityIndices ");
+        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+
+        System.out.println("\nfinal rankAcceptabilityIndices scaled");
         scaleTotalRankingPositions(rankAcceptabilityIndices);
-//        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
         scaleAggregatedMatrixMap(objectCurrentJudgementAcceptabilityIndices);
-//        for(int j = 0; j < row; j++){
-//            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
-//            Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
-//        }
+        for(int j = 0; j < alternative; j++){
+            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
+            Helper.show3DArray(objectCurrentJudgementAcceptabilityIndices[j]);
+        }
 
         scaleAggregatedWeightsMap(objectCurrentPreferenceAcceptabilityIndices);
-//        for (int i = 0; i < col; i++){
-//            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
-//            Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
-//        }
+        for (int i = 0; i < criteria; i++){
+            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
+            Helper.show2DArray(objectCurrentPreferenceAcceptabilityIndices[i]);
+        }
 
         fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
-//        for(int j = 0; j < row; j++){
-//            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
-//            Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
-//        }
+        for(int j = 0; j < alternative; j++){
+            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
+            Helper.show3DArray(objectPotentialJudgementAcceptabilityIndices[j]);
+        }
 
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
-//        for (int i = 0; i < col; i++){
-//            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
-//            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
-//        }
+        for (int i = 0; i < criteria; i++){
+            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
+            Helper.show2DArray(objectPotentialPreferenceAcceptabilityIndices[i]);
+        }
 
         double[][][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
-//        System.out.println("\njudgementEntropyMatrix");
-//        Helper.show2DArray(judgementEntropyMatrix);
+        System.out.println("\njudgementEntropyMatrix");
+        Helper.show3DArray(judgementEntropyMatrix);
 
         double[][] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
-//        System.out.println("\npreferenceEntropy");
-//        Helper.show1DArray(preferenceEntropy);
+        System.out.println("\npreferenceEntropy");
+        Helper.show2DArray(preferenceEntropy);
 
 //        System.out.println("\ncurrent entropy");
         System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
@@ -215,6 +206,16 @@ public class MonteCarloHelper {
         date = new Date();
         System.out.println("Ende: " + date);
         return null;//getLowestValue(judgementEntropyMatrix, preferenceEntropy);
+    }
+
+    public static ArrayList<int[]> help(int[][] judgementCombinationList){
+        ArrayList<int[]> list = new ArrayList<>();
+        for(int[] matrix : judgementCombinationList){
+            if(matrix[5] == 3){
+                list.add(matrix);
+            }
+        }
+        return list;
     }
 
     public static double[][][] copyIntToDouble(int[][][] currentJudgementAcceptabilityIndices){
@@ -595,7 +596,7 @@ public class MonteCarloHelper {
         }
     }
 
-    public static void fillWeightsMapWithZero(int[][] aggregatedWeights, double[][] aggregatedWeightsRankingMap){
+    public static void initWeightsMap(int[][] aggregatedWeights, double[][] aggregatedWeightsRankingMap){
         for(int j = 0; j < aggregatedWeights.length; j++){
             //get highest number
             int highest = 0;
@@ -619,7 +620,7 @@ public class MonteCarloHelper {
 
     }
 
-    public static void fillMatrixMapWithZero(int[][][] aggregatedMatrix, double[][][] aggregatedMatrixRankingMap){
+    public static void initMatrixMap(int[][][] aggregatedMatrix, double[][][] aggregatedMatrixRankingMap){
         for(int i = 0; i < aggregatedMatrix.length; i++){
             aggregatedMatrixRankingMap[i] = new double[aggregatedMatrix.length][];
             for(int j = 0; j < aggregatedMatrix[i].length; j++){
