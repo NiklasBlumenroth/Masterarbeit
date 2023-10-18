@@ -218,9 +218,6 @@ public class MonteCarloHelper {
         return list;
     }
 
-    public static double[][][] copyIntToDouble(int[][][] currentJudgementAcceptabilityIndices){
-        return null;
-    }
 
     public static boolean doubleOne(Object[] ranking){
         int counter = 0;
@@ -372,29 +369,6 @@ public class MonteCarloHelper {
         }
 
         return result;
-    }
-
-    public static List<List<Object>> cutInvalidIterationsForLex(List<List<Object>> cartesianProduct2){
-        List<List<Object>> list = new ArrayList<>();
-        for(int i = 0; i < cartesianProduct2.size(); i++){
-            if(!hasDouble(cartesianProduct2.get(i))){
-                list.add(cartesianProduct2.get(i));
-            }
-        }
-        return list;
-    }
-
-    public static boolean hasDouble(List<Object> arr){
-        for(int j = 0; j < arr.size(); j++){
-            Object elem = arr.get(j);
-            for(int i = j + 1; i < arr.size(); i++){
-                if(arr.get(i).equals(elem)){
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public static int[][] listToMatrix(int[] list, int matrixLength){
