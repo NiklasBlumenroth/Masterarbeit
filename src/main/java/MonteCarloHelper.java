@@ -58,9 +58,7 @@ public class MonteCarloHelper {
         Helper.show2DArray(aggregatedWeights);
 
         int[][] judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
-
         int[][] preferenceCombinationList = getPreferenceCombinations(aggregatedWeights, lex);
-
         k = judgementCombinationList.length * preferenceCombinationList.length;
         System.out.println("\nAggregated K: " + k);
 
@@ -86,7 +84,7 @@ public class MonteCarloHelper {
         //fill matrix map with 0 or -1 if not existed
         initMatrixMap(aggregatedMatrix, currentJudgementAcceptabilityIndices);
         initMatrixMap(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
-////        //fill weights map with 0
+        //fill weights map with 0
         initWeightsMap(aggregatedWeights, currentPreferenceAcceptabilityIndices);
         initWeightsMap(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
 
@@ -113,20 +111,17 @@ public class MonteCarloHelper {
         int prefCounter = 0;
         int jugCounter = 0;
         for(int i = 0; i < iteration - 1; i++){
-            if(i%100000 == 0){
+            if(i % 100000 == 0){
                 System.out.println(i);
             }
             if(full){
                 if(jugCounter == judgementCombinationList.length){
                     jugCounter = 0;
                     prefCounter++;
-
                 }
                 sawMatrix = listToMatrix(judgementCombinationList[jugCounter], alternative);
-
                 jugCounter++;
                 sawWeights = preferenceCombinationList[prefCounter];
-
             }else{
                 Random random = new Random();
                 int rngNumberW = random.nextInt(preferenceCombinationList.length);
@@ -137,19 +132,25 @@ public class MonteCarloHelper {
 
             if(i > 38928000){
                 rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
+
+                rankingPosition = getRanksArray(rankingTotalPoints);
+                addRanking(rankAcceptabilityIndices, rankingPosition);
+                System.out.println("\nranking ");
+                Helper.show1DArray(rankingPosition);
+
+                System.out.println("\nrankAcceptabilityIndices ");
+                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
             }else {
                 rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, false, lex);
+
+                rankingPosition = getRanksArray(rankingTotalPoints);
+                addRanking(rankAcceptabilityIndices, rankingPosition);
             }
-
-
-            rankingPosition = getRanksArray(rankingTotalPoints);
-            addRanking(rankAcceptabilityIndices, rankingPosition);
 
             //sawMatrix + ranking = countingMatrixRankingMap
             countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
-
         }
 
         System.out.println("\nAggregated Matrix");
@@ -199,10 +200,8 @@ public class MonteCarloHelper {
         System.out.println("\npreferenceEntropy");
         Helper.show2DArray(preferenceEntropy);
 
-//        System.out.println("\ncurrent entropy");
+        System.out.println("\ncurrent entropy");
         System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
-//        Date date = new Date();
-//        System.out.println("Date end: " + date);
         date = new Date();
         System.out.println("Ende: " + date);
         return null;//getLowestValue(judgementEntropyMatrix, preferenceEntropy);
@@ -218,7 +217,6 @@ public class MonteCarloHelper {
         return list;
     }
 
-
     public static boolean doubleOne(Object[] ranking){
         int counter = 0;
         for(int i = 0; i < ranking.length; i++){
@@ -226,7 +224,6 @@ public class MonteCarloHelper {
                 counter++;
             }
         }
-
         if(counter == 2){
             return true;
         }

@@ -86,7 +86,9 @@ public class Helper {
                     int value1 = weights[j];
                     int value2 = matrix[i][value1-1];
                     LexJudgements judgement = LexJudgements.getJudgement(value2 - 1);
-                    lexSum = lexSum + judgement;
+                    int value3 = weights[j];
+                    LexPreferenzes preferenze = LexPreferenzes.getLexValueById(value3 - 1);
+                    lexSum = lexSum + preferenze + judgement;
                 }
                 scores[i] = sum;
                 lexScores[i] = lexSum;
