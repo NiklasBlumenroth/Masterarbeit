@@ -175,6 +175,15 @@ public class Nutzwertanalyse {
          */
     }
 
+
+    /*
+    nachricht an thony mit den kriterien, alternativen
+    nachricht zum erfragen für den 24.10.
+
+    prüfungsamt schreiben
+     */
+
+
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
         if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {
             aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")] = new ArrayList<>();

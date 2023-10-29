@@ -135,11 +135,11 @@ public class MonteCarloHelper {
 
                 rankingPosition = getRanksArray(rankingTotalPoints);
                 addRanking(rankAcceptabilityIndices, rankingPosition);
-                System.out.println("\nranking ");
-                Helper.show1DArray(rankingPosition);
+                //System.out.println("\nranking ");
+                //Helper.show1DArray(rankingPosition);
 
-                System.out.println("\nrankAcceptabilityIndices ");
-                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+                //System.out.println("\nrankAcceptabilityIndices ");
+                //Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
             }else {
                 rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, false, lex);
 
