@@ -11,7 +11,7 @@ import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int row = 3;
+    public static final int row = 5;
     public static final int col = 5;
     public static final int numberOfDecisionMaker = 5;
     public static final Class jugClazz = FuzzyJudgements.class;
@@ -176,8 +176,8 @@ public class Nutzwertanalyse {
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, row, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-//            aggregatedMatrix = getMatrix();
-//            aggregatedWeights = getWeights();
+            //aggregatedMatrix = getMatrix();
+            //aggregatedWeights = getWeights();
             int indivCounter = 0;
             for (int k = 0; k < durchlaeufe; k++) {
                 //System.out.println("\nAggregated Matrix");
@@ -185,7 +185,7 @@ public class Nutzwertanalyse {
 
                 //System.out.println("\nAggregated Weight");
                 //Helper.show1DArray(aggregatedWeights);
-                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
                 indivCounter++;
 //                for (Object key: lowestValue.keySet()) {
 //                    System.out.println(key + " : " + lowestValue.get(key));
