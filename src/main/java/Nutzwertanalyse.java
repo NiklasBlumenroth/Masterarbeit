@@ -11,11 +11,13 @@ import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int row = 5;
-    public static final int col = 5;
-    public static final int numberOfDecisionMaker = 5;
+    public static final int row = 3;
+    public static final int col = 3;
+    public static final int numberOfDecisionMaker = 2;
     public static final Class jugClazz = FuzzyJudgements.class;
     public static final Class prefClazz = FuzzyPreferenzes.class;
+    public static final boolean full = true;
+    public static final boolean show = false;
 
     public static ArrayList<Object>[][] getMatrix() {
 //        return new ArrayList[][]{
@@ -169,8 +171,9 @@ public class Nutzwertanalyse {
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
         double sum = 0;
-        int durchlaeufe = 1;
+        int durchlaeufe = 100;
         int probleme = 1000;
+        int overAllSum = 0;
         for (int l = 0; l < probleme; l++) {
             ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, row, col, 1, 10);
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, row, 0, 1);
@@ -185,15 +188,15 @@ public class Nutzwertanalyse {
 
                 //System.out.println("\nAggregated Weight");
                 //Helper.show1DArray(aggregatedWeights);
-                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, true);
+                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
 //                for (Object key: lowestValue.keySet()) {
 //                    System.out.println(key + " : " + lowestValue.get(key));
 //                }
 
                 while ((Double) lowestValue.get("lowestValue") != 0) {
-                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue);
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, false);
+                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
+                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                     indivCounter++;
                 }
 //                System.out.println("Pfadlänge: " + indivCounter);
@@ -210,9 +213,10 @@ public class Nutzwertanalyse {
             aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-//            sum = 0;
+            overAllSum += sum;
+            sum = 0;
         }
-        System.out.println(probleme+ " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
+        System.out.println(probleme+ " Durchschnittliche Pfadlänge = " + overAllSum / (durchlaeufe*probleme) + " : " + endDate);
         System.out.println("End: " + endDate);
 
         /*
@@ -224,7 +228,7 @@ public class Nutzwertanalyse {
             + probleme generieren, aggregierte generieren
             + berechnungsmethode(lex, saw)
             + kombinationen
-            - statistik Matrizen
+            + statistik Matrizen
         Berechnung:
             - 1 Pfad mit idealauflösung 3,5,5, 7 klassen, 1000 Probleme
             - 100 Pfade mit zufallsauflösung

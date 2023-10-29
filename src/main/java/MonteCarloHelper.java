@@ -32,7 +32,7 @@ public class MonteCarloHelper {
         System.out.println(list);
     }
 
-    public static Map<String, Object> showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full){
+    public static Map<String, Object> showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full, boolean show){
         Date date = new Date();
 //        System.out.println("Date start: " + date);
         row = aggregatedMatrix.length;
@@ -163,59 +163,76 @@ public class MonteCarloHelper {
 
         }
 
-        System.out.println("\nAggregated Matrix");
-        Helper.show2DArray(aggregatedMatrix);
+        if(show){
+            System.out.println("\nAggregated Matrix");
+            Helper.show2DArray(aggregatedMatrix);
 
-        System.out.println("\nAggregated Weight");
-        Helper.show1DArray(aggregatedWeights);
+            System.out.println("\nAggregated Weight");
+            Helper.show1DArray(aggregatedWeights);
 
-        System.out.println("\nAggregated K: " + k);
-
-        System.out.println("\nfinal rankAcceptabilityIndices ");
-        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
-
-        System.out.println("\nfinal rankAcceptabilityIndices scaled");
-        normalizeTotalRankingPositions(rankAcceptabilityIndices);
-        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
-
-        scaleAggregatedMatrixMap(objectCurrentJudgementAcceptabilityIndices);
-        for(int j = 0; j < row; j++){
-            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
-            Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
+            System.out.println("\nAggregated K: " + k);
+            System.out.println("\nfinal rankAcceptabilityIndices ");
+            Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
         }
 
+
+
+        normalizeTotalRankingPositions(rankAcceptabilityIndices);
+        if(show){
+            System.out.println("\nfinal rankAcceptabilityIndices scaled");
+            Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+        }
+
+        scaleAggregatedMatrixMap(objectCurrentJudgementAcceptabilityIndices);
+        if(show){
+            for(int j = 0; j < row; j++){
+                System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
+                Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
+            }
+        }
+
+
         scaleAggregatedWeightsMap(objectCurrentPreferenceAcceptabilityIndices);
-        for (int i = 0; i < col; i++){
-            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
-            Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
+        if(show){
+            for (int i = 0; i < col; i++){
+                System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
+                Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
+            }
         }
 
         fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
-        scaleAggregatedMatrixMap(objectPotentialJudgementAcceptabilityIndices);
-        for(int j = 0; j < row; j++){
-            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
-            Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
+        if(show){
+            for(int j = 0; j < row; j++){
+                System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
+                Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
+            }
         }
 
+
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
-        scaleAggregatedWeightsMap(objectPotentialPreferenceAcceptabilityIndices);
-        for (int i = 0; i < col; i++){
-            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
-            Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
+        if(show){
+            for (int i = 0; i < col; i++){
+                System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
+                Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
+            }
         }
 
         Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
-        System.out.println("\njudgementEntropyMatrix");
-        Helper.show2DArray(judgementEntropyMatrix);
+
 
         Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
-        System.out.println("\npreferenceEntropy");
-        Helper.show1DArray(preferenceEntropy);
-        System.out.println("\ncurrent entropy");
-        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+
+        if(show){
+            System.out.println("\njudgementEntropyMatrix");
+            Helper.show2DArray(judgementEntropyMatrix);
+            System.out.println("\npreferenceEntropy");
+            Helper.show1DArray(preferenceEntropy);
+            System.out.println("\ncurrent entropy");
+            System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+        }
         date = new Date();
 //        System.out.println("Date end: " + date);
-        return null;//getLowestValue(judgementEntropyMatrix, preferenceEntropy);
+        return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
     public static boolean doubleOne(Object[] ranking){
