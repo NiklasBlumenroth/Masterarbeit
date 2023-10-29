@@ -1,10 +1,10 @@
 import java.util.*;
 
 public class Nutzwertanalyse {
-    public static final int row = 3;
-    public static final int col = 3;
-    public static final int numberOfDecisionMaker = 2;
-    public static final boolean useStaticProblem = true;
+    public static final int row = 7;
+    public static final int col = 7;
+    public static final int numberOfDecisionMaker = 7;
+    public static final boolean useStaticProblem = false;
     public static final boolean lex = true;
     public static final boolean full = true;
 
