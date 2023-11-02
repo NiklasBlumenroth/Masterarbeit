@@ -10,6 +10,7 @@ public class MonteCarloHelper {
     public static int crit;
     public static int k;
     public static long size = 0;
+    public static boolean individual = false;
 
     public static void main(String[] args) {
         Map<Integer, Integer> list = new HashMap<>();
@@ -33,24 +34,19 @@ public class MonteCarloHelper {
     }
 
     public static List<Map<String, Object>>  showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full, boolean show){
-        Date date = new Date();
-//        System.out.println("Date start: " + date);
         alt = aggregatedMatrix.length;
         crit = aggregatedWeights.length;
-
-//        ArrayList<SawFullIterationObject> fullIterations = null;
-//        fullIterations = getSawFullIterationObjects(aggregatedMatrix, aggregatedWeights);
-
-//        System.out.println("\nAggregated Matrix");
-//        Helper.show2DArray(aggregatedMatrix);
 
         List<List<Object>> preferenceCombinationList = getPreferenceCombinations(aggregatedWeights);
         List<List<Object>> judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
 
-//        System.out.println("\nAggregated Weight");
-//        Helper.show1DArray(aggregatedWeights);
-
-        k = judgementCombinationList.size() * preferenceCombinationList.size();
+        if(judgementCombinationList == null){
+            //use individual instance generation
+            k = 1_000_000_000;
+            individual = true;
+        }else{
+            k = judgementCombinationList.size() * preferenceCombinationList.size();
+        }
 
         Object[][] sawMatrix = null;
         Object[] sawWeights = null;
@@ -121,11 +117,9 @@ public class MonteCarloHelper {
                     prefCounter++;
 
                 }
-//                sawMatrix = listToMatrix(judgementCombinationList.get(i % judgementCombinationList.size()), row);
                 sawMatrix = listToMatrix(judgementCombinationList.get(jugCounter), alt);
 
                 jugCounter++;
-//                sawWeights = preferenceCombinationList.get(i % preferenceCombinationList.size()).toArray();
                 sawWeights = preferenceCombinationList.get(prefCounter).toArray();
 
             }else{
@@ -240,8 +234,6 @@ public class MonteCarloHelper {
             System.out.println("\ncurrent entropy");
             System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
         }
-        date = new Date();
-//        System.out.println("Date end: " + date);
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
@@ -330,12 +322,24 @@ public class MonteCarloHelper {
 
     private static List<List<Object>> getJudgementCombinations(ArrayList<Object>[][] aggregatedMatrix){
         //aggregatedMatrix
-        Date date = new Date();
-//        System.out.println("Start iterations: " + date);
         List<List<Object>> fullIterationObjects = new ArrayList<>();
         for(int i = 0; i < aggregatedMatrix.length; i++){
             fullIterationObjects.addAll(Arrays.asList(aggregatedMatrix[i]));
         }
+
+        long judgementCombinationNumber = 1;
+        int tenFactorOf = 0;
+        for(List<Object> lists : fullIterationObjects){
+            judgementCombinationNumber *= lists.size();
+            if(judgementCombinationNumber > 1_000_000_000){
+                judgementCombinationNumber /= 1_000;
+                tenFactorOf += 3;
+            }
+        }
+        if(tenFactorOf > 20_000_000){
+            return null;
+        }
+
         return CartesianProduct.cartesianProduct(fullIterationObjects);
     }
 

@@ -1,5 +1,7 @@
 import Enums.FuzzyJudgements;
 import Enums.FuzzyPreferenzes;
+import Enums.LexJudgements;
+import Enums.LexPreferenzes;
 
 import java.io.*;
 import java.util.*;
@@ -8,11 +10,11 @@ import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int alt = 4;
-    public static final int crit = 4;
-    public static final int numberOfDecisionMaker = 2;
-    public static final Class jugClazz = FuzzyJudgements.class;
-    public static final Class prefClazz = FuzzyPreferenzes.class;
+    public static final int alt = 6;
+    public static final int crit = 10;
+    public static final int numberOfDecisionMaker = 6;
+    public static final Class jugClazz = LexJudgements.class;
+    public static final Class prefClazz = LexPreferenzes.class;
     public static final boolean full = true;
     public static final boolean show = false;
 
@@ -205,17 +207,8 @@ public class Nutzwertanalyse {
             //aggregatedWeights = getWeights();
             int indivCounter = 0;
             for (int k = 0; k < durchlaeufe; k++) {
-                //System.out.println("\nAggregated Matrix");
-                //Helper.show2DArray(aggregatedMatrix);
-
-                //System.out.println("\nAggregated Weight");
-                //Helper.show1DArray(aggregatedWeights);
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
-//                for (Object key: lowestValue.keySet()) {
-//                    System.out.println(key + " : " + lowestValue.get(key));
-//                }
-
                 while (!containsZero(lowestValue)) {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
@@ -236,7 +229,7 @@ public class Nutzwertanalyse {
             endDate = new Date();
             writeTxt(fileName, l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-            if(sum / durchlaeufe == 1){
+            if(sum / durchlaeufe == 1000){
                 Helper.show2DArray(aggregatedMatrix);
                 Helper.show1DArray(aggregatedWeights);
             }
@@ -262,7 +255,7 @@ public class Nutzwertanalyse {
             - 100 Pfade mit zufallsauflösung
             - wenn k unter 1000 soll voll gerechnet werden
             - 1000 Probleme
-            - Anzahl der DM:    2,3,4,5,6
+            - Anzahl der DM:    3,4,5,6
             - Anzahl der Crit:  3,4,5,6,7,8,9,10
             - Anzahl der Alt:   3,4,5,6
         - zufällige pfade wählen
@@ -279,10 +272,14 @@ public class Nutzwertanalyse {
 
         /*
         + speicher von zwischenständen in file
-        - einlesen von abgespeicherten daten
+        + einlesen von abgespeicherten daten
+        + erste berechnungen
         - bug bei nicht quadratischen problemen
         - zählen bei optimierter variante
         - neue zufallsbildung von instanzen da out of memory
+        - dauerschleifen durch reset beenden? reicht while lowest entropy < 0.1?
+            - abbruch : wenn bei rankac bei rang 1 mehrfach 1 vorkommt
+        + Termin Sonntag 26.11. -> 19.11.
          */
     }
 
