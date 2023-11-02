@@ -4,10 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class MonteCarloHelper {
-    public static int monteCarloIterations = 10_000;
+    public static int monteCarloIterations = 1000;
     public static int iteration;
-    public static int row;
-    public static int col;
+    public static int alt;
+    public static int crit;
     public static int k;
     public static long size = 0;
 
@@ -32,11 +32,11 @@ public class MonteCarloHelper {
         System.out.println(list);
     }
 
-    public static Map<String, Object> showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full, boolean show){
+    public static List<Map<String, Object>>  showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full, boolean show){
         Date date = new Date();
 //        System.out.println("Date start: " + date);
-        row = aggregatedMatrix.length;
-        col = aggregatedWeights.length;
+        alt = aggregatedMatrix.length;
+        crit = aggregatedWeights.length;
 
 //        ArrayList<SawFullIterationObject> fullIterations = null;
 //        fullIterations = getSawFullIterationObjects(aggregatedMatrix, aggregatedWeights);
@@ -51,25 +51,24 @@ public class MonteCarloHelper {
 //        Helper.show1DArray(aggregatedWeights);
 
         k = judgementCombinationList.size() * preferenceCombinationList.size();
-//        System.out.println("\nAggregated K: " + k);
 
         Object[][] sawMatrix = null;
         Object[] sawWeights = null;
         Object[] rankingTotalPoints;
         Object[] rankingPosition;
-        Object[][] rankAcceptabilityIndices = new Object[row][col];
+        Object[][] rankAcceptabilityIndices = new Object[alt][crit];
         //fill ranking counter with 0
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
+        for(int i = 0; i < alt; i++){
+            for(int j = 0; j < crit; j++){
                 rankAcceptabilityIndices[i][j] = 0.0;
             }
         }
 
         // generate map for counting
-        Map<Object, Object>[][] currentJudgementAcceptabilityIndices = new Map[row][col];
-        Map<Object, Object>[][] potentialJudgementAcceptabilityIndices = new Map[row][col];
-        Map<Object, Object>[] currentPreferenceAcceptabilityIndices = new Map[row];
-        Map<Object, Object>[] potentialPreferencesAcceptabilityIndices = new Map[row];
+        Map<Object, Object>[][] currentJudgementAcceptabilityIndices = new Map[alt][crit];
+        Map<Object, Object>[][] potentialJudgementAcceptabilityIndices = new Map[alt][crit];
+        Map<Object, Object>[] currentPreferenceAcceptabilityIndices = new Map[alt];
+        Map<Object, Object>[] potentialPreferencesAcceptabilityIndices = new Map[alt];
 
         //fill matrix map with 0
         fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
@@ -83,30 +82,36 @@ public class MonteCarloHelper {
         ArrayList<Map<Object, Object>[][]> objectCurrentJudgementAcceptabilityIndices = new ArrayList<>();
         //[index for ai is winning][row][col][map for possible decisions]
         ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices = new ArrayList<>();
-        for(int j = 0; j < row; j++){
+        for(int j = 0; j < alt; j++){
             objectCurrentJudgementAcceptabilityIndices.add(currentJudgementAcceptabilityIndices);
-            currentJudgementAcceptabilityIndices = new Map[row][col];
+            currentJudgementAcceptabilityIndices = new Map[alt][crit];
             fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
 
             objectPotentialJudgementAcceptabilityIndices.add(potentialJudgementAcceptabilityIndices);
-            potentialJudgementAcceptabilityIndices = new Map[row][col];
+            potentialJudgementAcceptabilityIndices = new Map[alt][crit];
             fillMatrixMapWithZero(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
         }
 
         ArrayList<Map<Object, Object>[]> objectCurrentPreferenceAcceptabilityIndices = new ArrayList<>();
         ArrayList<Map<Object, Object>[]> objectPotentialPreferenceAcceptabilityIndices = new ArrayList<>();
-        for(int j = 0; j < row; j++){
+        for(int j = 0; j < alt; j++){
             objectCurrentPreferenceAcceptabilityIndices.add(currentPreferenceAcceptabilityIndices);
-            currentPreferenceAcceptabilityIndices = new Map[col];
+            currentPreferenceAcceptabilityIndices = new Map[crit];
             fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
 
             objectPotentialPreferenceAcceptabilityIndices.add(potentialPreferencesAcceptabilityIndices);
-            potentialPreferencesAcceptabilityIndices = new Map[col];
+            potentialPreferencesAcceptabilityIndices = new Map[crit];
             fillWeightsMapWithZero(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
         }
 
         //monteCarloSimulation
-        iteration = (full) ? k : monteCarloIterations;
+        if(k < 250_000){
+            full = true;
+            iteration = k;
+        }else{
+            full = false;
+            iteration = monteCarloIterations;
+        }
         int prefCounter = 0;
         int jugCounter = 0;
         for(int i = 0; i < iteration - 1; i++){
@@ -117,7 +122,7 @@ public class MonteCarloHelper {
 
                 }
 //                sawMatrix = listToMatrix(judgementCombinationList.get(i % judgementCombinationList.size()), row);
-                sawMatrix = listToMatrix(judgementCombinationList.get(jugCounter), row);
+                sawMatrix = listToMatrix(judgementCombinationList.get(jugCounter), alt);
 
                 jugCounter++;
 //                sawWeights = preferenceCombinationList.get(i % preferenceCombinationList.size()).toArray();
@@ -127,7 +132,7 @@ public class MonteCarloHelper {
                 Random random = new Random();
                 int rngNumberW = random.nextInt(preferenceCombinationList.size());
                 int rngNumberM = random.nextInt(judgementCombinationList.size());
-                sawMatrix = listToMatrix(judgementCombinationList.get(rngNumberM), row);
+                sawMatrix = listToMatrix(judgementCombinationList.get(rngNumberM), alt);
                 sawWeights = preferenceCombinationList.get(rngNumberW).toArray();
             }
 
@@ -140,7 +145,12 @@ public class MonteCarloHelper {
 
             rankingPosition = getRanksArray(rankingTotalPoints);
             addRanking(rankAcceptabilityIndices, rankingPosition);
-
+            if(show){
+                System.out.println("\n ranking ");
+                Helper.show1DArray(rankingPosition);
+                System.out.println("\n rankAcceptabilityIndices ");
+                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+            }
             //sawMatrix + ranking = countingMatrixRankingMap
             countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
@@ -185,7 +195,7 @@ public class MonteCarloHelper {
 
         scaleAggregatedMatrixMap(objectCurrentJudgementAcceptabilityIndices);
         if(show){
-            for(int j = 0; j < row; j++){
+            for(int j = 0; j < alt; j++){
                 System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
                 Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
             }
@@ -194,7 +204,7 @@ public class MonteCarloHelper {
 
         scaleAggregatedWeightsMap(objectCurrentPreferenceAcceptabilityIndices);
         if(show){
-            for (int i = 0; i < col; i++){
+            for (int i = 0; i < crit; i++){
                 System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
                 Helper.show1DArray(objectCurrentPreferenceAcceptabilityIndices.get(i));
             }
@@ -202,7 +212,7 @@ public class MonteCarloHelper {
 
         fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
         if(show){
-            for(int j = 0; j < row; j++){
+            for(int j = 0; j < alt; j++){
                 System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
                 Helper.show2DArray(objectPotentialJudgementAcceptabilityIndices.get(j));
             }
@@ -211,7 +221,7 @@ public class MonteCarloHelper {
 
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
         if(show){
-            for (int i = 0; i < col; i++){
+            for (int i = 0; i < crit; i++){
                 System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
                 Helper.show1DArray(objectPotentialPreferenceAcceptabilityIndices.get(i));
             }
@@ -249,23 +259,38 @@ public class MonteCarloHelper {
         return false;
     }
 
-    public static Map<String, Object> getLowestValue(Map<Object, Double>[][] judgementEntropyMatrix, Map<Object, Double>[] preferenceEntropy){
+    public static List<Map<String, Object>> getLowestValue(Map<Object, Double>[][] judgementEntropyMatrix, Map<Object, Double>[] preferenceEntropy){
+        List  list = new ArrayList<>();
+        List<Map<String, Object>> lowestValues = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
-        Double lowestValue = 1000.0;
-        Object lowestKey = null;
-        Integer lowestI = judgementEntropyMatrix.length;
-        Integer lowestJ = judgementEntropyMatrix.length;
-        Boolean lowestValueIsJudgement = null;
-
+        //add all values to list
         for (int i = 0; i < judgementEntropyMatrix.length; i++) {
             for(int j = 0; j < judgementEntropyMatrix[i].length; j++){
                 for (Object key: judgementEntropyMatrix[i][j].keySet()) {
-                    if(judgementEntropyMatrix[i][j].get(key) < lowestValue){
-                        lowestValue = judgementEntropyMatrix[i][j].get(key);
-                        lowestKey = key;
-                        lowestI = i;
-                        lowestJ = j;
-                        lowestValueIsJudgement = true;
+                    list.add(judgementEntropyMatrix[i][j].get(key));
+                }
+            }
+        }
+
+        for(int i = 0; i < preferenceEntropy.length; i++){
+            for (Object key: preferenceEntropy[i].keySet()) {
+                list.add(preferenceEntropy[i].get(key));
+            }
+        }
+        //sort
+        Collections.sort(list);
+        //search vor lowest values
+        for (int i = 0; i < judgementEntropyMatrix.length; i++) {
+            for(int j = 0; j < judgementEntropyMatrix[i].length; j++){
+                for (Object key: judgementEntropyMatrix[i][j].keySet()) {
+                    if(judgementEntropyMatrix[i][j].get(key) <= (Double)list.get(9)){
+                        map.put("lowestValue", judgementEntropyMatrix[i][j].get(key));
+                        map.put("lowestKey", key);
+                        map.put("lowestI", i);
+                        map.put("lowestJ", j);
+                        map.put("lowestValueIsJudgement", true);
+                        lowestValues.add(map);
+                        map = new HashMap<>();
                     }
                 }
             }
@@ -273,20 +298,20 @@ public class MonteCarloHelper {
 
         for(int i = 0; i < preferenceEntropy.length; i++){
             for (Object key: preferenceEntropy[i].keySet()) {
-                if(preferenceEntropy[i].get(key) < lowestValue){
-                    lowestValue = preferenceEntropy[i].get(key);
-                    lowestKey = key;
-                    lowestI = i;
-                    lowestValueIsJudgement = false;
+                if(preferenceEntropy[i].get(key) < (Double)list.get(9)){
+                    map.put("lowestValue", preferenceEntropy[i].get(key));
+                    map.put("lowestKey", key);
+                    map.put("lowestI", i);
+                    map.put("lowestJ", null);
+                    map.put("lowestValueIsJudgement", false);
+                    lowestValues.add(map);
+                    map = new HashMap<>();
                 }
             }
         }
-        map.put("lowestValue", lowestValue);
-        map.put("lowestKey", lowestKey);
-        map.put("lowestI", lowestI);
-        map.put("lowestJ", lowestJ);
-        map.put("lowestValueIsJudgement", lowestValueIsJudgement);
-        return map;
+
+        lowestValues.sort((o1, o2) -> Double.compare((Double)o1.get("lowestValue"), (Double)o2.get("lowestValue")));
+        return lowestValues;
     }
 
     private static List<List<Object>> getPreferenceCombinations(ArrayList<Object>[] aggregatedWeights){

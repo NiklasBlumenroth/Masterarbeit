@@ -1,18 +1,15 @@
 import Enums.FuzzyJudgements;
 import Enums.FuzzyPreferenzes;
-import Enums.LexJudgements;
-import Enums.LexPreferenzes;
 
+import java.io.*;
 import java.util.*;
 
-import static Enums.FuzzyJudgements.*;
-import static Enums.FuzzyPreferenzes.*;
 import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int row = 3;
-    public static final int col = 3;
+    public static final int alt = 4;
+    public static final int crit = 4;
     public static final int numberOfDecisionMaker = 2;
     public static final Class jugClazz = FuzzyJudgements.class;
     public static final Class prefClazz = FuzzyPreferenzes.class;
@@ -165,18 +162,43 @@ public class Nutzwertanalyse {
                 new ArrayList<>() {{add(PD);add(PE);add(PF);}}
         };
     }
+    private static String readTxt(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+        String txt = "";
+        while((line = br.readLine()) != null){
+            if(line.length() > 5){
+                txt += "\n" + line;
+            }
+        }
+        return txt;
+    }
 
-    public static void main(String[] args) {
+    private static void writeTxt(String fileName, String newText) throws IOException {
+        String fileData = readTxt(fileName);
+        fileData = newText  + fileData;
+        FileOutputStream fos = new FileOutputStream(fileName);
+        fos.write(fileData.getBytes());
+        fos.flush();
+        fos.close();
+    }
+    public static void main(String[] args) throws IOException {
+        String berechnungsName = numberOfDecisionMaker + " x " + alt + " x " + crit;
+        String fileName = "C:\\Users\\Ic3Dr4gon\\IdeaProjects\\MasterarbeitIndividualProjekt\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
         double sum = 0;
         int durchlaeufe = 100;
         int probleme = 1000;
-        int overAllSum = 0;
+        double overAllSum = 0;
+
+
         for (int l = 0; l < probleme; l++) {
-            ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, row, col, 1, 10);
-            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, row, 0, 1);
+            ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, alt, crit, 1, 10);
+            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, alt, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             //aggregatedMatrix = getMatrix();
@@ -188,13 +210,13 @@ public class Nutzwertanalyse {
 
                 //System.out.println("\nAggregated Weight");
                 //Helper.show1DArray(aggregatedWeights);
-                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
+                List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
 //                for (Object key: lowestValue.keySet()) {
 //                    System.out.println(key + " : " + lowestValue.get(key));
 //                }
 
-                while ((Double) lowestValue.get("lowestValue") != 0) {
+                while (!containsZero(lowestValue)) {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                     indivCounter++;
@@ -207,15 +229,21 @@ public class Nutzwertanalyse {
 //                aggregatedMatrix = getMatrix();
 //                aggregatedWeights = getWeights();
             }
-            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
-            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
+            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, alt, 0, 1);
+            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, alt, crit, 1, 10);
             aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
+            writeTxt(fileName, l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
+            if(sum / durchlaeufe == 1){
+                Helper.show2DArray(aggregatedMatrix);
+                Helper.show1DArray(aggregatedWeights);
+            }
             overAllSum += sum;
             sum = 0;
         }
+        writeTxt(fileName, probleme+ " Durchschnittliche Pfadlänge = " + overAllSum / (durchlaeufe*probleme) + " : " + endDate);
         System.out.println(probleme+ " Durchschnittliche Pfadlänge = " + overAllSum / (durchlaeufe*probleme) + " : " + endDate);
         System.out.println("End: " + endDate);
 
@@ -247,6 +275,24 @@ public class Nutzwertanalyse {
         - flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
         - mit vorgesetzten sprechen für zeitlichen ablauf
          */
+
+
+        /*
+        + speicher von zwischenständen in file
+        - einlesen von abgespeicherten daten
+        - bug bei nicht quadratischen problemen
+        - zählen bei optimierter variante
+        - neue zufallsbildung von instanzen da out of memory
+         */
+    }
+
+    public static boolean containsZero(List<Map<String, Object>> lowestValue){
+        for(Map map : lowestValue){
+            if((Double) map.get("lowestValue") == 0){
+               return true;
+            }
+        }
+        return false;
     }
 
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
@@ -259,18 +305,28 @@ public class Nutzwertanalyse {
         }
     }
 
-    public static void getRandomPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
+    public static void getRandomPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, List<Map<String, Object>>  lowestValue) {
         Random random = new Random();
-        if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {
-            Integer randomNumber = random.nextInt(aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].size());
-            Object randomObject = aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].get(randomNumber);
-            aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")] = new ArrayList<>();
-            aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].add(randomObject);
-        } else {
-            Integer randomNumber = random.nextInt(aggregatedWeights[(Integer) lowestValue.get("lowestI")].size());
-            Object randomObject = aggregatedWeights[(Integer) lowestValue.get("lowestI")].get(randomNumber);
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")] = new ArrayList<>();
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")].add(randomObject);
+        for(Map<String, Object> map : lowestValue){
+            if ((Boolean) map.get("lowestValueIsJudgement")) {
+                if(aggregatedMatrix[(Integer) map.get("lowestI")][(Integer) map.get("lowestJ")].size() > 1){
+                    Integer randomNumber = random.nextInt(aggregatedMatrix[(Integer) map.get("lowestI")][(Integer) map.get("lowestJ")].size());
+                    Object randomObject = aggregatedMatrix[(Integer) map.get("lowestI")][(Integer) map.get("lowestJ")].get(randomNumber);
+                    aggregatedMatrix[(Integer) map.get("lowestI")][(Integer) map.get("lowestJ")] = new ArrayList<>();
+                    aggregatedMatrix[(Integer) map.get("lowestI")][(Integer) map.get("lowestJ")].add(randomObject);
+                    break;
+                }
+
+            } else {
+                if(aggregatedWeights[(Integer) map.get("lowestI")].size() > 1){
+                    Integer randomNumber = random.nextInt(aggregatedWeights[(Integer) map.get("lowestI")].size());
+                    Object randomObject = aggregatedWeights[(Integer) map.get("lowestI")].get(randomNumber);
+                    aggregatedWeights[(Integer) map.get("lowestI")] = new ArrayList<>();
+                    aggregatedWeights[(Integer) map.get("lowestI")].add(randomObject);
+                    break;
+                }
+
+            }
         }
     }
 }
