@@ -52,10 +52,10 @@ public class MonteCarloHelper {
         Object[] sawWeights = null;
         Object[] rankingTotalPoints;
         Object[] rankingPosition;
-        Object[][] rankAcceptabilityIndices = new Object[alt][crit];
+        Object[][] rankAcceptabilityIndices = new Object[alt][alt];
         //fill ranking counter with 0
         for(int i = 0; i < alt; i++){
-            for(int j = 0; j < crit; j++){
+            for(int j = 0; j < alt; j++){
                 rankAcceptabilityIndices[i][j] = 0.0;
             }
         }
@@ -101,7 +101,7 @@ public class MonteCarloHelper {
         }
 
         //monteCarloSimulation
-        if(k < 250_000){
+        if(k < 1000){
             full = true;
             iteration = k;
         }else{
@@ -125,9 +125,14 @@ public class MonteCarloHelper {
             }else{
                 Random random = new Random();
                 int rngNumberW = random.nextInt(preferenceCombinationList.size());
-                int rngNumberM = random.nextInt(judgementCombinationList.size());
-                sawMatrix = listToMatrix(judgementCombinationList.get(rngNumberM), alt);
+
                 sawWeights = preferenceCombinationList.get(rngNumberW).toArray();
+                if(individual){
+                    sawMatrix = generateIndividualMatrix(aggregatedMatrix);
+                }else{
+                    int rngNumberM = random.nextInt(judgementCombinationList.size());
+                    sawMatrix = listToMatrix(judgementCombinationList.get(rngNumberM), alt);
+                }
             }
 
             if(i > 38928000){
@@ -179,8 +184,6 @@ public class MonteCarloHelper {
             Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
         }
 
-
-
         normalizeTotalRankingPositions(rankAcceptabilityIndices);
         if(show){
             System.out.println("\nfinal rankAcceptabilityIndices scaled");
@@ -194,7 +197,6 @@ public class MonteCarloHelper {
                 Helper.show2DArray(objectCurrentJudgementAcceptabilityIndices.get(j));
             }
         }
-
 
         scaleAggregatedWeightsMap(objectCurrentPreferenceAcceptabilityIndices);
         if(show){
@@ -212,7 +214,6 @@ public class MonteCarloHelper {
             }
         }
 
-
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
         if(show){
             for (int i = 0; i < crit; i++){
@@ -222,8 +223,6 @@ public class MonteCarloHelper {
         }
 
         Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
-
-
         Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
 
         if(show){
@@ -237,6 +236,18 @@ public class MonteCarloHelper {
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
+    public static Object[][] generateIndividualMatrix(ArrayList<Object>[][] aggregatedMatrix){
+        Object[][] generatedMatrix = new Object[aggregatedMatrix.length][aggregatedMatrix[0].length];
+        Random random = new Random();
+        int rngNumber;
+        for(int i = 0; i < aggregatedMatrix.length; i++){
+            for(int j = 0; j < aggregatedMatrix[i].length; j++){
+                 rngNumber = random.nextInt(aggregatedMatrix[i][j].size());
+                generatedMatrix[i][j] = aggregatedMatrix[i][j].get(rngNumber);
+            }
+        }
+        return generatedMatrix;
+    }
     public static boolean doubleOne(Object[] ranking){
         int counter = 0;
         for(int i = 0; i < ranking.length; i++){
@@ -331,12 +342,12 @@ public class MonteCarloHelper {
         int tenFactorOf = 0;
         for(List<Object> lists : fullIterationObjects){
             judgementCombinationNumber *= lists.size();
-            if(judgementCombinationNumber > 1_000_000_000){
+            if(judgementCombinationNumber > 1_000){
                 judgementCombinationNumber /= 1_000;
                 tenFactorOf += 3;
             }
         }
-        if(tenFactorOf > 20_000_000){
+        if(tenFactorOf > 6){
             return null;
         }
 
@@ -457,11 +468,11 @@ public class MonteCarloHelper {
         }
     }
 
-    public static void scaleAggregatedWeightsMap(ArrayList<Map<Object, Object>[]> objectPotentialJudgementAcceptabilityIndices){
+    public static void scaleAggregatedWeightsMap(ArrayList<Map<Object, Object>[]> objectCurrentPreferenceAcceptabilityIndices){
         Double integer;
-        for(int object = 0; object < objectPotentialJudgementAcceptabilityIndices.size(); object++){
-            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(object).length; i++){
-                for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(object)[i].entrySet()) {
+        for(int object = 0; object < objectCurrentPreferenceAcceptabilityIndices.size(); object++){
+            for(int i = 0; i < objectCurrentPreferenceAcceptabilityIndices.get(object).length; i++){
+                for (Map.Entry<Object, Object> entry : objectCurrentPreferenceAcceptabilityIndices.get(object)[i].entrySet()) {
                     integer = (Double)entry.getValue();
                     integer /= (Integer) iteration;
                     entry.setValue(integer);
@@ -640,12 +651,9 @@ public class MonteCarloHelper {
     public static ArrayList<Object[][]> generateDecisionMakerList(Class<?> clazz, int number, int row, int col, int min, int max){
         ArrayList<Object[][]> dMList = new ArrayList<>();
         Object[][] matrix;
-//        System.out.println("Generates decisionMakerWeightsList: ");
 
         for(int i = 0; i < number; i++){
             matrix = Helper.generate2DArray(clazz, row, col, min, max);
-//            Helper.show2DArray(matrix);
-//            System.out.println(" ");
             dMList.add(matrix);
         }
 

@@ -34,7 +34,7 @@ public class testFileClass {
     }
     public static void main(String[] args) throws IOException {
         String berechnungsName = numberOfDecisionMaker + " x " + alt + " x " + crit;
-        String fileName = "C:\\Users\\Ic3Dr4gon\\IdeaProjects\\MasterarbeitIndividualProjekt\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         System.out.println(getSavedValue(fileName));
     }
 }

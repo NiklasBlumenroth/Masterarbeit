@@ -10,8 +10,8 @@ import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int alt = 6;
-    public static final int crit = 10;
+    public static final int alt = 10;
+    public static final int crit = 6;
     public static final int numberOfDecisionMaker = 6;
     public static final Class jugClazz = LexJudgements.class;
     public static final Class prefClazz = LexPreferenzes.class;
@@ -179,6 +179,10 @@ public class Nutzwertanalyse {
     }
 
     private static void writeTxt(String fileName, String newText) throws IOException {
+        File myObj = new File(fileName);
+        if (myObj.createNewFile()) {
+            System.out.println("File created: " + myObj.getName());
+        }
         String fileData = readTxt(fileName);
         fileData = newText  + fileData;
         FileOutputStream fos = new FileOutputStream(fileName);
@@ -187,8 +191,14 @@ public class Nutzwertanalyse {
         fos.close();
     }
     public static void main(String[] args) throws IOException {
-        String berechnungsName = numberOfDecisionMaker + " x " + alt + " x " + crit;
-        String fileName = "C:\\Users\\Ic3Dr4gon\\IdeaProjects\\MasterarbeitIndividualProjekt\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        String berechnungsName;
+
+        if(jugClazz == LexJudgements.class){
+            berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }else {
+            berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }
+        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
@@ -200,7 +210,7 @@ public class Nutzwertanalyse {
 
         for (int l = 0; l < probleme; l++) {
             ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, alt, crit, 1, 10);
-            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, alt, 0, 1);
+            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             //aggregatedMatrix = getMatrix();
