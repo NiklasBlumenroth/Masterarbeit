@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class MonteCarloHelper {
-    public static int monteCarloIterations = 1000;
+    public static int monteCarloIterations = 10000;
     public static int iteration;
     public static int alt;
     public static int crit;
@@ -63,8 +63,8 @@ public class MonteCarloHelper {
         // generate map for counting
         Map<Object, Object>[][] currentJudgementAcceptabilityIndices = new Map[alt][crit];
         Map<Object, Object>[][] potentialJudgementAcceptabilityIndices = new Map[alt][crit];
-        Map<Object, Object>[] currentPreferenceAcceptabilityIndices = new Map[alt];
-        Map<Object, Object>[] potentialPreferencesAcceptabilityIndices = new Map[alt];
+        Map<Object, Object>[] currentPreferenceAcceptabilityIndices = new Map[crit];
+        Map<Object, Object>[] potentialPreferencesAcceptabilityIndices = new Map[crit];
 
         //fill matrix map with 0
         fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
@@ -410,6 +410,7 @@ public class MonteCarloHelper {
                 map.put(entry.getKey(), calculateEntropy(vector));
                 entropyMatrix[i] = map;
             }
+
         }
 
         return entropyMatrix;

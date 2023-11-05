@@ -10,7 +10,7 @@ import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int alt = 10;
+    public static final int alt = 6;
     public static final int crit = 6;
     public static final int numberOfDecisionMaker = 6;
     public static final Class jugClazz = LexJudgements.class;
@@ -284,9 +284,9 @@ public class Nutzwertanalyse {
         + speicher von zwischenständen in file
         + einlesen von abgespeicherten daten
         + erste berechnungen
-        - bug bei nicht quadratischen problemen
+        + bug bei nicht quadratischen problemen
         - zählen bei optimierter variante
-        - neue zufallsbildung von instanzen da out of memory
+        + neue zufallsbildung von instanzen da out of memory
         - dauerschleifen durch reset beenden? reicht while lowest entropy < 0.1?
             - abbruch : wenn bei rankac bei rang 1 mehrfach 1 vorkommt
         + Termin Sonntag 26.11. -> 19.11.
