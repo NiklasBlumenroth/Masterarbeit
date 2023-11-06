@@ -1,3 +1,6 @@
+import Enums.LexJudgements;
+import Enums.LexPreferenzes;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,7 +12,9 @@ public class testFileClass {
 
     public static final int alt = 3;
     public static final int crit = 3;
-    public static final int numberOfDecisionMaker = 2;
+    public static final int numberOfDecisionMaker = 3;
+    public static final Class jugClazz = LexJudgements.class;
+    public static final Class prefClazz = LexPreferenzes.class;
 
     private static Double getSavedValue(String fileName) throws IOException {
         File file = new File(fileName);
@@ -34,6 +39,11 @@ public class testFileClass {
     }
     public static void main(String[] args) throws IOException {
         String berechnungsName = numberOfDecisionMaker + " x " + alt + " x " + crit;
+        if(jugClazz == LexJudgements.class){
+            berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }else {
+            berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }
         String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         System.out.println(getSavedValue(fileName));
     }

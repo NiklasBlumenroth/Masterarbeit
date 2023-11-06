@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class MonteCarloHelper {
-    public static int monteCarloIterations = 10000;
+    public static int monteCarloIterations = 1000;
     public static int iteration;
     public static int alt;
     public static int crit;
@@ -342,12 +342,12 @@ public class MonteCarloHelper {
         int tenFactorOf = 0;
         for(List<Object> lists : fullIterationObjects){
             judgementCombinationNumber *= lists.size();
-            if(judgementCombinationNumber > 1_000){
-                judgementCombinationNumber /= 1_000;
+            if(judgementCombinationNumber > 10){
+                judgementCombinationNumber /= 10;
                 tenFactorOf += 3;
             }
         }
-        if(tenFactorOf > 6){
+        if(tenFactorOf > 7){
             return null;
         }
 

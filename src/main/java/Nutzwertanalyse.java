@@ -10,9 +10,9 @@ import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int alt = 6;
-    public static final int crit = 6;
-    public static final int numberOfDecisionMaker = 6;
+    public static final int alt = 4;
+    public static final int crit = 4;
+    public static final int numberOfDecisionMaker = 4;
     public static final Class jugClazz = LexJudgements.class;
     public static final Class prefClazz = LexPreferenzes.class;
     public static final boolean full = true;
