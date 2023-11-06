@@ -286,7 +286,7 @@ public class MonteCarloHelper {
         for (int i = 0; i < judgementEntropyMatrix.length; i++) {
             for(int j = 0; j < judgementEntropyMatrix[i].length; j++){
                 for (Object key: judgementEntropyMatrix[i][j].keySet()) {
-                    if(judgementEntropyMatrix[i][j].get(key) <= (Double)list.get(9)){
+                    if(judgementEntropyMatrix[i][j].get(key) <= (Double)list.get(20)){
                         map.put("lowestValue", judgementEntropyMatrix[i][j].get(key));
                         map.put("lowestKey", key);
                         map.put("lowestI", i);
