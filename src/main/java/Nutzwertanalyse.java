@@ -11,7 +11,7 @@ import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
     public static final int alt = 4;
-    public static final int crit = 4;
+    public static final int crit = 5;
     public static final int numberOfDecisionMaker = 4;
     public static final Class jugClazz = LexJudgements.class;
     public static final Class prefClazz = LexPreferenzes.class;
@@ -178,6 +178,19 @@ public class Nutzwertanalyse {
         return txt;
     }
 
+    private static int getLines(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        int counter = 0;
+        String line;
+        while((line = br.readLine()) != null){
+            if(line.length() > 5){
+                counter++;
+            }
+        }
+        return counter;
+    }
     private static void writeTxt(String fileName, String newText) throws IOException {
         File myObj = new File(fileName);
         if (myObj.createNewFile()) {
@@ -190,7 +203,8 @@ public class Nutzwertanalyse {
         fos.flush();
         fos.close();
     }
-    public static void main(String[] args) throws IOException {
+
+    public static void rechne(int numberOfDecisionMaker, int alt, int crit, Class jugClazz, Class prefClazz) throws IOException {
         String berechnungsName;
 
         if(jugClazz == LexJudgements.class){
@@ -249,6 +263,24 @@ public class Nutzwertanalyse {
         writeTxt(fileName, probleme+ " Durchschnittliche Pfadlänge = " + overAllSum / (durchlaeufe*probleme) + " : " + endDate);
         System.out.println(probleme+ " Durchschnittliche Pfadlänge = " + overAllSum / (durchlaeufe*probleme) + " : " + endDate);
         System.out.println("End: " + endDate);
+    }
+
+    public static void main(String[] args) throws IOException {
+        int[] numberOfDecisionMakers = {3,4,5,6};
+        int[] alt = {3,4,5,6,7,8,9,10};
+        int[] crit = {3,4,5,6};
+        Class[] jugdClazz = {LexJudgements.class, FuzzyJudgements.class};
+        Class[] prefClazz = {LexPreferenzes.class, FuzzyPreferenzes.class};
+
+        for(int i = 0; i < numberOfDecisionMakers.length; i++){
+            for (int j = 0; j < alt.length; j++){
+                for(int k = 0; k < crit.length; k++){
+                    for(int l = 0; l < jugdClazz.length; l++){
+                        rechne(numberOfDecisionMakers[i], alt[j], crit[k], jugdClazz[l], prefClazz[l]);
+                    }
+                }
+            }
+        }
 
         /*
         19.10 13 Uhr
@@ -281,6 +313,7 @@ public class Nutzwertanalyse {
 
 
         /*
+        - überprüfe automatisch bis wo bereits gerechnet wurde und setze es fort
         + speicher von zwischenständen in file
         + einlesen von abgespeicherten daten
         + erste berechnungen

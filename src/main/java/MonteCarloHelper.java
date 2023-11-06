@@ -417,21 +417,22 @@ public class MonteCarloHelper {
     }
 
     public static  Map<Object, Double>[][] getEntropyMatrix(ArrayList<Map<Object, Object>[][]> objectPotentialJudgementAcceptabilityIndices){
-        Map<Object, Double>[][] entropyMatrix = new Map[objectPotentialJudgementAcceptabilityIndices.get(0).length][objectPotentialJudgementAcceptabilityIndices.get(0).length];
+        Map<Object, Double>[][] entropyMatrix = new Map[objectPotentialJudgementAcceptabilityIndices.get(0).length][];
         Double[] vektor = new Double[objectPotentialJudgementAcceptabilityIndices.size()];
 
-            for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(0).length; i++){
-                for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices.get(0)[i].length; j++){
-                    Map<Object, Double> map = new HashMap<>();
-                    for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(0)[i][j].entrySet()) {
-                        for(int object = 0; object < vektor.length; object++){
-                            vektor[object] = (Double) objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey());
-                        }
-                        map.put(entry.getKey(), calculateEntropy(vektor));
-                        entropyMatrix[i][j] = map;
+        for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(0).length; i++){
+            for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices.get(0)[i].length; j++){
+                Map<Object, Double> map = new HashMap<>();
+                entropyMatrix[i] = new Map[objectPotentialJudgementAcceptabilityIndices.get(0)[i].length];
+                for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(0)[i][j].entrySet()) {
+                    for(int object = 0; object < vektor.length; object++){
+                        vektor[object] = (Double) objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey());
                     }
+                    map.put(entry.getKey(), calculateEntropy(vektor));
+                    entropyMatrix[i][j] = map;
                 }
             }
+        }
 
         return entropyMatrix;
     }

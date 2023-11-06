@@ -70,10 +70,10 @@ public class Helper {
     public static Double[] saw(Object[][] matrix, Object[] weights, boolean show) {
         int[] sortingVector = null;
         if(show){
-        System.out.println("\nsawMatrix: ");
-        show2DArray(matrix);
-        System.out.println("\nsawWeights: ");
-        show1DArray(weights);
+            System.out.println("\nsawMatrix: ");
+            show2DArray(matrix);
+            System.out.println("\nsawWeights: ");
+            show1DArray(weights);
         }
 
         Class<?> clazz = matrix[0][0].getClass();
@@ -98,8 +98,8 @@ public class Helper {
         Double[] scores = new Double[rows];
         String[] lexScores = new String[rows];
 
-        Double[][] sums = new Double[matrix.length][matrix[0].length];
-        String[][] lexSums = new String[matrix.length][matrix.length];
+        Double[][] sums = new Double[matrix.length][weights.length];
+        String[][] lexSums = new String[matrix.length][weights.length];
 
         Double value;
         // create sum for columns
@@ -107,9 +107,7 @@ public class Helper {
             Double sum = 0.0;
             String lexSum = "";
             for (int j = 0; j < cols; j++) {
-                if (Double.class.equals(clazz)) {
-
-                } else if (FuzzyJudgements.class.equals(clazz)) {
+                if (FuzzyJudgements.class.equals(clazz)) {
                     FuzzyPreferenzes fuzzyPreferenzes = (FuzzyPreferenzes) weights[j];
                     FuzzyJudgements fuzzyJudgements = (FuzzyJudgements) matrix[i][j];
                     value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
@@ -120,9 +118,8 @@ public class Helper {
                     sums[i][j] = (Integer)matrix[i][j] * (Double)weights[j];
                 } else if (LexJudgements.class.equals(clazz)) {
                     lexSum = lexSum + weights[j] + matrix[i][j];
-                    lexSums[i][j] = lexSum ;
+                    lexSums[i][j] = lexSum;
                 }
-
             }
             scores[i] = sum;
             lexScores[i] = lexSum;
