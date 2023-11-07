@@ -1,0 +1,19 @@
+<changelist name="Uncommitted_changes_before_Update_at_07_11_2023_08_22_[Changes]" date="1699341754516" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_07_11_2023_08_22_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 07.11.2023 08:22 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="src/main/resources/2022-04-01_Complementary-Data_CMAA-Article.xlsx" />
+    <option name="AFTER_PATH" value="src/main/resources/2022-04-01_Complementary-Data_CMAA-Article.xlsx" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_07_11_2023_08_22_[Changes]/2022-04-01_Complementary-Data_CMAA-Article.xlsx" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/2022-04-01_Complementary-Data_CMAA-Article.xlsx" />
+    <option name="AFTER_PATH" value="target/classes/2022-04-01_Complementary-Data_CMAA-Article.xlsx" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_07_11_2023_08_22_[Changes]/2022-04-01_Complementary-Data_CMAA-Article1.xlsx" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/Nutzwertanalyse.class" />
+    <option name="AFTER_PATH" value="target/classes/Nutzwertanalyse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_07_11_2023_08_22_[Changes]/Nutzwertanalyse.class" />
+  </binary>
+</changelist>
