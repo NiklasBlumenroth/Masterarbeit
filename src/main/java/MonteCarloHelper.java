@@ -286,30 +286,26 @@ public class MonteCarloHelper {
         for (int i = 0; i < judgementEntropyMatrix.length; i++) {
             for(int j = 0; j < judgementEntropyMatrix[i].length; j++){
                 for (Object key: judgementEntropyMatrix[i][j].keySet()) {
-                    if(judgementEntropyMatrix[i][j].get(key) <= (Double)list.get(20)){
-                        map.put("lowestValue", judgementEntropyMatrix[i][j].get(key));
-                        map.put("lowestKey", key);
-                        map.put("lowestI", i);
-                        map.put("lowestJ", j);
-                        map.put("lowestValueIsJudgement", true);
-                        lowestValues.add(map);
-                        map = new HashMap<>();
-                    }
+                    map.put("lowestValue", judgementEntropyMatrix[i][j].get(key));
+                    map.put("lowestKey", key);
+                    map.put("lowestI", i);
+                    map.put("lowestJ", j);
+                    map.put("lowestValueIsJudgement", true);
+                    lowestValues.add(map);
+                    map = new HashMap<>();
                 }
             }
         }
 
         for(int i = 0; i < preferenceEntropy.length; i++){
             for (Object key: preferenceEntropy[i].keySet()) {
-                if(preferenceEntropy[i].get(key) < (Double)list.get(9)){
-                    map.put("lowestValue", preferenceEntropy[i].get(key));
-                    map.put("lowestKey", key);
-                    map.put("lowestI", i);
-                    map.put("lowestJ", null);
-                    map.put("lowestValueIsJudgement", false);
-                    lowestValues.add(map);
-                    map = new HashMap<>();
-                }
+                map.put("lowestValue", preferenceEntropy[i].get(key));
+                map.put("lowestKey", key);
+                map.put("lowestI", i);
+                map.put("lowestJ", null);
+                map.put("lowestValueIsJudgement", false);
+                lowestValues.add(map);
+                map = new HashMap<>();
             }
         }
 
@@ -421,9 +417,9 @@ public class MonteCarloHelper {
         Double[] vektor = new Double[objectPotentialJudgementAcceptabilityIndices.size()];
 
         for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices.get(0).length; i++){
+            entropyMatrix[i] = new Map[objectPotentialJudgementAcceptabilityIndices.get(0)[i].length];
             for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices.get(0)[i].length; j++){
                 Map<Object, Double> map = new HashMap<>();
-                entropyMatrix[i] = new Map[objectPotentialJudgementAcceptabilityIndices.get(0)[i].length];
                 for (Map.Entry<Object, Object> entry : objectPotentialJudgementAcceptabilityIndices.get(0)[i][j].entrySet()) {
                     for(int object = 0; object < vektor.length; object++){
                         vektor[object] = (Double) objectPotentialJudgementAcceptabilityIndices.get(object)[i][j].get(entry.getKey());

@@ -10,9 +10,9 @@ import static Enums.LexPreferenzes.*;
 import static Enums.LexJudgements.*;
 
 public class Nutzwertanalyse {
-    public static final int alt = 4;
+    public static final int alt = 5;
     public static final int crit = 5;
-    public static final int numberOfDecisionMaker = 4;
+    public static final int numberOfDecisionMaker = 5;
     public static final Class jugClazz = LexJudgements.class;
     public static final Class prefClazz = LexPreferenzes.class;
     public static final boolean full = true;
@@ -191,6 +191,17 @@ public class Nutzwertanalyse {
         }
         return counter;
     }
+
+    private static boolean fileExist(String fileName) throws IOException {
+        File file = new File(fileName);
+        if (file.createNewFile()) {
+            System.out.println("File created: " + file.getName());
+            return false;
+        }else {
+            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")));
+            return true;
+        }
+    }
     private static void writeTxt(String fileName, String newText) throws IOException {
         File myObj = new File(fileName);
         if (myObj.createNewFile()) {
@@ -213,6 +224,8 @@ public class Nutzwertanalyse {
             berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
         }
         String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        fileExist(fileName);
+
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
@@ -220,9 +233,9 @@ public class Nutzwertanalyse {
         int durchlaeufe = 100;
         int probleme = 1000;
         double overAllSum = 0;
+        int linesInFile = getLines(fileName);
 
-
-        for (int l = 0; l < probleme; l++) {
+        for (int l = linesInFile; l < probleme; l++) {
             ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, alt, crit, 1, 10);
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
@@ -260,8 +273,7 @@ public class Nutzwertanalyse {
             overAllSum += sum;
             sum = 0;
         }
-        writeTxt(fileName, probleme+ " Durchschnittliche Pfadlänge = " + overAllSum / (durchlaeufe*probleme) + " : " + endDate);
-        System.out.println(probleme+ " Durchschnittliche Pfadlänge = " + overAllSum / (durchlaeufe*probleme) + " : " + endDate);
+        System.out.println(berechnungsName + " done.");
         System.out.println("End: " + endDate);
     }
 
