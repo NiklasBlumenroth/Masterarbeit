@@ -314,6 +314,8 @@ public class Nutzwertanalyse {
 
         /*
         - überprüfe automatisch bis wo bereits gerechnet wurde und setze es fort
+        - Montecarlo 10.000?
+        - Ab wie vielen Kombinationsmöglichgkeiten kann random die matrix erstellt werden?
         + speicher von zwischenständen in file
         + einlesen von abgespeicherten daten
         + erste berechnungen
