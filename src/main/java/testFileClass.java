@@ -1,3 +1,5 @@
+import Enums.FuzzyJudgements;
+import Enums.FuzzyPreferenzes;
 import Enums.LexJudgements;
 import Enums.LexPreferenzes;
 
@@ -10,11 +12,11 @@ import java.util.List;
 
 public class testFileClass {
 
-    public static final int alt = 3;
-    public static final int crit = 3;
-    public static final int numberOfDecisionMaker = 3;
-    public static final Class jugClazz = LexJudgements.class;
-    public static final Class prefClazz = LexPreferenzes.class;
+    public static final int alt = 10;
+    public static final int crit = 6;
+    public static final int numberOfDecisionMaker = 6;
+    public static final Class jugClazz = FuzzyJudgements.class;
+    public static final Class prefClazz = FuzzyPreferenzes.class;
 
     private static Double getSavedValue(String fileName) throws IOException {
         File file = new File(fileName);

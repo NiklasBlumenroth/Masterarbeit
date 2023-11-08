@@ -243,32 +243,21 @@ public class Nutzwertanalyse {
             //aggregatedMatrix = getMatrix();
             //aggregatedWeights = getWeights();
             int indivCounter = 0;
-            List<Map<String, Object>> lowestValue = null;
             for (int k = 0; k < durchlaeufe; k++) {
-                lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
+                List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
                 while (!containsZero(lowestValue)) {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
-                    if(lowestValue == null){
-                        break;
-                    }
                     indivCounter++;
                 }
 //                System.out.println("Pfadlänge: " + indivCounter);
-                if(lowestValue == null){
-                    break;
-                }
                 sum += indivCounter;
                 indivCounter = 0;
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
 //                aggregatedMatrix = getMatrix();
 //                aggregatedWeights = getWeights();
-            }
-            if (lowestValue == null){
-                l--;
-                continue;
             }
             decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, alt, 0, 1);
             decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, alt, crit, 1, 10);
@@ -292,8 +281,9 @@ public class Nutzwertanalyse {
         int[] numberOfDecisionMakers = {3,4,5,6};
         int[] alt = {3,4,5,6,7,8,9,10};
         int[] crit = {3,4,5,6};
-        Class[] jugdClazz = {LexJudgements.class};
-        Class[] prefClazz = {LexPreferenzes.class};
+        Class[] jugdClazz = {FuzzyJudgements.class};
+        Class[] prefClazz = {FuzzyPreferenzes.class};
+
 
         for(int i = 0; i < numberOfDecisionMakers.length; i++){
             for (int j = 0; j < alt.length; j++){
@@ -304,6 +294,7 @@ public class Nutzwertanalyse {
                 }
             }
         }
+
 
         /*
         19.10 13 Uhr
