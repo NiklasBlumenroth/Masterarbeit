@@ -1,7 +1,10 @@
 import Enums.LexPreferenzes;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class MonteCarloHelper {
     public static int monteCarloIterations = 1000;
@@ -33,10 +36,9 @@ public class MonteCarloHelper {
         System.out.println(list);
     }
 
-    public static List<Map<String, Object>>  showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full, boolean show){
+    public static List<Map<String, Object>>  showMonteCarloSaw(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, boolean full, boolean show) throws ParseException {
         alt = aggregatedMatrix.length;
         crit = aggregatedWeights.length;
-
         List<List<Object>> preferenceCombinationList = getPreferenceCombinations(aggregatedWeights);
         List<List<Object>> judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
 
@@ -238,6 +240,8 @@ public class MonteCarloHelper {
             System.out.println("\ncurrent entropy");
             System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
         }
+
+
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 
@@ -340,16 +344,11 @@ public class MonteCarloHelper {
         }
 
         long judgementCombinationNumber = 1;
-        int tenFactorOf = 0;
         for(List<Object> lists : fullIterationObjects){
             judgementCombinationNumber *= lists.size();
-            if(judgementCombinationNumber > 10){
-                judgementCombinationNumber /= 10;
-                tenFactorOf += 3;
+            if(judgementCombinationNumber > 1_000_000){
+                return null;
             }
-        }
-        if(tenFactorOf > 7){
-            return null;
         }
 
         return CartesianProduct.cartesianProduct(fullIterationObjects);

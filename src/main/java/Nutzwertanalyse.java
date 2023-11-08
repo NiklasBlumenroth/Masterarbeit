@@ -4,6 +4,7 @@ import Enums.LexJudgements;
 import Enums.LexPreferenzes;
 
 import java.io.*;
+import java.text.ParseException;
 import java.util.*;
 
 import static Enums.LexPreferenzes.*;
@@ -215,7 +216,7 @@ public class Nutzwertanalyse {
         fos.close();
     }
 
-    public static void rechne(int numberOfDecisionMaker, int alt, int crit, Class jugClazz, Class prefClazz) throws IOException {
+    public static void rechne(int numberOfDecisionMaker, int alt, int crit, Class jugClazz, Class prefClazz) throws IOException, ParseException {
         String berechnungsName;
 
         if(jugClazz == LexJudgements.class){
@@ -277,10 +278,10 @@ public class Nutzwertanalyse {
         System.out.println("End: " + endDate);
     }
 
-    public static void main(String[] args) throws IOException {
-        int[] numberOfDecisionMakers = {3,4,5,6};
-        int[] alt = {3,4,5,6,7,8,9,10};
-        int[] crit = {3,4,5,6};
+    public static void main(String[] args) throws IOException, ParseException {
+        int[] numberOfDecisionMakers = {3,6};
+        int[] alt = {5,10,15};
+        int[] crit = {3,6};
         Class[] jugdClazz = {FuzzyJudgements.class};
         Class[] prefClazz = {FuzzyPreferenzes.class};
 
@@ -295,6 +296,19 @@ public class Nutzwertanalyse {
             }
         }
 
+        int[] numberOfDecisionMakers2 = {3,6,9};
+        int[] alt2 = {5,10,15};
+        int[] crit2 = {3,6,9};
+
+        for(int i = 0; i < numberOfDecisionMakers2.length; i++){
+            for (int j = 0; j < alt2.length; j++){
+                for(int k = 0; k < crit2.length; k++){
+                    for(int l = 0; l < jugdClazz.length; l++){
+                        rechne(numberOfDecisionMakers2[i], alt2[j], crit2[k], jugdClazz[l], prefClazz[l]);
+                    }
+                }
+            }
+        }
 
         /*
         19.10 13 Uhr
