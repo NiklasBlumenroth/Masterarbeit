@@ -281,8 +281,9 @@ public class Nutzwertanalyse {
         int[] numberOfDecisionMakers = {3,4,5,6};
         int[] alt = {3,4,5,6,7,8,9,10};
         int[] crit = {3,4,5,6};
-        Class[] jugdClazz = {LexJudgements.class, FuzzyJudgements.class};
-        Class[] prefClazz = {LexPreferenzes.class, FuzzyPreferenzes.class};
+        Class[] jugdClazz = {FuzzyJudgements.class};
+        Class[] prefClazz = {FuzzyPreferenzes.class};
+
 
         for(int i = 0; i < numberOfDecisionMakers.length; i++){
             for (int j = 0; j < alt.length; j++){
@@ -293,6 +294,7 @@ public class Nutzwertanalyse {
                 }
             }
         }
+
 
         /*
         19.10 13 Uhr
