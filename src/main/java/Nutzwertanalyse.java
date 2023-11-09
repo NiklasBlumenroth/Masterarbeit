@@ -114,8 +114,8 @@ public class Nutzwertanalyse {
                 aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
                 aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
             }else{
-                decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, row, col, 1, 10);
-                decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, row, 0, 1);
+                decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, row, col, lex);
+                decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, row, lex);
                 //generates aggregated matrix and fill with -1
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);

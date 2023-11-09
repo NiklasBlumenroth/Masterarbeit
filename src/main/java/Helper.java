@@ -296,7 +296,7 @@ public class Helper {
         int[] randomArray = new int[size];
         Random random = new Random();
         for (int j = 0; j < size; j++) {
-            randomArray[j] = random.nextInt(maxValue - minValue + 1) + maxValue;
+            randomArray[j] = random.nextInt(maxValue - minValue + 1);
         }
 
         return randomArray;

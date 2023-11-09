@@ -1,3 +1,5 @@
+import Enums.FuzzyJudgements;
+import Enums.LexJudgements;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -57,10 +59,10 @@ public class MonteCarloHelper {
         System.out.println("\nAggregated Weight");
         Helper.show2DArray(aggregatedWeights);
 
-        int[][] judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
+        int[][] judgementCombinationList = null;//getJudgementCombinations(aggregatedMatrix);
         int[][] preferenceCombinationList = getPreferenceCombinations(aggregatedWeights, lex);
-        k = judgementCombinationList.length * preferenceCombinationList.length;
-        System.out.println("\nAggregated K: " + k);
+        //k = judgementCombinationList.length * preferenceCombinationList.length;
+        //System.out.println("\nAggregated K: " + k);
 
         int[][] sawMatrix = null;
         int[] sawWeights = null;
@@ -317,7 +319,7 @@ public class MonteCarloHelper {
     }
 
     private static int[][] getJudgementCombinations(int[][][] aggregatedMatrix){
-        int kCounter = 1;
+        long kCounter = 1;
         //countCombinations
         for(int i = 0; i < aggregatedMatrix.length; i++){
             for(int j = 0; j < aggregatedMatrix[i].length; j++){
@@ -622,19 +624,26 @@ public class MonteCarloHelper {
 
     @NotNull
     public static int[][][] generateAggregatedMatrix(@NotNull int[][][] dMList){
-        int[][][] aggregatedMatrix = new int[dMList.length][dMList[0].length][dMList[0][0].length];
-        Helper.fill3dArrayWithNegOne(aggregatedMatrix);
-        for (int k = 0; k < aggregatedMatrix.length; k++) {
-            for (int i = 0; i < aggregatedMatrix[0].length; i++) {
-                int counter = 0;
-                for (int j = 0; j < aggregatedMatrix[0][0].length; j++) {
-                    if (!elementContainsInArray(dMList[k][i][j], aggregatedMatrix[k][i])) {
-                        aggregatedMatrix[k][i][counter] = dMList[k][i][j];
-                        counter++;
+        int[][][] aggregatedMatrix = new int[dMList.length][dMList[0].length][];
+
+        for (int alt = 0; alt < dMList[0].length; alt++) {
+            for (int crit = 0; crit < dMList[0][0].length; crit++) {
+                List<Integer> aggregatedList = new ArrayList<>();
+                for (int decisionMaker = 0; decisionMaker < dMList.length; decisionMaker++) {
+                    if(!aggregatedList.contains(dMList[decisionMaker][alt][crit])){
+                        aggregatedList.add(dMList[decisionMaker][alt][crit]);
                     }
                 }
+                int[] aggregatedArray = new int[aggregatedList.size()];
+                for(int s = 0; s < aggregatedList.size(); s++){
+                    aggregatedArray[s] = aggregatedList.get(s);
+                }
+                aggregatedMatrix[alt][crit] = aggregatedArray;
+
             }
+
         }
+
         return aggregatedMatrix;
     }
 
@@ -649,25 +658,36 @@ public class MonteCarloHelper {
 
     @NotNull
     public static int[][] generateAggregatedWeights(@NotNull int[][] dMWList){
-        int[][] aggregatedWeights = new int[dMWList.length][dMWList[0].length];
-        Helper.fill2dArrayWithNegOne(aggregatedWeights);
-        //fill empty lists
-        for(int k = 0; k < aggregatedWeights.length; k++){
-            int counter = 0;
-            for(int j = 0; j < aggregatedWeights[k].length; j++){
-                if(!elementContainsInArray(dMWList[k][j], aggregatedWeights[k])){
-                    aggregatedWeights[k][counter] = dMWList[k][j];
-                    counter++;
+        int[][] aggregatedWeights = new int[dMWList.length][];
+
+        for(int crit = 0; crit < dMWList[0].length; crit++){
+            List<Integer> aggregatedList = new ArrayList<>();
+            for (int[] ints : dMWList) {
+                if (!aggregatedList.contains(ints[crit])) {
+                    aggregatedList.add(ints[crit]);
                 }
             }
+            int[] aggregatedArray = new int[aggregatedList.size()];
+            for(int s = 0; s < aggregatedList.size(); s++){
+                aggregatedArray[s] = aggregatedList.get(s);
+            }
+            aggregatedWeights[crit] = aggregatedArray;
         }
+
 
         return aggregatedWeights;
     }
 
     @NotNull
-    public static int[][] generateDecisionMakerWeightList(int number, int length, int min, int max){
+    public static int[][] generateDecisionMakerWeightList(int number, int length, boolean lex){
         int[][] dMWList = new int[number][length];
+        int min = 0;
+        int max;
+        if(lex){
+            max = LexJudgements.values().length;
+        }else{
+            max = FuzzyJudgements.values().length;
+        }
         for(int i = 0; i < number; i++){
             dMWList[i] = Helper.generate1DArray(length, min, max);
         }
@@ -676,7 +696,14 @@ public class MonteCarloHelper {
     }
 
     @NotNull
-    public static int[][][] generateDecisionMakerList(int number, int row, int col, int min, int max){
+    public static int[][][] generateDecisionMakerList(int number, int row, int col, boolean lex){
+        int min = 0;
+        int max;
+        if(lex){
+            max = LexJudgements.values().length;
+        }else{
+            max = FuzzyJudgements.values().length;
+        }
         int[][][] dMList = new int[number][row][col];
         for(int i = 0; i < number; i++){
             dMList[i] = Helper.generate2DArray(row, col, min, max);
