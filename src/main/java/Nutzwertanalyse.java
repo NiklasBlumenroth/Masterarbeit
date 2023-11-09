@@ -4,7 +4,7 @@ public class Nutzwertanalyse {
     public static final int row = 7;
     public static final int col = 7;
     public static final int numberOfDecisionMaker = 7;
-    public static final boolean useStaticProblem = false;
+    public static final boolean useStaticProblem = true;
     public static final boolean lex = true;
     public static final boolean full = true;
 
@@ -29,52 +29,52 @@ public class Nutzwertanalyse {
 
         return new ArrayList[][]{
                 {
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
                         new ArrayList<>() {{add(1);}},
                         new ArrayList<>() {{add(2);}},
-                        new ArrayList<>() {{add(3);}},
+                        new ArrayList<>() {{add(0);}}
+                },
+                {
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);add(2);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);add(2);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                },
+                {
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);add(2);}},
+                        new ArrayList<>() {{ add(0);}},
+                        new ArrayList<>() {{ add(2);}},
+                },
+                {
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);}}
+                },
+                {
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}}
+                },
+                {
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(2);add(1);}},
                         new ArrayList<>() {{add(1);}}
-                },
-                {
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(1);add(2);add(3);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);add(2);add(3);}},
-                        new ArrayList<>() {{add(2);}},
-                        new ArrayList<>() {{add(2);add(3);}},
-                },
-                {
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);add(2);add(3);}},
-                        new ArrayList<>() {{ add(1);}},
-                        new ArrayList<>() {{ add(3);}},
-                },
-                {
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(2);}},
-                        new ArrayList<>() {{add(2);add(3);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(1);}}
-                },
-                {
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(2);}},
-                        new ArrayList<>() {{add(2);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);add(2);}}
-                },
-                {
-                        new ArrayList<>() {{add(2);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(3);add(2);}},
-                        new ArrayList<>() {{add(2);}}
                 }
         };
     }
@@ -87,12 +87,12 @@ public class Nutzwertanalyse {
 //        };
 
         return new ArrayList[]{
-                new ArrayList<>() {{add(1);add(2);add(3);add(4);add(5);}},
-                new ArrayList<>() {{add(1);add(2);add(3);}},
-                new ArrayList<>() {{add(1);add(2);add(3);add(6);}},
-                new ArrayList<>() {{add(1);add(2);add(4);add(5);add(6);}},
-                new ArrayList<>() {{add(1);add(2);add(4);add(5);add(6);}},
-                new ArrayList<>() {{add(4);add(5);add(6);}}
+                new ArrayList<>() {{add(0);add(1);add(2);add(3);add(4);}},
+                new ArrayList<>() {{add(0);add(1);add(2);}},
+                new ArrayList<>() {{add(0);add(1);add(2);add(5);}},
+                new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(3);add(4);add(5);}}
         };
     }
 

@@ -84,10 +84,10 @@ public class Helper {
                 String lexSum = "";
                 for (int j = 0; j < weights.length; j++) {
                     int value1 = weights[j];
-                    int value2 = matrix[i][value1-1];
-                    LexJudgements judgement = LexJudgements.getJudgement(value2 - 1);
+                    int value2 = matrix[i][value1];
+                    LexJudgements judgement = LexJudgements.getJudgement(value2);
                     int value3 = weights[j];
-                    LexPreferenzes preferenze = LexPreferenzes.getLexValueById(value3 - 1);
+                    LexPreferenzes preferenze = LexPreferenzes.getLexValueById(value3);
                     lexSum = lexSum + preferenze + judgement;
                 }
                 scores[i] = sum;
@@ -166,13 +166,13 @@ public class Helper {
     }
 
     public static void show2DArray(int[][] matrix) {
-        int[][] invert = invertArray(matrix);
-        for (int[] objects : invert) {
+        for (int[] objects : matrix) {
+            System.out.print("[");
             for (int i = 0; i < objects.length - 1; i++) {
-                System.out.print(objects[i] + " : ");
+                System.out.print(objects[i] + ", ");
             }
             System.out.print(objects[objects.length - 1]);
-            System.out.println();
+            System.out.print("]");
         }
     }
     public static void showMatrixAndWeights(int[][] matrix, int[] weights) {

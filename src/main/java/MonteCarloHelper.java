@@ -1,5 +1,7 @@
 import Enums.FuzzyJudgements;
+import Enums.FuzzyPreferenzes;
 import Enums.LexJudgements;
+import Enums.LexPreferenzes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -59,7 +61,7 @@ public class MonteCarloHelper {
         System.out.println("\nAggregated Weight");
         Helper.show2DArray(aggregatedWeights);
 
-        int[][] judgementCombinationList = null;//getJudgementCombinations(aggregatedMatrix);
+        int[][] judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
         int[][] preferenceCombinationList = getPreferenceCombinations(aggregatedWeights, lex);
         //k = judgementCombinationList.length * preferenceCombinationList.length;
         //System.out.println("\nAggregated K: " + k);
@@ -107,7 +109,26 @@ public class MonteCarloHelper {
             objectCurrentPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices.clone();
             objectPotentialPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices.clone();
         }
+        boolean individual = false;
+        if(judgementCombinationList == null){
+            //use individual instance generation
+            k = 1_000_000_000;
+            individual = true;
+        }else{
+            k = judgementCombinationList.length * preferenceCombinationList.length;
+        }
 
+        //monteCarloSimulation
+        if(k < 1000){
+            full = true;
+            iteration = k;
+        }else{
+//            full = false;
+//            iteration = monteCarloIterations;
+
+            full = true;
+            iteration = k;
+        }
         //monteCarloSimulation
         iteration = (full) ? k : monteCarloIterations;
         int prefCounter = 0;
@@ -116,20 +137,34 @@ public class MonteCarloHelper {
             if(i % 100000 == 0){
                 System.out.println(i);
             }
+
             if(full){
                 if(jugCounter == judgementCombinationList.length){
                     jugCounter = 0;
                     prefCounter++;
+
                 }
                 sawMatrix = listToMatrix(judgementCombinationList[jugCounter], alternative);
+
                 jugCounter++;
                 sawWeights = preferenceCombinationList[prefCounter];
+
             }else{
                 Random random = new Random();
-                int rngNumberW = random.nextInt(preferenceCombinationList.length);
-                int rngNumberM = random.nextInt(judgementCombinationList.length);
-                sawMatrix = listToMatrix(judgementCombinationList[rngNumberM], alternative);
+                int rngNumberW = -1;
+                try{
+                    rngNumberW = random.nextInt(preferenceCombinationList.length);
+                }catch (Exception e){
+                    return null;
+                }
+
                 sawWeights = preferenceCombinationList[rngNumberW];
+                if(individual){
+                    sawMatrix = generateIndividualMatrix(aggregatedMatrix);
+                }else{
+                    int rngNumberM = random.nextInt(judgementCombinationList.length);
+                    sawMatrix = listToMatrix(judgementCombinationList[rngNumberM], alternative);
+                }
             }
 
             if(i > 38928000){
@@ -160,8 +195,6 @@ public class MonteCarloHelper {
 
         System.out.println("\nAggregated Weight");
         Helper.show2DArray(aggregatedWeights);
-
-        System.out.println("\nAggregated K: " + k);
 
         System.out.println("\nfinal rankAcceptabilityIndices ");
         Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
@@ -207,6 +240,25 @@ public class MonteCarloHelper {
         date = new Date();
         System.out.println("Ende: " + date);
         return null;//getLowestValue(judgementEntropyMatrix, preferenceEntropy);
+    }
+/*
+0.2558971880260943 : 0.11377364136153198 : 0.14735489662247475 : 0.1633267900357744 : 0.1622630931712963 : 0.15738436509463122 :
+0.14875438959911616 : 0.1386476253419613 : 0.17908536866056396 : 0.23534128722117004 : 0.1353812940192945 : 0.16279000946969696 :
+0.2305604054871633 : 0.17849102084484164 : 0.16162890296191076 : 0.1260090323811027 : 0.13409732086489898 : 0.16921329177188552 :
+0.09555513529665141 : 0.17201597682554715 : 0.14278609664351852 : 0.13697193287037038 : 0.20295977351641414 : 0.24971105915930134 :
+0.09325843066077441 : 0.21027906013257575 : 0.21452316130050506 : 0.21101967654244266 : 0.18411655618686867 : 0.08680308948863637 :
+0.17662300084175084 : 0.1875287707807239 : 0.15529231832485008 : 0.12688489714856901 : 0.1808194247159091 : 0.1728515625 :
+
+ */
+    public static int[][] generateIndividualMatrix(int[][][] aggregatedMatrix){
+        Random random = new Random();
+        int[][] matrixInstance = new int[aggregatedMatrix.length][aggregatedMatrix[0].length];
+        for(int alt = 0; alt < aggregatedMatrix.length; alt++){
+            for(int crit = 0; crit < aggregatedMatrix[0].length; crit++){
+                matrixInstance[alt][crit] = random.nextInt(aggregatedMatrix[alt][crit].length);
+            }
+        }
+        return matrixInstance;
     }
 
     public static ArrayList<int[]> help(int[][] judgementCombinationList){
@@ -684,9 +736,9 @@ public class MonteCarloHelper {
         int min = 0;
         int max;
         if(lex){
-            max = LexJudgements.values().length;
+            max = LexPreferenzes.values().length - 1;
         }else{
-            max = FuzzyJudgements.values().length;
+            max = FuzzyPreferenzes.values().length - 1;
         }
         for(int i = 0; i < number; i++){
             dMWList[i] = Helper.generate1DArray(length, min, max);
@@ -700,9 +752,9 @@ public class MonteCarloHelper {
         int min = 0;
         int max;
         if(lex){
-            max = LexJudgements.values().length;
+            max = LexJudgements.values().length - 1;
         }else{
-            max = FuzzyJudgements.values().length;
+            max = FuzzyJudgements.values().length - 1;
         }
         int[][][] dMList = new int[number][row][col];
         for(int i = 0; i < number; i++){
