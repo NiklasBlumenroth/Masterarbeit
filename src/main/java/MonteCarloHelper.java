@@ -171,9 +171,9 @@ public class MonteCarloHelper {
                 rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
 
                 rankingPosition = getRanksArray(rankingTotalPoints);
+                System.out.println("\nranking ");
+                Helper.show1DArray(rankingPosition);
                 addRanking(rankAcceptabilityIndices, rankingPosition);
-                //System.out.println("\nranking ");
-                //Helper.show1DArray(rankingPosition);
 
                 //System.out.println("\nrankAcceptabilityIndices ");
                 //Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
