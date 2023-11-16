@@ -11,30 +11,6 @@ import static Enums.FuzzyJudgements.*;
 public class Helper {
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    public static void main(String[] args) {
-        ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
-                {
-                        new ArrayList<>(){{add(VG);}},
-                        new ArrayList<>(){{add(VP);}},
-                        new ArrayList<>(){{add(P);}}
-                },
-                {
-                        new ArrayList<>(){{add(G);}},
-                        new ArrayList<>(){{add(VG);}},
-                        new ArrayList<>(){{add(MP);}}
-                },
-                {
-                        new ArrayList<>(){{add(VP);}},
-                        new ArrayList<>(){{add(MG);}},
-                        new ArrayList<>(){{add(F);}}
-                },
-                {
-                        new ArrayList<>(){{add(VP);}},
-                        new ArrayList<>(){{add(MG);}},
-                        new ArrayList<>(){{add(F);}}
-                }
-        };
-    }
 
     public static int[] getSortingVectorAndSortWeights(int[] weights){
         List <Integer> unSortedWeightsList = new ArrayList<>();
@@ -75,7 +51,7 @@ public class Helper {
         String[] lexScores = new String[rows];
 
         double[][] sums = new double[matrix.length][matrix[0].length];
-
+        int[] weightsOrder = getWeightsOrder(weights);
         double value;
         // create sum for columns
         if(lex){
@@ -83,11 +59,10 @@ public class Helper {
                 double sum = 0.0;
                 String lexSum = "";
                 for (int j = 0; j < weights.length; j++) {
-                    int value1 = weights[j];
-                    int value2 = matrix[i][value1];
+                    int index = getIndex(weightsOrder, j);
+                    int value2 = matrix[i][index];
                     LexJudgements judgement = LexJudgements.getJudgement(value2);
-                    int value3 = weights[j];
-                    LexPreferenzes preferenze = LexPreferenzes.getLexValueById(value3);
+                    LexPreferenzes preferenze = LexPreferenzes.getLexValueById(weights[index]);
                     lexSum = lexSum + preferenze + judgement;
                 }
                 scores[i] = sum;
@@ -119,6 +94,32 @@ public class Helper {
             }
         }
         return scores;
+    }
+
+    public static int[] getWeightsOrder(int[] weights){
+        int[] weightsOrder = new int[weights.length];
+        for(int i = 0; i < weights.length; i++){
+            weightsOrder[i] = weights[i];
+        }
+        Arrays.sort(weightsOrder);
+        int[] order = new int[weights.length];
+        for(int i = 0; i < weightsOrder.length; i++){
+            for(int j = 0; j < weights.length; j++){
+                if(weightsOrder[i] == weights[j]){
+                    order[i] = j;
+                }
+            }
+        }
+        return order;
+    }
+
+    public static int getIndex(int[] array, int number){
+        for(int i = 0; i < array.length; i++){
+            if(array[i]==number) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static int getPlacement(String[] temp, String object){

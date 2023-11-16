@@ -49,7 +49,7 @@ public class MonteCarloHelper {
         return result;
     }
 
-    public static Map<String, Object> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex){
+    public static double[][] showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex){
         Date date = new Date();
         System.out.println("Start: " + date);
         alternative = aggregatedMatrix.length;
@@ -99,15 +99,25 @@ public class MonteCarloHelper {
         double[][][][] objectPotentialJudgementAcceptabilityIndices = new double[alternative][][][];
         for(int j = 0; j < alternative; j++){
             //add one matrix for each possible winner
-            objectCurrentJudgementAcceptabilityIndices[j] = currentJudgementAcceptabilityIndices.clone();
-            objectPotentialJudgementAcceptabilityIndices[j] = currentJudgementAcceptabilityIndices.clone();
+            objectCurrentJudgementAcceptabilityIndices[j] = currentJudgementAcceptabilityIndices;
+            objectPotentialJudgementAcceptabilityIndices[j] = currentJudgementAcceptabilityIndices;
+
+            currentJudgementAcceptabilityIndices = new double[alternative][][];
+            potentialJudgementAcceptabilityIndices = new double[alternative][][];
+            initMatrixMap(aggregatedMatrix, currentJudgementAcceptabilityIndices);
+            initMatrixMap(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
         }
 
         double[][][] objectCurrentPreferenceAcceptabilityIndices = new double[alternative][][];
         double[][][] objectPotentialPreferenceAcceptabilityIndices = new double[alternative][][];
         for(int j = 0; j < alternative; j++){
-            objectCurrentPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices.clone();
-            objectPotentialPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices.clone();
+            objectCurrentPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices;
+            objectPotentialPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices;
+
+            currentPreferenceAcceptabilityIndices = new double[alternative][];
+            potentialPreferencesAcceptabilityIndices = new double[alternative][];
+            initWeightsMap(aggregatedWeights, currentPreferenceAcceptabilityIndices);
+            initWeightsMap(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
         }
         boolean individual = false;
         if(judgementCombinationList == null){
@@ -175,8 +185,8 @@ public class MonteCarloHelper {
                 Helper.show1DArray(rankingPosition);
                 addRanking(rankAcceptabilityIndices, rankingPosition);
 
-                //System.out.println("\nrankAcceptabilityIndices ");
-                //Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+                System.out.println("\nrankAcceptabilityIndices ");
+                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
             }else {
                 rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, false, lex);
 
@@ -239,17 +249,9 @@ public class MonteCarloHelper {
         System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
         date = new Date();
         System.out.println("Ende: " + date);
-        return null;//getLowestValue(judgementEntropyMatrix, preferenceEntropy);
+        return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
-/*
-0.2558971880260943 : 0.11377364136153198 : 0.14735489662247475 : 0.1633267900357744 : 0.1622630931712963 : 0.15738436509463122 :
-0.14875438959911616 : 0.1386476253419613 : 0.17908536866056396 : 0.23534128722117004 : 0.1353812940192945 : 0.16279000946969696 :
-0.2305604054871633 : 0.17849102084484164 : 0.16162890296191076 : 0.1260090323811027 : 0.13409732086489898 : 0.16921329177188552 :
-0.09555513529665141 : 0.17201597682554715 : 0.14278609664351852 : 0.13697193287037038 : 0.20295977351641414 : 0.24971105915930134 :
-0.09325843066077441 : 0.21027906013257575 : 0.21452316130050506 : 0.21101967654244266 : 0.18411655618686867 : 0.08680308948863637 :
-0.17662300084175084 : 0.1875287707807239 : 0.15529231832485008 : 0.12688489714856901 : 0.1808194247159091 : 0.1728515625 :
 
- */
     public static int[][] generateIndividualMatrix(int[][][] aggregatedMatrix){
         Random random = new Random();
         int[][] matrixInstance = new int[aggregatedMatrix.length][aggregatedMatrix[0].length];
@@ -284,44 +286,50 @@ public class MonteCarloHelper {
         return false;
     }
 
-    public static Map<String, Object> getLowestValue(Map<Object, Double>[][] judgementEntropyMatrix, Map<Object, Double>[] preferenceEntropy){
-        Map<String, Object> map = new HashMap<>();
-        Double lowestValue = 1000.0;
-        Object lowestKey = null;
-        Integer lowestI = judgementEntropyMatrix.length;
-        Integer lowestJ = judgementEntropyMatrix.length;
-        Boolean lowestValueIsJudgement = null;
-
+    public static double[][] getLowestValue(double[][][] judgementEntropyMatrix, double[][] preferenceEntropy){
+        /**
+         * 0 - lowest value
+         * 1 - (k) index of lowest value
+         * 2 - i index
+         * 3 - j index
+         * 4 - is judgement (0 - false; 1 - true)
+         */
+        int sizeOfLowestValue = (judgementEntropyMatrix.length * judgementEntropyMatrix[0].length) + preferenceEntropy.length;
+        double[][] lowestValue = new double[sizeOfLowestValue][];
+        int lowestValueCounter = 0;
+        //add all cells from judgementEntropyMatrix
         for (int i = 0; i < judgementEntropyMatrix.length; i++) {
             for(int j = 0; j < judgementEntropyMatrix[i].length; j++){
-                for (Object key: judgementEntropyMatrix[i][j].keySet()) {
-                    if(judgementEntropyMatrix[i][j].get(key) < lowestValue){
-                        lowestValue = judgementEntropyMatrix[i][j].get(key);
-                        lowestKey = key;
-                        lowestI = i;
-                        lowestJ = j;
-                        lowestValueIsJudgement = true;
+                for (int k = 0; k < judgementEntropyMatrix[i][j].length; k++) {
+                    if(judgementEntropyMatrix[i][j][k] != -1) {
+                        double[] array = new double[5];
+                        array[0] = judgementEntropyMatrix[i][j][k];
+                        array[1] = k;
+                        array[2] = i;
+                        array[3] = j;
+                        array[4] = 1;
+                        lowestValue[lowestValueCounter] = array;
+                        lowestValueCounter++;
                     }
                 }
             }
         }
 
         for(int i = 0; i < preferenceEntropy.length; i++){
-            for (Object key: preferenceEntropy[i].keySet()) {
-                if(preferenceEntropy[i].get(key) < lowestValue){
-                    lowestValue = preferenceEntropy[i].get(key);
-                    lowestKey = key;
-                    lowestI = i;
-                    lowestValueIsJudgement = false;
+            for (int j = 0; j < preferenceEntropy[i].length; j++) {
+                if(preferenceEntropy[i][j] != -1) {
+                    double[] array = new double[5];
+                    array[0] = preferenceEntropy[i][j];
+                    array[1] = j;
+                    array[2] = i;
+                    array[3] = -1;
+                    array[4] = 0;
+                    lowestValue[lowestValueCounter] = array;
+                    lowestValueCounter++;
                 }
             }
         }
-        map.put("lowestValue", lowestValue);
-        map.put("lowestKey", lowestKey);
-        map.put("lowestI", lowestI);
-        map.put("lowestJ", lowestJ);
-        map.put("lowestValueIsJudgement", lowestValueIsJudgement);
-        return map;
+        return lowestValue;
     }
 
     private static int[][] getPreferenceCombinations(int[][] aggregatedWeights, boolean lex){
@@ -465,6 +473,10 @@ public class MonteCarloHelper {
                         entropyCounter++;
                     }
                 }
+                boolean test = isHigherThanOne(entropyArray);
+                if(test){
+                    System.out.println();
+                }
                 cellArray[k] = calculateEntropy(entropyArray);
                 entropyMatrixArray[i] = cellArray;
             }
@@ -479,29 +491,32 @@ public class MonteCarloHelper {
             for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices[0][i].length; j++){
                 double[] cellArray = new double[objectPotentialJudgementAcceptabilityIndices[0][i][j].length];
                 for(int k = 0; k < objectPotentialJudgementAcceptabilityIndices[0][i][j].length; k++){
-                    int entropyCounter = 0;
                     for(int object = 0; object < vectorArray.length; object++){
-                        if(objectPotentialJudgementAcceptabilityIndices[object][i][j][k] != -1){
+                        if(objectPotentialJudgementAcceptabilityIndices[object][i][j][k] >= 0){
                             vectorArray[object] = objectPotentialJudgementAcceptabilityIndices[object][i][j][k];
-                            entropyCounter++;
                         }else {
                             vectorArray[object] = -1;
                         }
                     }
-                    double[] entropyArray = new double[entropyCounter];
-                    entropyCounter = 0;
-                    for(int l = 0; l < vectorArray.length; l++){
-                        if(vectorArray[entropyCounter] != -1){
-                            entropyArray[entropyCounter] = vectorArray[l];
-                            entropyCounter++;
-                        }
+                    boolean test = isHigherThanOne(vectorArray);
+                    if(test){
+                        System.out.println();
                     }
-                    cellArray[k] = calculateEntropy(entropyArray);
+                    cellArray[k] = calculateEntropy(vectorArray);
                     entropyMatrixArray[i][j] = cellArray;
                 }
             }
         }
         return entropyMatrixArray;
+    }
+
+    public static boolean isHigherThanOne(double[] array){
+        double sum = 0;
+        for (double v : array) {
+            sum += v;
+        }
+        return sum > 1;
+
     }
 
     public static double calculateEntropy(double[] vector) {
@@ -530,7 +545,9 @@ public class MonteCarloHelper {
             for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices[object].length; i++){
                 for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices[object][i].length; j++){
                     for (int k = 0; k < objectPotentialJudgementAcceptabilityIndices[object][i][j].length; k++) {
-                        objectPotentialJudgementAcceptabilityIndices[object][i][j][k] /= iteration;
+                        if(objectPotentialJudgementAcceptabilityIndices[object][i][j][k] != -1){
+                            objectPotentialJudgementAcceptabilityIndices[object][i][j][k] /= iteration;
+                        }
                     }
                 }
             }
@@ -541,7 +558,9 @@ public class MonteCarloHelper {
         for(int object = 0; object < objectPotentialPreferenceAcceptabilityIndices.length; object++){
             for(int i = 0; i < objectPotentialPreferenceAcceptabilityIndices[object].length; i++){
                 for (int k = 0; k < objectPotentialPreferenceAcceptabilityIndices[object][i].length; k++) {
-                    objectPotentialPreferenceAcceptabilityIndices[object][i][k] /= iteration;
+                    if(objectPotentialPreferenceAcceptabilityIndices[object][i][k] != -1){
+                        objectPotentialPreferenceAcceptabilityIndices[object][i][k] /= iteration;
+                    }
                 }
             }
         }
@@ -588,10 +607,9 @@ public class MonteCarloHelper {
             if(rankingPosition[i] == 1){
                 //add for rank one the counter for Judgements from saw by one
                 addRankOneToCJAI(i, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
+                break;
             }
         }
-
-
     }
 
     public static void addRankOneToCJAI(int rankOne,
@@ -600,11 +618,7 @@ public class MonteCarloHelper {
         for(int i = 0; i < sawMatrix.length; i++){
             for(int j = 0; j < sawMatrix[i].length; j++){
                 //get old value
-                try{
-                    objectCurrentJudgementAcceptabilityIndices[rankOne][i][j][sawMatrix[i][j]]++;
-                }catch(Exception e){
-                    System.out.println();
-                }
+                objectCurrentJudgementAcceptabilityIndices[rankOne][i][j][sawMatrix[i][j]]++;
             }
         }
     }

@@ -1,10 +1,10 @@
 import java.util.*;
 
 public class Nutzwertanalyse {
-    public static final int row = 7;
-    public static final int col = 7;
-    public static final int numberOfDecisionMaker = 7;
-    public static final boolean useStaticProblem = true;
+    public static final int row = 3;
+    public static final int col = 3;
+    public static final int numberOfDecisionMaker = 3;
+    public static final boolean useStaticProblem = false;
     public static final boolean lex = true;
     public static final boolean full = true;
 
@@ -125,10 +125,10 @@ public class Nutzwertanalyse {
             double sum = 0;
             int durchlaeufe = 100;
             for (int k = 0; k < durchlaeufe; k++) {
-                Map<String, Object> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
+                double[][] lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
                 indivCounter++;
 
-                while ((Double) lowestValue.get("lowestValue") != 0) {
+                while (!containsZero(lowestValue)) {
 //                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
                     indivCounter++;
@@ -175,6 +175,15 @@ public class Nutzwertanalyse {
          */
     }
 
+    public static boolean containsZero(double[][] lowestValue){
+        for(int i = 0; i < lowestValue.length; i++){
+            if(lowestValue[i][0] == 0){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /*
     nachricht an thony mit den kriterien, alternativen
