@@ -22,7 +22,7 @@ public class Nutzwertanalyse {
     public static final boolean show = false;
 
     public static ArrayList<Object>[][] getMatrix() {
-        return new ArrayList[][]{
+      /*  return new ArrayList[][]{
                 {
                         new ArrayList<>(){{add(MP); add(P);}},
                         new ArrayList<>(){{add(F); add(G);}},
@@ -39,44 +39,105 @@ public class Nutzwertanalyse {
                         new ArrayList<>(){{add(F); add(P);}},
                 }
         };
-//        return new ArrayList[][]{
-//                {
-//                        new ArrayList<>(){{add(F); add(G); add(MG);}},
-//                        new ArrayList<>(){{add(F); add(MG);}},
-//                        new ArrayList<>(){{add(F); add(G);add(MG);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(F); add(G); add(MG);}},
-//                        new ArrayList<>(){{add(MG); add(G);}},
-//                        new ArrayList<>(){{add(F); add(MP);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(MG); add(G);}},
-//                        new ArrayList<>(){{add(MG); add(G);}},
-//                        new ArrayList<>(){{add(MG); add(G); add(MP); add(F);}},
-//                },
-//                {
-//                        new ArrayList<>(){{add(F); add(G);}},
-//                        new ArrayList<>(){{add(MG);add(F); add(G);}},
-//                        new ArrayList<>(){{add(MG); add(MP); add(F);}},
-//                }
-//        };
 
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>(){{add(F); add(G); add(MG);}},
+                        new ArrayList<>(){{add(F); add(MG);}},
+                        new ArrayList<>(){{add(F); add(G);add(MG);}}
+                },
+                {
+                        new ArrayList<>(){{add(F); add(G); add(MG);}},
+                        new ArrayList<>(){{add(MG); add(G);}},
+                        new ArrayList<>(){{add(F); add(MP);}}
+                },
+                {
+                        new ArrayList<>(){{add(MG); add(G);}},
+                        new ArrayList<>(){{add(MG); add(G);}},
+                        new ArrayList<>(){{add(MG); add(G); add(MP); add(F);}},
+                },
+                {
+                        new ArrayList<>(){{add(F); add(G);}},
+                        new ArrayList<>(){{add(MG);add(F); add(G);}},
+                        new ArrayList<>(){{add(MG); add(MP); add(F);}},
+                }
+        };
+
+       */
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JC);}},
+                        new ArrayList<>() {{add(JA);}}
+                },
+                {
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JB);add(JC);}},
+                },
+                {
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{ add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JC);}},
+                },
+                {
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);}}
+                },
+                {
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}}
+                },
+                {
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JC);add(JB);}},
+                        new ArrayList<>() {{add(JB);}}
+                }
+        };
 
     }
 
     public static ArrayList<Object>[] getWeights() {
-        return new ArrayList[]{
+/*        return new ArrayList[]{
                 new ArrayList<>(){{add(H); add(ML); add(L);}},
                 new ArrayList<>(){{add(L); add(MH);}},
                 new ArrayList<>(){{add(M); add(H); add(L);}}
         };
-//        return new ArrayList[]{
-//                new ArrayList<>(){{add(M); add(MH); add(H);}},
-//                new ArrayList<>(){{add(H); add(MH);}},
-//                new ArrayList<>(){{add(M); add(H); add(ML);}}
-//        };
+return new ArrayList[]{
+                new ArrayList<>(){{add(M); add(MH); add(H);}},
+                new ArrayList<>(){{add(H); add(MH);}},
+                new ArrayList<>(){{add(M); add(H); add(ML);}}
+        };
+ */
 
+        return new ArrayList[]{
+                new ArrayList<>() {{add(PA);add(PB);add(PC);add(PD);add(PE);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PC);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PC);add(PF);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PD);add(PE);add(PF);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PD);add(PE);add(PF);}},
+                new ArrayList<>() {{add(PD);add(PE);add(PF);}}
+        };
 
     }
     private static String readTxt(String fileName) throws IOException {
@@ -171,8 +232,8 @@ public class Nutzwertanalyse {
                 indivCounter = 0;
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-//                aggregatedMatrix = getMatrix();
-//                aggregatedWeights = getWeights();
+                aggregatedMatrix = getMatrix();
+                aggregatedWeights = getWeights();
             }
             decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, alt, 0, 1);
             decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, alt, crit, 1, 10);

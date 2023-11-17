@@ -41,7 +41,9 @@ public class MonteCarloHelper {
         crit = aggregatedWeights.length;
         List<List<Object>> preferenceCombinationList = getPreferenceCombinations(aggregatedWeights);
         List<List<Object>> judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
-
+        if(preferenceCombinationList.isEmpty()){
+            return null;
+        }
         if(judgementCombinationList == null){
             //use individual instance generation
             k = 1_000_000_000;
@@ -113,6 +115,9 @@ public class MonteCarloHelper {
         int prefCounter = 0;
         int jugCounter = 0;
         for(int i = 0; i < iteration - 1; i++){
+            if(i % 100000 == 0){
+                System.out.println(i);
+            }
             if(full){
                 if(jugCounter == judgementCombinationList.size()){
                     jugCounter = 0;
