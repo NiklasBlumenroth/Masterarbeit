@@ -12,29 +12,7 @@ public class Helper {
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public static void main(String[] args) {
-        ArrayList<Object>[][] aggregatedMatrix = new ArrayList[][]{
-                {
-                        new ArrayList<>(){{add(VG);}},
-                        new ArrayList<>(){{add(VP);}},
-                        new ArrayList<>(){{add(P);}}
-                },
-                {
-                        new ArrayList<>(){{add(G);}},
-                        new ArrayList<>(){{add(VG);}},
-                        new ArrayList<>(){{add(MP);}}
-                },
-                {
-                        new ArrayList<>(){{add(VP);}},
-                        new ArrayList<>(){{add(MG);}},
-                        new ArrayList<>(){{add(F);}}
-                },
-                {
-                        new ArrayList<>(){{add(VP);}},
-                        new ArrayList<>(){{add(MG);}},
-                        new ArrayList<>(){{add(F);}}
-                }
-        };
-        show2DArray(aggregatedMatrix);
+
     }
     public static void showSaw(){
         Integer[][] matrix = (Integer[][]) generate2DArray(Integer.class, 5, 5, 1, 10);
