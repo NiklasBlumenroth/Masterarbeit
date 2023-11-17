@@ -107,8 +107,8 @@ public class MonteCarloHelper {
             full = true;
             iteration = k;
         }else{
-            full = false;
-            iteration = monteCarloIterations;
+            full = true;
+            iteration = k;
         }
         int prefCounter = 0;
         int jugCounter = 0;
@@ -178,7 +178,7 @@ public class MonteCarloHelper {
             }
 
         }
-
+        show = true;
         if(show){
             System.out.println("\nAggregated Matrix");
             Helper.show2DArray(aggregatedMatrix);
