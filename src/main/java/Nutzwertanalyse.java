@@ -241,8 +241,8 @@ public class Nutzwertanalyse {
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            //aggregatedMatrix = getMatrix();
-            //aggregatedWeights = getWeights();
+            aggregatedMatrix = getMatrix();
+            aggregatedWeights = getWeights();
             int indivCounter = 0;
             for (int k = 0; k < durchlaeufe; k++) {
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
@@ -339,21 +339,6 @@ public class Nutzwertanalyse {
         - mit vorgesetzten sprechen für zeitlichen ablauf
          */
 
-
-        /*
-        - überprüfe automatisch bis wo bereits gerechnet wurde und setze es fort
-        - Montecarlo 10.000?
-        - Ab wie vielen Kombinationsmöglichgkeiten kann random die matrix erstellt werden?
-        + speicher von zwischenständen in file
-        + einlesen von abgespeicherten daten
-        + erste berechnungen
-        + bug bei nicht quadratischen problemen
-        - zählen bei optimierter variante
-        + neue zufallsbildung von instanzen da out of memory
-        - dauerschleifen durch reset beenden? reicht while lowest entropy < 0.1?
-            - abbruch : wenn bei rankac bei rang 1 mehrfach 1 vorkommt
-        + Termin Sonntag 26.11. -> 19.11.
-         */
     }
 
     public static boolean containsZero(List<Map<String, Object>> lowestValue){

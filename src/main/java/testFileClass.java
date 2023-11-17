@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class testFileClass {
-    public static final int numberOfDecisionMaker = 3;
-    public static final int alt = 7;
-    public static final int crit = 4;
+    public static final int numberOfDecisionMaker = 6;
+    public static final int alt = 5;
+    public static final int crit = 6;
     public static final Class jugClazz = FuzzyJudgements.class;
     public static final Class prefClazz = FuzzyPreferenzes.class;
 
