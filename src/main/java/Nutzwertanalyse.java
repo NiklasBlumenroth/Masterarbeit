@@ -137,9 +137,7 @@ public class Nutzwertanalyse {
                 sum += indivCounter;
                 indivCounter = 0;
 //                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-//                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-//                aggregatedMatrix = getMatrix();
-//                aggregatedWeights = getWeights();
+//                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList)
             }
 //            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
 //            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);

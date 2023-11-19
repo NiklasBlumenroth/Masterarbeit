@@ -473,10 +473,6 @@ public class MonteCarloHelper {
                         entropyCounter++;
                     }
                 }
-                boolean test = isHigherThanOne(entropyArray);
-                if(test){
-                    System.out.println();
-                }
                 cellArray[k] = calculateEntropy(entropyArray);
                 entropyMatrixArray[i] = cellArray;
             }
@@ -497,10 +493,6 @@ public class MonteCarloHelper {
                         }else {
                             vectorArray[object] = -1;
                         }
-                    }
-                    boolean test = isHigherThanOne(vectorArray);
-                    if(test){
-                        System.out.println();
                     }
                     cellArray[k] = calculateEntropy(vectorArray);
                     entropyMatrixArray[i][j] = cellArray;
