@@ -155,8 +155,8 @@ public class Nutzwertanalyse {
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            aggregatedMatrix = getMatrix();
-            aggregatedWeights = getWeights();
+//            aggregatedMatrix = getMatrix();
+//            aggregatedWeights = getWeights();
             int indivCounter = 0;
             for (int k = 0; k < durchlaeufe; k++) {
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
@@ -196,8 +196,8 @@ public class Nutzwertanalyse {
         int[] numberOfDecisionMakers = {3,6};
         int[] alt = {5,10,15};
         int[] crit = {3,6};
-        Class[] jugdClazz = {FuzzyJudgements.class};
-        Class[] prefClazz = {FuzzyPreferenzes.class};
+        Class[] jugdClazz = {LexJudgements.class, FuzzyJudgements.class};
+        Class[] prefClazz = {LexPreferenzes.class, FuzzyPreferenzes.class};
 
 
         for(int i = 0; i < numberOfDecisionMakers.length; i++){
@@ -210,19 +210,19 @@ public class Nutzwertanalyse {
             }
         }
 
-        int[] numberOfDecisionMakers2 = {3,6,9};
+        int[] numberOfDecisionMakers2 = {3,6};
         int[] alt2 = {5,10,15};
-        int[] crit2 = {3,6,9};
+        int[] crit2 = {3,6};
 
-        for(int i = 0; i < numberOfDecisionMakers2.length; i++){
-            for (int j = 0; j < alt2.length; j++){
-                for(int k = 0; k < crit2.length; k++){
-                    for(int l = 0; l < jugdClazz.length; l++){
-                        rechne(numberOfDecisionMakers2[i], alt2[j], crit2[k], jugdClazz[l], prefClazz[l]);
-                    }
-                }
-            }
-        }
+//        for(int i = 0; i < numberOfDecisionMakers2.length; i++){
+//            for (int j = 0; j < alt2.length; j++){
+//                for(int k = 0; k < crit2.length; k++){
+//                    for(int l = 0; l < jugdClazz.length; l++){
+//                        rechne(numberOfDecisionMakers2[i], alt2[j], crit2[k], jugdClazz[l], prefClazz[l]);
+//                    }
+//                }
+//            }
+//        }
 
         /*
         19.10 13 Uhr
@@ -285,11 +285,18 @@ public class Nutzwertanalyse {
                     aggregatedMatrix[(Integer) map.get("lowestI")][(Integer) map.get("lowestJ")].add(randomObject);
                     break;
                 }
-
             } else {
                 if(aggregatedWeights[(Integer) map.get("lowestI")].size() > 1){
                     Integer randomNumber = random.nextInt(aggregatedWeights[(Integer) map.get("lowestI")].size());
                     Object randomObject = aggregatedWeights[(Integer) map.get("lowestI")].get(randomNumber);
+
+                    for(int i = 0; i < aggregatedWeights.length; i++){
+                        for(Object object : aggregatedWeights[i]){
+                            if(aggregatedWeights[i].contains(map.get("lowestValue"))){
+                                aggregatedWeights[i].remove(object);
+                            }
+                        }
+                    }
                     aggregatedWeights[(Integer) map.get("lowestI")] = new ArrayList<>();
                     aggregatedWeights[(Integer) map.get("lowestI")].add(randomObject);
                     break;
