@@ -1,0 +1,14 @@
+<changelist name="Uncommitted_changes_before_Update_at_17_11_2023_09_50_[Changes]1" date="1700211053195" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2023_09_50_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 17.11.2023 09:50 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/Ergebnisse.xlsx" />
+    <option name="AFTER_PATH" value="target/classes/Ergebnisse.xlsx" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2023_09_50_[Changes]1/Ergebnisse.xlsx" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="target/classes/Nutzwertanalyse.class" />
+    <option name="AFTER_PATH" value="target/classes/Nutzwertanalyse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2023_09_50_[Changes]1/Nutzwertanalyse.class" />
+  </binary>
+</changelist>
