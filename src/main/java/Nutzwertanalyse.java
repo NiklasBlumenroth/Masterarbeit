@@ -220,8 +220,24 @@ return new ArrayList[]{
 //            aggregatedWeights = getWeights();
             int indivCounter = 0;
             for (int k = 0; k < durchlaeufe; k++) {
+                List<List<Object>> preferenceCombinationList = MonteCarloHelper.getPreferenceCombinations(aggregatedWeights);
+                if(preferenceCombinationList.size() == 0){
+                    k--;
+                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
+                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, alt, crit, 1, 10);
+                    aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                    aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+                    continue;
+                }
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
+                assert lowestValue != null;
+                if(lowestValue.get(0) == null){
+                    System.out.println("\nAggregated Matrix");
+                    Helper.show2DArray(aggregatedMatrix);
+                    System.out.println("\nAggregated Weights");
+                    Helper.show1DArray(aggregatedWeights);
+                }
                 while (!containsZero(lowestValue)) {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
@@ -235,17 +251,10 @@ return new ArrayList[]{
                 //aggregatedMatrix = getMatrix();
                 //aggregatedWeights = getWeights();
             }
-            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, alt, 0, 1);
-            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, alt, crit, 1, 10);
-            aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
             writeTxt(fileName, l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-            if(sum / durchlaeufe == 1000){
-                Helper.show2DArray(aggregatedMatrix);
-                Helper.show1DArray(aggregatedWeights);
-            }
+
             overAllSum += sum;
             sum = 0;
         }
@@ -308,10 +317,15 @@ return new ArrayList[]{
         - danach fuzzy 3 lex 3
         - danach fuzzy 7 lex 7
         - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
-        Teststudie 24.10.
-        - gedanken zum ersten intro machen und durchführen
-        - flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
-        - mit vorgesetzten sprechen für zeitlichen ablauf
+
+         + logging studie
+         + preferences cut
+         - bug
+         - aufbau arbeit
+         - prüfungsamt
+
+
+
          */
 
     }

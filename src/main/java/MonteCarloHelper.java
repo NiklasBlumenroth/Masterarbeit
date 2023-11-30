@@ -71,10 +71,20 @@ public class MonteCarloHelper {
         Map<Object, Object>[] potentialPreferencesAcceptabilityIndices = new Map[crit];
 
         //fill matrix map with 0
-        fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
+        try{
+            fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
+        }catch (Exception e){
+            return null;
+        }
+
         fillMatrixMapWithZero(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
         //fill weights map with 0
-        fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
+
+        try{
+            fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
+        }catch (Exception e){
+            return null;
+        }
         fillWeightsMapWithZero(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
 
         //create currentJudgementAcceptabilityIndices and currentPreferenceAcceptabilityIndices
@@ -323,7 +333,7 @@ public class MonteCarloHelper {
         return lowestValues;
     }
 
-    private static List<List<Object>> getPreferenceCombinations(ArrayList<Object>[] aggregatedWeights){
+    static List<List<Object>> getPreferenceCombinations(ArrayList<Object>[] aggregatedWeights){
         //aggregatedWeights
         List<List<Object>> fullIterationObjects2 = new ArrayList<>();
         fullIterationObjects2.addAll(Arrays.asList(aggregatedWeights));
@@ -587,6 +597,7 @@ public class MonteCarloHelper {
                     newMap.put(aggregatedMatrix[i][j].get(k), 0.0);
                 }
                 aggregatedMatrixRankingMap[i][j] = newMap;
+
             }
         }
     }
@@ -640,13 +651,10 @@ public class MonteCarloHelper {
     public static ArrayList<Object[]> generateDecisionMakerWeightList(Class<?> clazz, int number, int length, int min, int max){
         ArrayList<Object[]> dMWList = new ArrayList<>();
         Object[] matrix;
-//        System.out.println("Generates decisionMakerWeightList: ");
         for(int i = 0; i < number; i++){
             matrix = Helper.generate1DArray(clazz, length, min, max);
-//            Helper.show1DArray(matrix);
             dMWList.add(matrix);
         }
-
         return dMWList;
     }
 
