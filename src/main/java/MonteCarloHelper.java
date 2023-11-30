@@ -139,11 +139,7 @@ public class MonteCarloHelper {
             }else{
                 Random random = new Random();
                 int rngNumberW = -1;
-                try{
-                    rngNumberW = random.nextInt(preferenceCombinationList.size());
-                }catch (Exception e){
-                    return null;
-                }
+                rngNumberW = random.nextInt(preferenceCombinationList.size());
 
                 sawWeights = preferenceCombinationList.get(rngNumberW).toArray();
                 if(individual){

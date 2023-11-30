@@ -218,26 +218,16 @@ return new ArrayList[]{
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
 //            aggregatedMatrix = getMatrix();
 //            aggregatedWeights = getWeights();
+            List<List<Object>> preferenceCombinationList = MonteCarloHelper.getPreferenceCombinations(aggregatedWeights);
+            if(preferenceCombinationList.size() == 0){
+                l--;
+                continue;
+            }
             int indivCounter = 0;
             for (int k = 0; k < durchlaeufe; k++) {
-                List<List<Object>> preferenceCombinationList = MonteCarloHelper.getPreferenceCombinations(aggregatedWeights);
-                if(preferenceCombinationList.size() == 0){
-                    k--;
-                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
-                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, alt, crit, 1, 10);
-                    aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                    aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                    continue;
-                }
+
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
-                assert lowestValue != null;
-                if(lowestValue.get(0) == null){
-                    System.out.println("\nAggregated Matrix");
-                    Helper.show2DArray(aggregatedMatrix);
-                    System.out.println("\nAggregated Weights");
-                    Helper.show1DArray(aggregatedWeights);
-                }
                 while (!containsZero(lowestValue)) {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
@@ -319,12 +309,14 @@ return new ArrayList[]{
         - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
 
          + logging studie
+         + Grafiken Fuzzy Saw simulation
          + preferences cut
-         - bug
+         + bug
          - aufbau arbeit
-         - prüfungsamt
+         + prüfungsamt
 
-
+    // random path... mehrstufig kürzen zum checken
+    // input checken?
 
          */
 
