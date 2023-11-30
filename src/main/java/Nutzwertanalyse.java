@@ -317,7 +317,8 @@ return new ArrayList[]{
 
     // random path... mehrstufig kürzen zum checken
     // input checken?
-
+    // start entropie(current entropie vor dem ersten mal rechen) und mittlere ausgeben lassen(wenn pfadlänge 1 ist, und die entropie hoch ist macht es keinen sinn)
+    // current entropie soll 0 sein zum abbrechen, da danach erst der zufällige pfad gerechnet wird
          */
 
     }
