@@ -175,22 +175,23 @@ public class Helper {
     }
 
     public static void show2DArray(Object[][] matrix) {
+        Nutzwertanalyse.output += "\n";
         Object[][] invert = invertArray(matrix);
         for (Object[] objects : invert) {
             for (int i = 0; i < objects.length - 1; i++) {
-                System.out.print(objects[i] + " : ");
+                Nutzwertanalyse.output += objects[i] + " : ";
             }
-            System.out.print(objects[objects.length - 1]);
-            System.out.println();
+            Nutzwertanalyse.output += objects[objects.length - 1];
+            Nutzwertanalyse.output += "\n";
         }
     }
 
     public static void showAcceptabilityIndices(Object[][] matrix) {
         for (Object[] objects : matrix) {
             for (Object object : objects) {
-                System.out.print(object + " : ");
+                Nutzwertanalyse.output += object + " : ";
             }
-            System.out.println();
+            Nutzwertanalyse.output += "\n";
         }
     }
 
@@ -212,12 +213,12 @@ public class Helper {
     }
 
     public static void show1DArray(Object[] array) {
-        System.out.print(array[0]);
+        Nutzwertanalyse.output += "\n" + array[0];
 
         for (int i = 1; i < array.length; i++) {
-            System.out.print(" | " + array[i]);
+            Nutzwertanalyse.output += " | " + array[i];
         }
-        System.out.println();
+        Nutzwertanalyse.output += "\n";
     }
 
 

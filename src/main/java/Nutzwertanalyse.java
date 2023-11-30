@@ -5,6 +5,7 @@ import Enums.LexPreferenzes;
 
 import java.io.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static Enums.FuzzyJudgements.*;
@@ -41,19 +42,19 @@ public class Nutzwertanalyse {
 //        };
         return new ArrayList[][]{
                 {
-                        new ArrayList<>(){{add(F); add(G); add(MG);}},
+                        new ArrayList<>(){{add(MG);}},
                         new ArrayList<>(){{add(F); add(MG);}},
                         new ArrayList<>(){{add(F); add(G);add(MG);}}
                 },
                 {
-                        new ArrayList<>(){{add(F); add(G); add(MG);}},
+                        new ArrayList<>(){{add(MG);}},
                         new ArrayList<>(){{add(MG); add(G);}},
                         new ArrayList<>(){{add(F); add(MP);}}
                 },
                 {
                         new ArrayList<>(){{add(MG); add(G);}},
                         new ArrayList<>(){{add(MG); add(G);}},
-                        new ArrayList<>(){{add(MG); add(G); add(MP); add(F);}},
+                        new ArrayList<>(){{add(F);}},
                 },
                 {
                         new ArrayList<>(){{add(F); add(G);}},
@@ -113,7 +114,7 @@ public class Nutzwertanalyse {
             System.out.println("File created: " + file.getName());
             return false;
         }else {
-            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")));
+            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")-1));
             return true;
         }
     }
@@ -130,129 +131,60 @@ public class Nutzwertanalyse {
         fos.close();
     }
 
-    public static void rechne(int numberOfDecisionMaker, int alt, int crit, Class jugClazz, Class prefClazz) throws IOException, ParseException {
-        String berechnungsName;
+    public static String output = "";
+    public static void main(String[] args) throws IOException, ParseException {
+        Date startDate = new Date();
+        String logFile;
 
-        if(jugClazz == LexJudgements.class){
-            berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-        }else {
-            berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-        }
-        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM_dd_yyyy");
+        Calendar c = Calendar.getInstance();
+        String curr_date = dateFormat.format(c.getTime());
+
+        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Logging\\" + curr_date + ".txt";
         fileExist(fileName);
 
-        Date startDate = new Date();
-        Date endDate = new Date();
-        System.out.println("Start: " + startDate);
-        double sum = 0;
-        int durchlaeufe = 100;
-        int probleme = 1000;
-        double overAllSum = 0;
-        int linesInFile = getLines(fileName);
+        output += "Start: " + startDate;
+        ArrayList<Object>[][] aggregatedMatrix = getMatrix();
+        ArrayList<Object>[] aggregatedWeights = getWeights();
+        List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
 
-        for (int l = linesInFile; l < probleme; l++) {
-            ArrayList<Object[][]> decisionMakerList = MonteCarloHelper.generateDecisionMakerList(jugClazz, numberOfDecisionMaker, alt, crit, 1, 10);
-            ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
-            ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            aggregatedMatrix = getMatrix();
-            aggregatedWeights = getWeights();
-            int indivCounter = 0;
-            for (int k = 0; k < durchlaeufe; k++) {
-                List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
-                indivCounter++;
-                while (!containsZero(lowestValue)) {
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
-                    indivCounter++;
-                }
-//                System.out.println("Pfadlänge: " + indivCounter);
-                sum += indivCounter;
-                indivCounter = 0;
-                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-//                aggregatedMatrix = getMatrix();
-//                aggregatedWeights = getWeights();
-            }
-            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, alt, 0, 1);
-            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, alt, crit, 1, 10);
-            aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            endDate = new Date();
-            writeTxt(fileName, l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-            System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-            if(sum / durchlaeufe == 1000){
-                Helper.show2DArray(aggregatedMatrix);
-                Helper.show1DArray(aggregatedWeights);
-            }
-            overAllSum += sum;
-            sum = 0;
-        }
-        System.out.println(berechnungsName + " done.");
-        System.out.println("End: " + endDate);
+        output += "\nLowest values\n";
+
+        output += "\n0: " + getLowestFormated(lowestValue.get(0));
+        output += "\n1: " + getLowestFormated(lowestValue.get(1));
+        output += "\n2: " + getLowestFormated(lowestValue.get(2));
+
+        startDate = new Date();
+        output += "\nEnd: " + startDate;
+
+        System.out.println(output);
+        writeTxt(fileName, output);
     }
 
-    public static void main(String[] args) throws IOException, ParseException {
-        int[] numberOfDecisionMakers = {3,6};
-        int[] alt = {5,10,15};
-        int[] crit = {3,6};
-        Class[] jugdClazz = {FuzzyJudgements.class};
-        Class[] prefClazz = {FuzzyPreferenzes.class};
+    public static String getLowestFormated (Map<String, Object> map){
+        String formated = "";
+        String iValue = map.get("lowestI").toString();
+        String jValue = null;
 
-
-        for(int i = 0; i < numberOfDecisionMakers.length; i++){
-            for (int j = 0; j < alt.length; j++){
-                for(int k = 0; k < crit.length; k++){
-                    for(int l = 0; l < jugdClazz.length; l++){
-                        rechne(numberOfDecisionMakers[i], alt[j], crit[k], jugdClazz[l], prefClazz[l]);
-                    }
-                }
-            }
+        try{
+            jValue = map.get("lowestJ").toString();
+        }catch (Exception e){
+            jValue = "null";
         }
 
-        int[] numberOfDecisionMakers2 = {3,6,9};
-        int[] alt2 = {5,10,15};
-        int[] crit2 = {3,6,9};
-
-        for(int i = 0; i < numberOfDecisionMakers2.length; i++){
-            for (int j = 0; j < alt2.length; j++){
-                for(int k = 0; k < crit2.length; k++){
-                    for(int l = 0; l < jugdClazz.length; l++){
-                        rechne(numberOfDecisionMakers2[i], alt2[j], crit2[k], jugdClazz[l], prefClazz[l]);
-                    }
-                }
-            }
+        String jugdementBoolean = map.get("lowestValueIsJudgement").toString();
+        if(jugdementBoolean.contains("true")){
+            jugdementBoolean = "Judgement";
+        }else {
+            jugdementBoolean = "Preference";
         }
+        String lowestKey = map.get("lowestKey").toString();
+        String lowestValue = map.get("lowestValue").toString();
 
-        /*
-        19.10 13 Uhr
-
-        - adm und its
-        - nicht quadratisches problem testen
-        - berechnungszeit checken
-            + probleme generieren, aggregierte generieren
-            + berechnungsmethode(lex, saw)
-            + kombinationen
-            + statistik Matrizen
-        Berechnung:
-            - 1 Pfad mit idealauflösung 3,5,5, 7 klassen, 1000 Probleme
-            - 100 Pfade mit zufallsauflösung
-            - wenn k unter 1000 soll voll gerechnet werden
-            - 1000 Probleme
-            - Anzahl der DM:    3,4,5,6
-            - Anzahl der Crit:  3,4,5,6,7,8,9,10
-            - Anzahl der Alt:   3,4,5,6
-        - zufällige pfade wählen
-        - Fuzzy 5 lex 5 als Standard
-        - danach fuzzy 3 lex 3
-        - danach fuzzy 7 lex 7
-        - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
-        Teststudie 24.10.
-        - gedanken zum ersten intro machen und durchführen
-        - flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
-        - mit vorgesetzten sprechen für zeitlichen ablauf
-         */
-
+        formated += jugdementBoolean + "\n";
+        formated += "Key: " + lowestKey + " | Value: " + lowestValue + "\n";
+        formated += "I: " + iValue + " | J: " + jValue + "\n";
+        return formated;
     }
 
     public static boolean containsZero(List<Map<String, Object>> lowestValue){
