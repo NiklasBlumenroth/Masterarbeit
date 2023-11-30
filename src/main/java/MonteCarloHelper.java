@@ -115,9 +115,6 @@ public class MonteCarloHelper {
         int prefCounter = 0;
         int jugCounter = 0;
         for(int i = 0; i < iteration - 1; i++){
-            if(i % 100000 == 0){
-                System.out.println(i);
-            }
             if(full){
                 if(jugCounter == judgementCombinationList.size()){
                     jugCounter = 0;

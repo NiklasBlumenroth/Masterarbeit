@@ -232,8 +232,8 @@ return new ArrayList[]{
                 indivCounter = 0;
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                aggregatedMatrix = getMatrix();
-                aggregatedWeights = getWeights();
+                //aggregatedMatrix = getMatrix();
+                //aggregatedWeights = getWeights();
             }
             decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, alt, 0, 1);
             decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, alt, crit, 1, 10);
