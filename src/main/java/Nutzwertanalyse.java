@@ -191,6 +191,7 @@ return new ArrayList[]{
         fos.close();
     }
 
+    public static double currentEntropy = 100;
     public static void rechne(int numberOfDecisionMaker, int alt, int crit, Class jugClazz, Class prefClazz) throws IOException, ParseException {
         String berechnungsName;
 
@@ -228,7 +229,7 @@ return new ArrayList[]{
 
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
-                while (!containsZero(lowestValue)) {
+                while (currentEntropy!=0) {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                     indivCounter++;
@@ -253,11 +254,11 @@ return new ArrayList[]{
     }
 
     public static void main(String[] args) throws IOException, ParseException {
-        int[] numberOfDecisionMakers = {3,6};
-        int[] alt = {5,10,15};
-        int[] crit = {3,6};
-        Class[] jugdClazz = {LexJudgements.class, FuzzyJudgements.class};
-        Class[] prefClazz = {LexPreferenzes.class, FuzzyPreferenzes.class};
+        int[] numberOfDecisionMakers = {6};
+        int[] alt = {15};
+        int[] crit = {6};
+        Class[] jugdClazz = {FuzzyJudgements.class};
+        Class[] prefClazz = {FuzzyPreferenzes.class};
 
 
         for(int i = 0; i < numberOfDecisionMakers.length; i++){
