@@ -22,7 +22,7 @@ public class Nutzwertanalyse {
     public static final boolean show = false;
 
     public static ArrayList<Object>[][] getMatrix() {
-        return new ArrayList[][]{
+      /*  return new ArrayList[][]{
                 {
                         new ArrayList<>(){{add(MP); add(P);}},
                         new ArrayList<>(){{add(F); add(G);}},
@@ -39,44 +39,105 @@ public class Nutzwertanalyse {
                         new ArrayList<>(){{add(F); add(P);}},
                 }
         };
-//        return new ArrayList[][]{
-//                {
-//                        new ArrayList<>(){{add(F); add(G); add(MG);}},
-//                        new ArrayList<>(){{add(F); add(MG);}},
-//                        new ArrayList<>(){{add(F); add(G);add(MG);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(F); add(G); add(MG);}},
-//                        new ArrayList<>(){{add(MG); add(G);}},
-//                        new ArrayList<>(){{add(F); add(MP);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(MG); add(G);}},
-//                        new ArrayList<>(){{add(MG); add(G);}},
-//                        new ArrayList<>(){{add(MG); add(G); add(MP); add(F);}},
-//                },
-//                {
-//                        new ArrayList<>(){{add(F); add(G);}},
-//                        new ArrayList<>(){{add(MG);add(F); add(G);}},
-//                        new ArrayList<>(){{add(MG); add(MP); add(F);}},
-//                }
-//        };
 
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>(){{add(F); add(G); add(MG);}},
+                        new ArrayList<>(){{add(F); add(MG);}},
+                        new ArrayList<>(){{add(F); add(G);add(MG);}}
+                },
+                {
+                        new ArrayList<>(){{add(F); add(G); add(MG);}},
+                        new ArrayList<>(){{add(MG); add(G);}},
+                        new ArrayList<>(){{add(F); add(MP);}}
+                },
+                {
+                        new ArrayList<>(){{add(MG); add(G);}},
+                        new ArrayList<>(){{add(MG); add(G);}},
+                        new ArrayList<>(){{add(MG); add(G); add(MP); add(F);}},
+                },
+                {
+                        new ArrayList<>(){{add(F); add(G);}},
+                        new ArrayList<>(){{add(MG);add(F); add(G);}},
+                        new ArrayList<>(){{add(MG); add(MP); add(F);}},
+                }
+        };
+
+       */
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JC);}},
+                        new ArrayList<>() {{add(JA);}}
+                },
+                {
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JB);add(JC);}},
+                },
+                {
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{ add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JC);}},
+                },
+                {
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JB);add(JC);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);}}
+                },
+                {
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);add(JB);}}
+                },
+                {
+                        new ArrayList<>() {{add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JA);add(JB);}},
+                        new ArrayList<>() {{add(JA);}},
+                        new ArrayList<>() {{add(JC);add(JB);}},
+                        new ArrayList<>() {{add(JB);}}
+                }
+        };
 
     }
 
     public static ArrayList<Object>[] getWeights() {
-        return new ArrayList[]{
+/*        return new ArrayList[]{
                 new ArrayList<>(){{add(H); add(ML); add(L);}},
                 new ArrayList<>(){{add(L); add(MH);}},
                 new ArrayList<>(){{add(M); add(H); add(L);}}
         };
-//        return new ArrayList[]{
-//                new ArrayList<>(){{add(M); add(MH); add(H);}},
-//                new ArrayList<>(){{add(H); add(MH);}},
-//                new ArrayList<>(){{add(M); add(H); add(ML);}}
-//        };
+return new ArrayList[]{
+                new ArrayList<>(){{add(M); add(MH); add(H);}},
+                new ArrayList<>(){{add(H); add(MH);}},
+                new ArrayList<>(){{add(M); add(H); add(ML);}}
+        };
+ */
 
+        return new ArrayList[]{
+                new ArrayList<>() {{add(PA);add(PB);add(PC);add(PD);add(PE);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PC);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PC);add(PF);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PD);add(PE);add(PF);}},
+                new ArrayList<>() {{add(PA);add(PB);add(PD);add(PE);add(PF);}},
+                new ArrayList<>() {{add(PD);add(PE);add(PF);}}
+        };
 
     }
     private static String readTxt(String fileName) throws IOException {
@@ -130,6 +191,7 @@ public class Nutzwertanalyse {
         fos.close();
     }
 
+    public static double currentEntropy = 100;
     public static void rechne(int numberOfDecisionMaker, int alt, int crit, Class jugClazz, Class prefClazz) throws IOException, ParseException {
         String berechnungsName;
 
@@ -157,11 +219,17 @@ public class Nutzwertanalyse {
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
 //            aggregatedMatrix = getMatrix();
 //            aggregatedWeights = getWeights();
+            List<List<Object>> preferenceCombinationList = MonteCarloHelper.getPreferenceCombinations(aggregatedWeights);
+            if(preferenceCombinationList.size() == 0){
+                l--;
+                continue;
+            }
             int indivCounter = 0;
             for (int k = 0; k < durchlaeufe; k++) {
+
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
-                while (!containsZero(lowestValue)) {
+                while (currentEntropy!=0) {
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                     indivCounter++;
@@ -171,20 +239,13 @@ public class Nutzwertanalyse {
                 indivCounter = 0;
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-//                aggregatedMatrix = getMatrix();
-//                aggregatedWeights = getWeights();
+                //aggregatedMatrix = getMatrix();
+                //aggregatedWeights = getWeights();
             }
-            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, alt, 0, 1);
-            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, alt, crit, 1, 10);
-            aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
             writeTxt(fileName, l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-            if(sum / durchlaeufe == 1000){
-                Helper.show2DArray(aggregatedMatrix);
-                Helper.show1DArray(aggregatedWeights);
-            }
+
             overAllSum += sum;
             sum = 0;
         }
@@ -193,11 +254,11 @@ public class Nutzwertanalyse {
     }
 
     public static void main(String[] args) throws IOException, ParseException {
-        int[] numberOfDecisionMakers = {3,6};
-        int[] alt = {5,10,15};
-        int[] crit = {3,6};
-        Class[] jugdClazz = {LexJudgements.class, FuzzyJudgements.class};
-        Class[] prefClazz = {LexPreferenzes.class, FuzzyPreferenzes.class};
+        int[] numberOfDecisionMakers = {6};
+        int[] alt = {15};
+        int[] crit = {6};
+        Class[] jugdClazz = {FuzzyJudgements.class};
+        Class[] prefClazz = {FuzzyPreferenzes.class};
 
 
         for(int i = 0; i < numberOfDecisionMakers.length; i++){
@@ -247,10 +308,18 @@ public class Nutzwertanalyse {
         - danach fuzzy 3 lex 3
         - danach fuzzy 7 lex 7
         - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
-        Teststudie 24.10.
-        - gedanken zum ersten intro machen und durchführen
-        - flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
-        - mit vorgesetzten sprechen für zeitlichen ablauf
+
+         + logging studie
+         + Grafiken Fuzzy Saw simulation
+         + preferences cut
+         + bug
+         - aufbau arbeit
+         + prüfungsamt
+
+    // random path... mehrstufig kürzen zum checken
+    // input checken?
+    // start entropie(current entropie vor dem ersten mal rechen) und mittlere ausgeben lassen(wenn pfadlänge 1 ist, und die entropie hoch ist macht es keinen sinn)
+    // current entropie soll 0 sein zum abbrechen, da danach erst der zufällige pfad gerechnet wird
          */
 
     }

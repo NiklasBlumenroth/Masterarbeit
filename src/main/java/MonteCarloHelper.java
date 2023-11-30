@@ -41,7 +41,9 @@ public class MonteCarloHelper {
         crit = aggregatedWeights.length;
         List<List<Object>> preferenceCombinationList = getPreferenceCombinations(aggregatedWeights);
         List<List<Object>> judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
-
+        if(preferenceCombinationList.isEmpty()){
+            return null;
+        }
         if(judgementCombinationList == null){
             //use individual instance generation
             k = 1_000_000_000;
@@ -69,10 +71,20 @@ public class MonteCarloHelper {
         Map<Object, Object>[] potentialPreferencesAcceptabilityIndices = new Map[crit];
 
         //fill matrix map with 0
-        fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
+        try{
+            fillMatrixMapWithZero(aggregatedMatrix, currentJudgementAcceptabilityIndices);
+        }catch (Exception e){
+            return null;
+        }
+
         fillMatrixMapWithZero(aggregatedMatrix, potentialJudgementAcceptabilityIndices);
         //fill weights map with 0
-        fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
+
+        try{
+            fillWeightsMapWithZero(aggregatedWeights, currentPreferenceAcceptabilityIndices);
+        }catch (Exception e){
+            return null;
+        }
         fillWeightsMapWithZero(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
 
         //create currentJudgementAcceptabilityIndices and currentPreferenceAcceptabilityIndices
@@ -127,11 +139,7 @@ public class MonteCarloHelper {
             }else{
                 Random random = new Random();
                 int rngNumberW = -1;
-                try{
-                    rngNumberW = random.nextInt(preferenceCombinationList.size());
-                }catch (Exception e){
-                    return null;
-                }
+                rngNumberW = random.nextInt(preferenceCombinationList.size());
 
                 sawWeights = preferenceCombinationList.get(rngNumberW).toArray();
                 if(individual){
@@ -240,6 +248,7 @@ public class MonteCarloHelper {
             System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
         }
 
+        Nutzwertanalyse.currentEntropy = getCurrentEntropy(rankAcceptabilityIndices);
 
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
@@ -321,7 +330,7 @@ public class MonteCarloHelper {
         return lowestValues;
     }
 
-    private static List<List<Object>> getPreferenceCombinations(ArrayList<Object>[] aggregatedWeights){
+    static List<List<Object>> getPreferenceCombinations(ArrayList<Object>[] aggregatedWeights){
         //aggregatedWeights
         List<List<Object>> fullIterationObjects2 = new ArrayList<>();
         fullIterationObjects2.addAll(Arrays.asList(aggregatedWeights));
@@ -585,6 +594,7 @@ public class MonteCarloHelper {
                     newMap.put(aggregatedMatrix[i][j].get(k), 0.0);
                 }
                 aggregatedMatrixRankingMap[i][j] = newMap;
+
             }
         }
     }
@@ -638,13 +648,10 @@ public class MonteCarloHelper {
     public static ArrayList<Object[]> generateDecisionMakerWeightList(Class<?> clazz, int number, int length, int min, int max){
         ArrayList<Object[]> dMWList = new ArrayList<>();
         Object[] matrix;
-//        System.out.println("Generates decisionMakerWeightList: ");
         for(int i = 0; i < number; i++){
             matrix = Helper.generate1DArray(clazz, length, min, max);
-//            Helper.show1DArray(matrix);
             dMWList.add(matrix);
         }
-
         return dMWList;
     }
 
