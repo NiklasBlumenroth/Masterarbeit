@@ -122,6 +122,22 @@ public class Helper {
         return matrix;
     }
 
+    public static void showEntropyMatrix(Map<Object, Double>[][] matrix){
+        //use invert output
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[i].length; j++){
+                System.out.print(matrix[j][i]);
+            }
+            System.out.println();
+        }
+    }
+
+    public static void showEntropyWeights(Map<Object, Double>[] weights){
+        for(int j = 0; j < weights.length; j++){
+            System.out.print(weights[j]);
+        }
+        System.out.println();
+    }
     public static void show3DArray(int[][][] matrix) {
         int[][][] invert = invertArray3D(matrix);
         for (int[][] objects : invert) {

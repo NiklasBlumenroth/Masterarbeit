@@ -49,7 +49,7 @@ public class MonteCarloHelper {
         return result;
     }
 
-    public static double[][] showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex){
+    public static List<LowestValueObject> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex){
         Date date = new Date();
         System.out.println("Start: " + date);
         alternative = aggregatedMatrix.length;
@@ -231,13 +231,13 @@ public class MonteCarloHelper {
             Helper.show2DArray(objectPotentialPreferenceAcceptabilityIndices[i]);
         }
 
-        double[][][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices);
+        Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices, lex);
         System.out.println("\njudgementEntropyMatrix");
-        Helper.show3DArray(judgementEntropyMatrix);
+        Helper.showEntropyMatrix(judgementEntropyMatrix);
 
-        double[][] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices);
+        Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices, lex);
         System.out.println("\npreferenceEntropy");
-        Helper.show2DArray(preferenceEntropy);
+        Helper.showEntropyWeights(preferenceEntropy);
 
         System.out.println("\ncurrent entropy");
         System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
@@ -283,50 +283,17 @@ public class MonteCarloHelper {
         return false;
     }
 
-    public static double[][] getLowestValue(double[][][] judgementEntropyMatrix, double[][] preferenceEntropy){
-        /**
-         * 0 - lowest value
-         * 1 - (k) index of lowest value
-         * 2 - i index
-         * 3 - j index
-         * 4 - is judgement (0 - false; 1 - true)
-         */
-        int sizeOfLowestValue = (judgementEntropyMatrix.length * judgementEntropyMatrix[0].length) + preferenceEntropy.length;
-        double[][] lowestValue = new double[sizeOfLowestValue][];
-        int lowestValueCounter = 0;
-        //add all cells from judgementEntropyMatrix
-        for (int i = 0; i < judgementEntropyMatrix.length; i++) {
+    public static List<LowestValueObject> getLowestValue(Map<Object, Double>[][] judgementEntropyMatrix, Map<Object, Double>[] preferenceEntropy){
+        List<LowestValueObject> lowestValueObjectList = new ArrayList<>();
+        //add values from matrix
+        for(int i = 0; i < judgementEntropyMatrix.length; i++){
             for(int j = 0; j < judgementEntropyMatrix[i].length; j++){
-                for (int k = 0; k < judgementEntropyMatrix[i][j].length; k++) {
-                    if(judgementEntropyMatrix[i][j][k] != -1) {
-                        double[] array = new double[5];
-                        array[0] = judgementEntropyMatrix[i][j][k];
-                        array[1] = k;
-                        array[2] = i;
-                        array[3] = j;
-                        array[4] = 1;
-                        lowestValue[lowestValueCounter] = array;
-                        lowestValueCounter++;
-                    }
-                }
+                lowestValueObjectList.add(new LowestValueObject(0,0,0,0,true));
             }
         }
+        //add values from weights
 
-        for(int i = 0; i < preferenceEntropy.length; i++){
-            for (int j = 0; j < preferenceEntropy[i].length; j++) {
-                if(preferenceEntropy[i][j] != -1) {
-                    double[] array = new double[5];
-                    array[0] = preferenceEntropy[i][j];
-                    array[1] = j;
-                    array[2] = i;
-                    array[3] = -1;
-                    array[4] = 0;
-                    lowestValue[lowestValueCounter] = array;
-                    lowestValueCounter++;
-                }
-            }
-        }
-        return lowestValue;
+        return null;
     }
 
     private static int[][] getPreferenceCombinations(int[][] aggregatedWeights, boolean lex){
@@ -447,56 +414,77 @@ public class MonteCarloHelper {
         return calculateEntropy(vector);
     }
 
-    public static  double[][] getEntropyPreference(double[][][] objectPotentialPreferenceAcceptabilityIndices){
-        double[][] entropyMatrixArray = new double[objectPotentialPreferenceAcceptabilityIndices[0].length][];
-        double[] vectorArray = new double[objectPotentialPreferenceAcceptabilityIndices.length];
-        for(int i = 0; i < objectPotentialPreferenceAcceptabilityIndices[0].length; i++){
-            double[] cellArray = new double[objectPotentialPreferenceAcceptabilityIndices[0][i].length];
-            for(int k = 0; k < objectPotentialPreferenceAcceptabilityIndices[0][i].length; k++){
-                int entropyCounter = 0;
-                for(int object = 0; object < vectorArray.length; object++){
-                    if(objectPotentialPreferenceAcceptabilityIndices[object][i][k] != -1){
-                        vectorArray[object] = objectPotentialPreferenceAcceptabilityIndices[object][i][k];
-                        entropyCounter++;
+    public static  Map<Object, Double>[] getEntropyPreference(double[][][] objectPotentialPreferenceAcceptabilityIndices, boolean lex){
+        Map<Object, Double>[] entropyWeightsArray = new Map[objectPotentialPreferenceAcceptabilityIndices[0].length];
+
+        for(int j = 0; j < objectPotentialPreferenceAcceptabilityIndices[0].length; j++){
+            Map<Object, Double> optionsEntropyMap = new HashMap<>();
+            for(int k = 0; k < objectPotentialPreferenceAcceptabilityIndices[0][j].length; k++) {
+                if(objectPotentialPreferenceAcceptabilityIndices[0][j][k] < 0){
+                    continue;
+                }
+                if(lex){
+                    optionsEntropyMap.put(LexPreferenzes.getLexValueById(k), createWeightsCellEntropy(objectPotentialPreferenceAcceptabilityIndices, j, k));
+                }else {
+                    optionsEntropyMap.put(FuzzyPreferenzes.getPreferenzes(k), createWeightsCellEntropy(objectPotentialPreferenceAcceptabilityIndices, j, k));
+                }
+
+            }
+            entropyWeightsArray[j] = optionsEntropyMap;
+        }
+
+        return entropyWeightsArray;
+    }
+
+    public static double createWeightsCellEntropy(double[][][] objectPotentialPreferenceAcceptabilityIndices, int j, int k){
+        List<Double> list = new ArrayList<>();
+
+        for(int alternative = 0; alternative < objectPotentialPreferenceAcceptabilityIndices.length; alternative++){
+            list.add(objectPotentialPreferenceAcceptabilityIndices[alternative][j][k]);
+        }
+        double[] cell = new double[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            cell[i] = list.get(i);
+        }
+
+        return calculateEntropy(cell);
+    }
+
+    public static Map<Object, Double>[][] getEntropyMatrix(double[][][][] objectPotentialJudgementAcceptabilityIndices, boolean lex){
+        Map<Object, Double>[][] entropyMatrixArray = new Map[objectPotentialJudgementAcceptabilityIndices[0].length][objectPotentialJudgementAcceptabilityIndices[0][0].length];
+
+        for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices[0].length; i++){
+            for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices[0][i].length; j++){
+                Map<Object, Double> optionsEntropyMap = new HashMap<>();
+                for(int k = 0; k < objectPotentialJudgementAcceptabilityIndices[0][i][j].length; k++) {
+                    if(objectPotentialJudgementAcceptabilityIndices[0][i][j][k] < 0){
+                        continue;
+                    }
+                    if(lex){
+                        optionsEntropyMap.put(LexJudgements.getJudgement(k), createMatrixCellEntropy(objectPotentialJudgementAcceptabilityIndices, i, j, k));
                     }else {
-                        vectorArray[object] = -1;
+                        optionsEntropyMap.put(FuzzyJudgements.getJudgement(k), createMatrixCellEntropy(objectPotentialJudgementAcceptabilityIndices, i, j, k));
                     }
+
                 }
-                double[] entropyArray = new double[entropyCounter];
-                entropyCounter = 0;
-                for(int l = 0; l < vectorArray.length; l++){
-                    if(vectorArray[entropyCounter] != -1){
-                        entropyArray[entropyCounter] = vectorArray[l];
-                        entropyCounter++;
-                    }
-                }
-                cellArray[k] = calculateEntropy(entropyArray);
-                entropyMatrixArray[i] = cellArray;
+                entropyMatrixArray[i][j] = optionsEntropyMap;
             }
         }
         return entropyMatrixArray;
     }
 
-    public static double[][][] getEntropyMatrix(double[][][][] objectPotentialJudgementAcceptabilityIndices){
-        double[][][] entropyMatrixArray = new double[objectPotentialJudgementAcceptabilityIndices[0].length][objectPotentialJudgementAcceptabilityIndices[0].length][];
-        double[] vectorArray = new double[objectPotentialJudgementAcceptabilityIndices.length];
-        for(int i = 0; i < objectPotentialJudgementAcceptabilityIndices[0].length; i++){
-            for(int j = 0; j < objectPotentialJudgementAcceptabilityIndices[0][i].length; j++){
-                double[] cellArray = new double[objectPotentialJudgementAcceptabilityIndices[0][i][j].length];
-                for(int k = 0; k < objectPotentialJudgementAcceptabilityIndices[0][i][j].length; k++){
-                    for(int object = 0; object < vectorArray.length; object++){
-                        if(objectPotentialJudgementAcceptabilityIndices[object][i][j][k] >= 0){
-                            vectorArray[object] = objectPotentialJudgementAcceptabilityIndices[object][i][j][k];
-                        }else {
-                            vectorArray[object] = -1;
-                        }
-                    }
-                    cellArray[k] = calculateEntropy(vectorArray);
-                    entropyMatrixArray[i][j] = cellArray;
-                }
-            }
+    public static double createMatrixCellEntropy(double[][][][] objectPotentialJudgementAcceptabilityIndices, int i, int j, int k){
+        List<Double> list = new ArrayList<>();
+
+        for(int alternative = 0; alternative < objectPotentialJudgementAcceptabilityIndices.length; alternative++){
+            list.add(objectPotentialJudgementAcceptabilityIndices[alternative][i][j][k]);
         }
-        return entropyMatrixArray;
+        double[] cell = new double[list.size()];
+        for(int l = 0; l < list.size(); l++){
+            cell[l] = list.get(l);
+        }
+
+        return calculateEntropy(cell);
     }
 
     public static boolean isHigherThanOne(double[] array){
@@ -509,20 +497,19 @@ public class MonteCarloHelper {
     }
 
     public static double calculateEntropy(double[] vector) {
-        Double entropy = 0.0;
-        Double sum = 0.0;
+        double entropy = 0.0;
+        double sum = 0.0;
 
-        for (Double value : vector) {
+        for (double value : vector) {
             sum += value;
         }
 
-        for (Double value : vector) {
+        for (double value : vector) {
             if (value != 0.0) {
-                Double probability = value / sum;
+                double probability = value / sum;
                 entropy -= probability * Math.log(probability) / Math.log(2);
             }
         }
-
         return entropy;
     }
 

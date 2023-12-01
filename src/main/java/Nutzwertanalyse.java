@@ -10,13 +10,13 @@ public class Nutzwertanalyse {
 
 
     public static ArrayList<Object>[][] getMatrix() {
-        return getLexMatrix();
-//        return getFuzzyMatrix();
+//        return getLexMatrix();
+        return getFuzzyMatrix();
     }
 
     public static ArrayList<Object>[] getWeights() {
-        return getLexWeights();
-//        return getFuzzyWeights();
+//        return getLexWeights();
+        return getFuzzyWeights();
     }
     public static double currentEntropy;
 
@@ -48,7 +48,7 @@ public class Nutzwertanalyse {
             double sum = 0;
             int durchlaeufe = 100;
             for (int k = 0; k < durchlaeufe; k++) {
-                double[][] lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
+                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
                 indivCounter++;
 
                 while (currentEntropy != 0) {
