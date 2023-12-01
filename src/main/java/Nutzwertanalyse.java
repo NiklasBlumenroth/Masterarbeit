@@ -217,8 +217,8 @@ return new ArrayList[]{
             ArrayList<Object[]> decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(prefClazz, numberOfDecisionMaker, crit, 0, 1);
             ArrayList<Object>[][] aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             ArrayList<Object>[] aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-//            aggregatedMatrix = getMatrix();
-//            aggregatedWeights = getWeights();
+            aggregatedMatrix = getMatrix();
+            aggregatedWeights = getWeights();
             List<List<Object>> preferenceCombinationList = MonteCarloHelper.getPreferenceCombinations(aggregatedWeights);
             if(preferenceCombinationList.size() == 0){
                 l--;
@@ -230,17 +230,14 @@ return new ArrayList[]{
                 List<Map<String, Object>> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                 indivCounter++;
                 while (currentEntropy!=0) {
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
+                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue.get(0));
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, show);
                     indivCounter++;
                 }
-//                System.out.println("Pfadlänge: " + indivCounter);
                 sum += indivCounter;
                 indivCounter = 0;
-                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                //aggregatedMatrix = getMatrix();
-                //aggregatedWeights = getWeights();
+                //aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                //aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
             endDate = new Date();
             writeTxt(fileName, l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
@@ -270,20 +267,6 @@ return new ArrayList[]{
                 }
             }
         }
-
-        int[] numberOfDecisionMakers2 = {3,6};
-        int[] alt2 = {5,10,15};
-        int[] crit2 = {3,6};
-
-//        for(int i = 0; i < numberOfDecisionMakers2.length; i++){
-//            for (int j = 0; j < alt2.length; j++){
-//                for(int k = 0; k < crit2.length; k++){
-//                    for(int l = 0; l < jugdClazz.length; l++){
-//                        rechne(numberOfDecisionMakers2[i], alt2[j], crit2[k], jugdClazz[l], prefClazz[l]);
-//                    }
-//                }
-//            }
-//        }
 
         /*
         19.10 13 Uhr
@@ -334,17 +317,23 @@ return new ArrayList[]{
     }
 
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
+        boolean lex = aggregatedWeights[0].get(0).getClass() == LexPreferenzes.class;
         if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {
             aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")] = new ArrayList<>();
             aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].add(lowestValue.get("lowestKey"));
         } else {
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")] = new ArrayList<>();
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")].add(lowestValue.get("lowestKey"));
+            Object idealObject = lowestValue.get("lowestValue");
+            int index = (Integer) lowestValue.get("lowestI");
+            if(lex){
+                optimizePref(aggregatedWeights, idealObject, index);
+            }
         }
     }
 
     public static void getRandomPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, List<Map<String, Object>>  lowestValue) {
         Random random = new Random();
+        boolean lex = aggregatedWeights[0].get(0).getClass() == LexPreferenzes.class;
+
         for(Map<String, Object> map : lowestValue){
             if ((Boolean) map.get("lowestValueIsJudgement")) {
                 if(aggregatedMatrix[(Integer) map.get("lowestI")][(Integer) map.get("lowestJ")].size() > 1){
@@ -358,21 +347,26 @@ return new ArrayList[]{
                 if(aggregatedWeights[(Integer) map.get("lowestI")].size() > 1){
                     Integer randomNumber = random.nextInt(aggregatedWeights[(Integer) map.get("lowestI")].size());
                     Object randomObject = aggregatedWeights[(Integer) map.get("lowestI")].get(randomNumber);
-
-                    for(int i = 0; i < aggregatedWeights.length; i++){
-                        for(Object object : aggregatedWeights[i]){
-                            if(aggregatedWeights[i].contains(map.get("lowestValue"))){
-                                aggregatedWeights[i].remove(object);
-                            }
-                        }
+                    if(lex){
+                        optimizePref(aggregatedWeights, randomObject, (Integer) map.get("lowestI"));
                     }
-                    aggregatedWeights[(Integer) map.get("lowestI")] = new ArrayList<>();
-                    aggregatedWeights[(Integer) map.get("lowestI")].add(randomObject);
                     break;
                 }
 
             }
         }
+    }
+
+    public static void optimizePref(ArrayList<Object>[] aggregatedWeights, Object lowestValueObject, int index){
+        for(int i = 0; i < aggregatedWeights.length; i++){
+            if(i == index){
+                aggregatedWeights[index] = new ArrayList<>();
+                aggregatedWeights[index].add(lowestValueObject);
+            }else {
+                aggregatedWeights[i].remove(lowestValueObject);
+            }
+        }
+
     }
 }
 //        return new ArrayList[][]{
