@@ -1,14 +1,6 @@
 import java.util.*;
 
 public class Nutzwertanalyse {
-    public static final int row = 3;
-    public static final int col = 3;
-    public static final int numberOfDecisionMaker = 3;
-    public static final boolean useStaticProblem = false;
-    public static final boolean lex = false;
-    public static final boolean full = true;
-
-
     public static ArrayList<Object>[][] getMatrix() {
 //        return getLexMatrix();
         return getFuzzyMatrix();
@@ -19,8 +11,26 @@ public class Nutzwertanalyse {
         return getFuzzyWeights();
     }
     public static double currentEntropy;
-
     public static void main(String[] args) {
+        int[] alternatives = {5, 10, 15};
+        int[] criteria = {3, 6};
+        int[] numberOfDecisionMakers = {3, 6};
+        boolean full = false;
+        boolean useStaticProblem = false;
+        boolean lex = false;
+        boolean show = false;
+
+        for(int alt : alternatives){
+            for(int crit : criteria){
+                for(int num : numberOfDecisionMakers){
+                    rechnen(15, 6, 6, false, false, false, show);
+                    //rechnen(alt, crit, num, full, lex, useStaticProblem, show);
+                }
+            }
+        }
+    }
+
+    public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show){
         Date startDate = new Date();
         Date endDate = new Date();
         System.out.println("Start: " + startDate);
@@ -37,8 +47,8 @@ public class Nutzwertanalyse {
                 aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
                 aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
             }else{
-                decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, row, col, lex);
-                decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, row, lex);
+                decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
+                decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
                 //generates aggregated matrix and fill with -1
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
@@ -48,12 +58,12 @@ public class Nutzwertanalyse {
             double sum = 0;
             int durchlaeufe = 100;
             for (int k = 0; k < durchlaeufe; k++) {
-                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
+                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show);
                 indivCounter++;
 
                 while (currentEntropy != 0) {
 //                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
+                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show);
                     indivCounter++;
                 }
                 System.out.println("Pfadlänge: " + indivCounter);
@@ -65,17 +75,6 @@ public class Nutzwertanalyse {
             sum = 0;
         }
         System.out.println("End: " + endDate);
-
-    }
-
-    public static boolean containsZero(double[][] lowestValue){
-        for(int i = 0; i < lowestValue.length; i++){
-            if(lowestValue[i][0] == 0){
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {

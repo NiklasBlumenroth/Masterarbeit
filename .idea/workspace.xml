@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="update">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_01_12_2023_12_59__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_01_12_2023_12_59__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2023_17_38__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2023_17_38__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Beispiel-Niklas.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Beispiel-Niklas.xlsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2\plugins\maven\lib\maven3" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2QHJ8ohSz0g6aXxiUyMEl5J67vR" />
+  <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Blumenroth/ideaProjects/Masterarbeit&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Application.Nutzwertanalyse">
+    <configuration name="ArraySortAndRestore" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ArraySortAndRestore" />
+      <module name="MasterarbeitIndividualProjekt" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Helper" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Helper" />
+      <module name="Masterarbeit" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MonteCarloHelper" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MonteCarloHelper" />
+      <module name="MasterarbeitIndividualProjekt" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Nutzwertanalyse" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Nutzwertanalyse" />
+      <module name="Masterarbeit" />
+      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Masterarbeit [clean,install]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Nutzwertanalyse" />
+        <item itemvalue="Maven.Masterarbeit [clean,install]" />
+        <item itemvalue="Application.MonteCarloHelper" />
+        <item itemvalue="Application.Helper" />
+        <item itemvalue="Application.ArraySortAndRestore" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="" />
+      <created>1685004417338</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1685004417338</updated>
+    </task>
+    <task id="LOCAL-00001" summary="ads">
+      <created>1685004753946</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1685004753946</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update">
+      <created>1692124463020</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1692124463020</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix sorting">
+      <created>1692991426924</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1692991426924</updated>
+    </task>
+    <task id="LOCAL-00004" summary="update">
+      <created>1693202676169</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1693202676169</updated>
+    </task>
+    <task id="LOCAL-00005" summary="update">
+      <created>1696581321077</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1696581321077</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update">
+      <created>1697468158307</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1697468158307</updated>
+    </task>
+    <task id="LOCAL-00007" summary="update">
+      <created>1697651903739</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1697651903739</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update">
+      <created>1698595191289</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698595191289</updated>
+    </task>
+    <task id="LOCAL-00009" summary="enable output">
+      <created>1698601791747</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1698601791747</updated>
+    </task>
+    <task id="LOCAL-00010" summary="update">
+      <created>1698602507031</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1698602507031</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add show variable for output">
+      <created>1698604005644</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1698604005644</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fix nicht quadratische probleme">
+      <created>1699204830392</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1699204830392</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fix nicht quadratische probleme">
+      <created>1699287188627</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1699287188627</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fix nicht quadratische probleme">
+      <created>1699288839708</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1699288839708</updated>
+    </task>
+    <task id="LOCAL-00015" summary="berechnung 333">
+      <created>1699341870928</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1699341870928</updated>
+    </task>
+    <task id="LOCAL-00016" summary="notizen">
+      <created>1699342061203</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1699342061203</updated>
+    </task>
+    <task id="LOCAL-00017" summary="berechnungen von 3x3x3 bis 3x7x4">
+      <created>1699425768549</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1699425768549</updated>
+    </task>
+    <task id="LOCAL-00018" summary="berechnungen von 3x3x3 bis 3x7x4">
+      <created>1699447772750</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1699447772750</updated>
+    </task>
+    <task id="LOCAL-00019" summary="berechnungen von 3x3x3 bis 3x7x4">
+      <created>1699450081022</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1699450081022</updated>
+    </task>
+    <task id="LOCAL-00020" summary="berechnungen von 3x3x3 bis 3x7x4">
+      <created>1699478378428</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1699478378428</updated>
+    </task>
+    <task id="LOCAL-00021" summary="berechnungen von 3x3x3 bis 3x7x4">
+      <created>1699633292439</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1699633292439</updated>
+    </task>
+    <task id="LOCAL-00022" summary="update">
+      <created>1700130211962</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1700130211962</updated>
+    </task>
+    <task id="LOCAL-00023" summary="update">
+      <created>1700213313780</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1700213313780</updated>
+    </task>
+    <task id="LOCAL-00024" summary="update">
+      <created>1700238931295</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1700238931295</updated>
+    </task>
+    <task id="LOCAL-00025" summary="update">
+      <created>1700380777541</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1700380777541</updated>
+    </task>
+    <task id="LOCAL-00026" summary="update">
+      <created>1700380848233</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1700380848233</updated>
+    </task>
+    <task id="LOCAL-00027" summary="update">
+      <created>1701329179040</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1701329179040</updated>
+    </task>
+    <task id="LOCAL-00028" summary="update logging save in file">
+      <created>1701332818682</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1701332818682</updated>
+    </task>
+    <task id="LOCAL-00029" summary="fix: new run if invalid input">
+      <created>1701341877799</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1701341877799</updated>
+    </task>
+    <task id="LOCAL-00030" summary="update">
+      <created>1701345196707</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1701345196707</updated>
+    </task>
+    <task id="LOCAL-00031" summary="update">
+      <created>1701345225058</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1701345225058</updated>
+    </task>
+    <task id="LOCAL-00032" summary="update">
+      <created>1701347222150</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1701347222150</updated>
+    </task>
+    <task id="LOCAL-00033" summary="update">
+      <created>1701364035724</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1701364035724</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ads" />
+    <MESSAGE value="fix sorting" />
+    <MESSAGE value="enable output" />
+    <MESSAGE value="add show variable for output" />
+    <MESSAGE value="fix nicht quadratische probleme" />
+    <MESSAGE value="berechnung 333" />
+    <MESSAGE value="notizen" />
+    <MESSAGE value="berechnungen von 3x3x3 bis 3x7x4" />
+    <MESSAGE value="update logging save in file" />
+    <MESSAGE value="fix: new run if invalid input" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
+          <line>199</line>
+          <option name="timeStamp" value="107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
+          <line>157</line>
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
+          <line>125</line>
+          <option name="timeStamp" value="110" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
+          <line>371</line>
+          <option name="timeStamp" value="111" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
+          <line>358</line>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="113" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Masterarbeit$Nutzwertanalyse.ic" NAME="Nutzwertanalyse Coverage Results" MODIFIED="1691670302471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

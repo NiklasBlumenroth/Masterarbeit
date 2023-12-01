@@ -49,9 +49,9 @@ public class MonteCarloHelper {
         return result;
     }
 
-    public static List<LowestValueObject> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex){
+    public static List<LowestValueObject> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex, boolean show){
         Date date = new Date();
-        System.out.println("Start: " + date);
+        if(show) System.out.println("Start: " + date);
         alternative = aggregatedMatrix.length;
         criteria = aggregatedWeights.length;
 
@@ -127,14 +127,10 @@ public class MonteCarloHelper {
             full = true;
             iteration = k;
         }else{
-//            full = false;
-//            iteration = monteCarloIterations;
-
-            full = true;
-            iteration = k;
+            full = false;
+            iteration = monteCarloIterations;
         }
         //monteCarloSimulation
-        iteration = (full) ? k : monteCarloIterations;
         int prefCounter = 0;
         int jugCounter = 0;
         for(int i = 0; i < iteration - 1; i++){
@@ -156,11 +152,7 @@ public class MonteCarloHelper {
             }else{
                 Random random = new Random();
                 int rngNumberW = -1;
-                try{
-                    rngNumberW = random.nextInt(preferenceCombinationList.length);
-                }catch (Exception e){
-                    return null;
-                }
+                rngNumberW = random.nextInt(preferenceCombinationList.length);
 
                 sawWeights = preferenceCombinationList[rngNumberW];
                 if(individual){
@@ -194,56 +186,74 @@ public class MonteCarloHelper {
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
         }
 
-        System.out.println("\nAggregated Matrix");
-        Helper.show3DArray(aggregatedMatrix);
+        if(show){
+            System.out.println("\nAggregated Matrix");
+            Helper.show3DArray(aggregatedMatrix);
 
-        System.out.println("\nAggregated Weight");
-        Helper.show2DArray(aggregatedWeights);
+            System.out.println("\nAggregated Weight");
+            Helper.show2DArray(aggregatedWeights);
 
-        System.out.println("\nfinal rankAcceptabilityIndices ");
-        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+            System.out.println("\nfinal rankAcceptabilityIndices ");
+            Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+        }
 
-        System.out.println("\nfinal rankAcceptabilityIndices scaled");
         scaleTotalRankingPositions(rankAcceptabilityIndices);
-        Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+        if(show){
+            System.out.println("\nfinal rankAcceptabilityIndices scaled");
+            Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+        }
 
         scaleAggregatedMatrixMap(objectCurrentJudgementAcceptabilityIndices);
-        for(int j = 0; j < alternative; j++){
-            System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
-            Helper.show3DArray(objectCurrentJudgementAcceptabilityIndices[j]);
+        if(show){
+            for(int j = 0; j < alternative; j++){
+                System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
+                Helper.show3DArray(objectCurrentJudgementAcceptabilityIndices[j]);
+            }
         }
 
         scaleAggregatedWeightsMap(objectCurrentPreferenceAcceptabilityIndices);
-        for (int i = 0; i < criteria; i++){
-            System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
-            Helper.show2DArray(objectCurrentPreferenceAcceptabilityIndices[i]);
+        if(show){
+            for (int i = 0; i < criteria; i++){
+                System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
+                Helper.show2DArray(objectCurrentPreferenceAcceptabilityIndices[i]);
+            }
         }
 
         fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
-        for(int j = 0; j < alternative; j++){
-            System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
-            Helper.show3DArray(objectPotentialJudgementAcceptabilityIndices[j]);
+        if(show){
+            for(int j = 0; j < alternative; j++){
+                System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
+                Helper.show3DArray(objectPotentialJudgementAcceptabilityIndices[j]);
+            }
         }
 
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
-        for (int i = 0; i < criteria; i++){
-            System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
-            Helper.show2DArray(objectPotentialPreferenceAcceptabilityIndices[i]);
+        if(show){
+            for (int i = 0; i < criteria; i++){
+                System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
+                Helper.show2DArray(objectPotentialPreferenceAcceptabilityIndices[i]);
+            }
         }
 
         Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices, lex);
-        System.out.println("\njudgementEntropyMatrix");
-        Helper.showEntropyMatrix(judgementEntropyMatrix);
+        if(show){
+            System.out.println("\njudgementEntropyMatrix");
+            Helper.showEntropyMatrix(judgementEntropyMatrix);
+        }
 
         Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices, lex);
-        System.out.println("\npreferenceEntropy");
-        Helper.showEntropyWeights(preferenceEntropy);
+        if(show){
+            System.out.println("\npreferenceEntropy");
+            Helper.showEntropyWeights(preferenceEntropy);
 
-        System.out.println("\ncurrent entropy");
-        System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
-        //getLowestValue(judgementEntropyMatrix, preferenceEntropy);
+            System.out.println("\ncurrent entropy");
+            System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+        }
+
         date = new Date();
-        System.out.println("Ende: " + date);
+        if(show){
+            System.out.println("Ende: " + date);
+        }
         Nutzwertanalyse.currentEntropy = getCurrentEntropy(rankAcceptabilityIndices);
 
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
@@ -343,12 +353,20 @@ public class MonteCarloHelper {
     }
 
     private static int[][] getJudgementCombinations(int[][][] aggregatedMatrix){
-        long kCounter = 1;
+        float kCounter = 1;
+        int exp = 0;
         //countCombinations
         for(int i = 0; i < aggregatedMatrix.length; i++){
             for(int j = 0; j < aggregatedMatrix[i].length; j++){
                 kCounter *= aggregatedMatrix[i][j].length;
+                if(kCounter > 10){
+                    kCounter /= 10;
+                    exp++;
+                }
             }
+        }
+        if(exp > 5){
+            return null;
         }
 
         int[][] aggregatedMatrixListForm = new int[aggregatedMatrix.length * aggregatedMatrix[0].length][];
@@ -666,7 +684,7 @@ public class MonteCarloHelper {
 
     @NotNull
     public static int[][][] generateAggregatedMatrix(@NotNull int[][][] dMList){
-        int[][][] aggregatedMatrix = new int[dMList.length][dMList[0].length][];
+        int[][][] aggregatedMatrix = new int[dMList[0].length][dMList[0][0].length][];
 
         for (int alt = 0; alt < dMList[0].length; alt++) {
             for (int crit = 0; crit < dMList[0][0].length; crit++) {
@@ -681,11 +699,8 @@ public class MonteCarloHelper {
                     aggregatedArray[s] = aggregatedList.get(s);
                 }
                 aggregatedMatrix[alt][crit] = aggregatedArray;
-
             }
-
         }
-
         return aggregatedMatrix;
     }
 
