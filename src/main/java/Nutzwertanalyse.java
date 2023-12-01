@@ -4,7 +4,7 @@ public class Nutzwertanalyse {
     public static final int row = 3;
     public static final int col = 3;
     public static final int numberOfDecisionMaker = 3;
-    public static final boolean useStaticProblem = true;
+    public static final boolean useStaticProblem = false;
     public static final boolean lex = false;
     public static final boolean full = true;
 
@@ -59,13 +59,7 @@ public class Nutzwertanalyse {
                 System.out.println("Pfadlänge: " + indivCounter);
                 sum += indivCounter;
                 indivCounter = 0;
-//                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-//                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList)
             }
-//            decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(FuzzyPreferenzes.class, numberOfDecisionMaker, row, 0, 1);
-//            decisionMakerList = MonteCarloHelper.generateDecisionMakerList(FuzzyJudgements.class, numberOfDecisionMaker, row, col, 1, 10);
-            aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             endDate = new Date();
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
             sum = 0;
