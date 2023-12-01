@@ -23,7 +23,7 @@ public class Nutzwertanalyse {
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
-                    rechnen(15, 6, 6, false, false, false, show);
+                    rechnen(15, 6, 6, false, false, useStaticProblem, show);
                     //rechnen(alt, crit, num, full, lex, useStaticProblem, show);
                 }
             }
@@ -62,7 +62,7 @@ public class Nutzwertanalyse {
                 indivCounter++;
 
                 while (currentEntropy != 0) {
-//                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
+                    //getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show);
                     indivCounter++;
                 }

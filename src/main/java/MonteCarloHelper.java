@@ -64,7 +64,7 @@ public class MonteCarloHelper {
         int[] sawWeights = null;
         double[] rankingTotalPoints;
         int[] rankingPosition;
-        double[][] rankAcceptabilityIndices = new double[alternative][criteria];
+        double[][] rankAcceptabilityIndices = new double[alternative][alternative];
         //fill ranking counter with 0
         for(int i = 0; i < alternative; i++){
             for(int j = 0; j < criteria; j++){
@@ -76,8 +76,9 @@ public class MonteCarloHelper {
         //row, col, counter (index + counter)
         double[][][] currentJudgementAcceptabilityIndices = new double[alternative][][];
         double[][][] potentialJudgementAcceptabilityIndices = new double[alternative][][];
-        double[][] currentPreferenceAcceptabilityIndices = new double[alternative][];
-        double[][] potentialPreferencesAcceptabilityIndices = new double[alternative][];
+        //col, counter (index + counter)
+        double[][] currentPreferenceAcceptabilityIndices = new double[criteria][];
+        double[][] potentialPreferencesAcceptabilityIndices = new double[criteria][];
 
         //fill matrix map with 0 or -1 if not existed
         initMatrixMap(aggregatedMatrix, currentJudgementAcceptabilityIndices);
@@ -108,8 +109,8 @@ public class MonteCarloHelper {
             objectCurrentPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices;
             objectPotentialPreferenceAcceptabilityIndices[j] = currentPreferenceAcceptabilityIndices;
 
-            currentPreferenceAcceptabilityIndices = new double[alternative][];
-            potentialPreferencesAcceptabilityIndices = new double[alternative][];
+            currentPreferenceAcceptabilityIndices = new double[criteria][];
+            potentialPreferencesAcceptabilityIndices = new double[criteria][];
             initWeightsMap(aggregatedWeights, currentPreferenceAcceptabilityIndices);
             initWeightsMap(aggregatedWeights, potentialPreferencesAcceptabilityIndices);
         }
@@ -185,7 +186,7 @@ public class MonteCarloHelper {
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
         }
-
+        show = true;
         if(show){
             System.out.println("\nAggregated Matrix");
             Helper.show3DArray(aggregatedMatrix);
@@ -303,7 +304,7 @@ public class MonteCarloHelper {
         }
         //add values from weights
 
-        return null;
+        return lowestValueObjectList;
     }
 
     private static int[][] getPreferenceCombinations(int[][] aggregatedWeights, boolean lex){
@@ -655,9 +656,8 @@ public class MonteCarloHelper {
 
     public static void initMatrixMap(int[][][] aggregatedMatrix, double[][][] aggregatedMatrixRankingMap){
         for(int i = 0; i < aggregatedMatrix.length; i++){
-            aggregatedMatrixRankingMap[i] = new double[aggregatedMatrix.length][];
+            aggregatedMatrixRankingMap[i] = new double[aggregatedMatrix[i].length][];
             for(int j = 0; j < aggregatedMatrix[i].length; j++){
-                aggregatedMatrixRankingMap[i][j] = new double[aggregatedMatrix[i].length];
                 //get highest number
                 int highest = 0;
                 for(int k = 0; k < aggregatedMatrix[i][j].length; k++){
@@ -778,7 +778,6 @@ public class MonteCarloHelper {
             i1 += 1;
             totalRanking[i][x] = i1;
         }
-
 
     }
 

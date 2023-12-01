@@ -7,9 +7,11 @@
     <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_01_12_2023_12_59__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_01_12_2023_12_59__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2023_17_38__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_11_2023_17_38__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Masterarbeit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Masterarbeit.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Helper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Beispiel-Niklas.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Beispiel-Niklas.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -419,36 +421,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
           <line>63</line>
           <option name="timeStamp" value="104" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>199</line>
-          <option name="timeStamp" value="107" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>157</line>
-          <option name="timeStamp" value="109" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>125</line>
-          <option name="timeStamp" value="110" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>371</line>
-          <option name="timeStamp" value="111" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>358</line>
-          <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="113" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

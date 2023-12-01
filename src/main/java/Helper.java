@@ -122,11 +122,20 @@ public class Helper {
         return matrix;
     }
 
-    public static void showEntropyMatrix(Map<Object, Double>[][] matrix){
-        //use invert output
+    public static Map<Object, Double>[][] invertMatrix(Map<Object, Double>[][] matrix){
+        Map<Object, Double>[][] invertedMatrix = new Map[matrix[0].length][matrix.length];
         for(int i = 0; i < matrix.length; i++){
             for(int j = 0; j < matrix[i].length; j++){
-                System.out.print(matrix[j][i]);
+                invertedMatrix[j][i] = matrix[i][j];
+            }
+        }
+        return invertedMatrix;
+    }
+    public static void showEntropyMatrix(Map<Object, Double>[][] matrix){
+        Map<Object, Double>[][] invertedMatrix = invertMatrix(matrix);
+        for (Map<Object, Double>[] maps : invertedMatrix) {
+            for (Map<Object, Double> map : maps) {
+                System.out.print(map);
             }
             System.out.println();
         }
