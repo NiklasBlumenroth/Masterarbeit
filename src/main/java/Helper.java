@@ -35,31 +35,26 @@ public class Helper {
     public static double[] decisionMethod(int[][] matrix, int[] weights, boolean show, boolean lex) {
         if(show){
             showMatrixAndWeights(matrix, weights);
-            //System.out.println("\nsawMatrix: ");
-            //show2DArray(matrix);
-            //System.out.println("\nsawWeights: ");
-            //show1DArray(weights);
         }
 
-        int rows = matrix.length;
-        int cols = matrix[0].length;
+        int alt = matrix.length;
+        int crit = matrix[0].length;
         // check if matrix and weights fit
-        if (cols != weights.length) {
-            throw new IllegalArgumentException("ERROR: Matrix length:" + cols + " | Weights :" + weights.length );
+        if (crit != weights.length) {
+            throw new IllegalArgumentException("ERROR: Matrix length:" + crit + " | Weights :" + weights.length );
         }
-        double[] scores = new double[rows];
-        String[] lexScores = new String[rows];
+        double[] scores = new double[alt];
+        String[] lexScores = new String[alt];
 
         double[][] sums = new double[matrix.length][matrix[0].length];
-        int[] weightsOrder = getWeightsOrder(weights);
         double value;
         // create sum for columns
         if(lex){
-            for (int i = 0; i < rows; i++) {
+            for (int i = 0; i < alt; i++) {
                 double sum = 0.0;
                 String lexSum = "";
                 for (int j = 0; j < weights.length; j++) {
-                    int index = getIndex(weightsOrder, j);
+                    int index = getIndex(weights, j);
                     int value2 = matrix[i][index];
                     LexJudgements judgement = LexJudgements.getJudgement(value2);
                     LexPreferenzes preferenze = LexPreferenzes.getLexValueById(weights[index]);
@@ -69,9 +64,9 @@ public class Helper {
                 lexScores[i] = lexSum;
             }
         }else {
-            for (int i = 0; i < rows; i++) {
+            for (int i = 0; i < alt; i++) {
                 double sum = 0.0;
-                for (int j = 0; j < cols; j++) {
+                for (int j = 0; j < crit; j++) {
                     FuzzyPreferenzes fuzzyPreferenzes =  FuzzyPreferenzes.getPreferenzes(weights[j]);
                     FuzzyJudgements fuzzyJudgements = FuzzyJudgements.getJudgement(matrix[i][j]);
                     value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
@@ -94,23 +89,6 @@ public class Helper {
             }
         }
         return scores;
-    }
-
-    public static int[] getWeightsOrder(int[] weights){
-        int[] weightsOrder = new int[weights.length];
-        for(int i = 0; i < weights.length; i++){
-            weightsOrder[i] = weights[i];
-        }
-        Arrays.sort(weightsOrder);
-        int[] order = new int[weights.length];
-        for(int i = 0; i < weightsOrder.length; i++){
-            for(int j = 0; j < weights.length; j++){
-                if(weightsOrder[i] == weights[j]){
-                    order[i] = j;
-                }
-            }
-        }
-        return order;
     }
 
     public static int getIndex(int[] array, int number){
@@ -277,20 +255,6 @@ public class Helper {
             System.out.print(" | " + array[i]);
         }
         System.out.println();
-    }
-
-    public static void fill3dArrayWithNegOne(int[][][] array){
-        for(int[][] array2D : array){
-            for (int[] array1D : array2D){
-                Arrays.fill(array1D, -1);
-            }
-        }
-    }
-
-    public static void fill2dArrayWithNegOne(int[][] array){
-        for(int[] array1D : array){
-            Arrays.fill(array1D, -1);
-        }
     }
 
     public static int[] generate1DArray( int size, int minValue, int maxValue) {

@@ -95,7 +95,7 @@ public class Nutzwertanalyse {
                 new ArrayList<>() {{add(3);add(4);add(5);}}
         };
     }
-
+    public static double currentEntropy;
 
     public static void main(String[] args) {
         Date startDate = new Date();
@@ -128,7 +128,7 @@ public class Nutzwertanalyse {
                 double[][] lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
                 indivCounter++;
 
-                while (!containsZero(lowestValue)) {
+                while (currentEntropy != 0) {
 //                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex);
                     indivCounter++;
@@ -148,29 +148,7 @@ public class Nutzwertanalyse {
             sum = 0;
         }
         System.out.println("End: " + endDate);
-        /*
-        - adm und its
-        - nicht quadratisches problem testen
-        -> berechnungszeit checken
-        Berechnung:
-            - 1 Pfad mit idealauflösung 3,5,5, 7 klassen, 1000 Probleme
-            - 100 Pfade mit zufallsauflösung
-            - wenn k unter 1000 soll voll gerechnet werden
-            - 1000 Probleme
-            - Anzahl der DM:    2,3,4,5,6
-            - Anzahl der Crit:  3,4,5,6,7,8,9,10
-            - Anzahl der Alt:   3,4,5,6
-            -
-        - zufällige pfade wählen
-        - Fuzzy 5 lex 5 als Standard
-        - danach fuzzy 3 lex 3
-        - danach fuzzy 7 lex 7
-        - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
-        Teststudie 24.10.
-        gedanken zum ersten intro machen und durchführen
-        -> flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
-        mit vorgesetzten sprechen für zeitlichen ablauf
-         */
+
     }
 
     public static boolean containsZero(double[][] lowestValue){
@@ -182,14 +160,6 @@ public class Nutzwertanalyse {
 
         return false;
     }
-
-    /*
-    nachricht an thony mit den kriterien, alternativen
-    nachricht zum erfragen für den 24.10.
-
-    prüfungsamt schreiben
-     */
-
 
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
         if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {

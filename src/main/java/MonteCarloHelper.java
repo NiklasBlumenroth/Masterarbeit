@@ -247,8 +247,10 @@ public class MonteCarloHelper {
 
         System.out.println("\ncurrent entropy");
         System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+        //getLowestValue(judgementEntropyMatrix, preferenceEntropy);
         date = new Date();
         System.out.println("Ende: " + date);
+        Nutzwertanalyse.currentEntropy = getCurrentEntropy(rankAcceptabilityIndices);
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 

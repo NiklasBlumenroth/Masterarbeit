@@ -33,7 +33,29 @@ ABX-LEX -> https://www.worldscientific.com/doi/10.1142/S0219622020500431
 
 
 
-
+/*
+        - adm und its
+        - nicht quadratisches problem testen
+        -> berechnungszeit checken
+        Berechnung:
+            - 1 Pfad mit idealauflösung 3,5,5, 7 klassen, 1000 Probleme
+            - 100 Pfade mit zufallsauflösung
+            - wenn k unter 1000 soll voll gerechnet werden
+            - 1000 Probleme
+            - Anzahl der DM:    2,3,4,5,6
+            - Anzahl der Crit:  3,4,5,6,7,8,9,10
+            - Anzahl der Alt:   3,4,5,6
+            -
+        - zufällige pfade wählen
+        - Fuzzy 5 lex 5 als Standard
+        - danach fuzzy 3 lex 3
+        - danach fuzzy 7 lex 7
+        - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
+        Teststudie 24.10.
+        gedanken zum ersten intro machen und durchführen
+        -> flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
+        mit vorgesetzten sprechen für zeitlichen ablauf
+         */
 
 
 
