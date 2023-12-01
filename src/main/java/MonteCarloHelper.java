@@ -55,12 +55,6 @@ public class MonteCarloHelper {
         alternative = aggregatedMatrix.length;
         criteria = aggregatedWeights.length;
 
-        System.out.println("\nAggregated Matrix");
-        Helper.show3DArray(aggregatedMatrix);
-
-        System.out.println("\nAggregated Weight");
-        Helper.show2DArray(aggregatedWeights);
-
         int[][] judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
         int[][] preferenceCombinationList = getPreferenceCombinations(aggregatedWeights, lex);
         //k = judgementCombinationList.length * preferenceCombinationList.length;
@@ -251,6 +245,7 @@ public class MonteCarloHelper {
         date = new Date();
         System.out.println("Ende: " + date);
         Nutzwertanalyse.currentEntropy = getCurrentEntropy(rankAcceptabilityIndices);
+
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy);
     }
 

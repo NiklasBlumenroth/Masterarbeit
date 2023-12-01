@@ -5,95 +5,18 @@ public class Nutzwertanalyse {
     public static final int col = 3;
     public static final int numberOfDecisionMaker = 3;
     public static final boolean useStaticProblem = true;
-    public static final boolean lex = true;
+    public static final boolean lex = false;
     public static final boolean full = true;
 
-    public static ArrayList<Object>[][] getMatrix() {
-//        return new ArrayList[][]{
-//                {
-//                        new ArrayList<>(){{add(MP); add(P);}},
-//                        new ArrayList<>(){{add(F); add(G);}},
-//                        new ArrayList<>(){{add(MG); add(VG);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(MP); add(VG);}},
-//                        new ArrayList<>(){{add(F); add(MG);}},
-//                        new ArrayList<>(){{add(F); add(G);}}
-//                },
-//                {
-//                        new ArrayList<>(){{add(MG); add(P); add(VG);}},
-//                        new ArrayList<>(){{add(G); add(P);}},
-//                        new ArrayList<>(){{add(F); add(P);}}
-//                }
-//        };
 
-        return new ArrayList[][]{
-                {
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(2);}},
-                        new ArrayList<>() {{add(0);}}
-                },
-                {
-                        new ArrayList<>() {{add(0);}},
-                        new ArrayList<>() {{add(0);add(1);add(2);}},
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);add(1);add(2);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                },
-                {
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);add(1);add(2);}},
-                        new ArrayList<>() {{ add(0);}},
-                        new ArrayList<>() {{ add(2);}},
-                },
-                {
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(1);add(2);}},
-                        new ArrayList<>() {{add(0);}},
-                        new ArrayList<>() {{add(0);}}
-                },
-                {
-                        new ArrayList<>() {{add(0);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(0);}},
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);add(1);}}
-                },
-                {
-                        new ArrayList<>() {{add(1);}},
-                        new ArrayList<>() {{add(0);}},
-                        new ArrayList<>() {{add(0);add(1);}},
-                        new ArrayList<>() {{add(0);}},
-                        new ArrayList<>() {{add(2);add(1);}},
-                        new ArrayList<>() {{add(1);}}
-                }
-        };
+    public static ArrayList<Object>[][] getMatrix() {
+        return getLexMatrix();
+//        return getFuzzyMatrix();
     }
 
     public static ArrayList<Object>[] getWeights() {
-//        return new ArrayList[]{
-//                new ArrayList<>(){{add(H); add(ML); add(L);}},
-//                new ArrayList<>(){{add(L); add(MH);}},
-//                new ArrayList<>(){{add(M); add(H); add(L);}}
-//        };
-
-        return new ArrayList[]{
-                new ArrayList<>() {{add(0);add(1);add(2);add(3);add(4);}},
-                new ArrayList<>() {{add(0);add(1);add(2);}},
-                new ArrayList<>() {{add(0);add(1);add(2);add(5);}},
-                new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
-                new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
-                new ArrayList<>() {{add(3);add(4);add(5);}}
-        };
+        return getLexWeights();
+//        return getFuzzyWeights();
     }
     public static double currentEntropy;
 
@@ -211,5 +134,97 @@ public class Nutzwertanalyse {
             aggregatedWeights[(Integer) lowestValue.get("lowestI")] = new ArrayList<>();
             aggregatedWeights[(Integer) lowestValue.get("lowestI")].add(randomObject);
         }
+    }
+
+    public static ArrayList<Object>[][] getFuzzyMatrix() {
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>(){{add(2); add(1);}},
+                        new ArrayList<>(){{add(3); add(5);}},
+                        new ArrayList<>(){{add(4); add(6);}}
+                },
+                {
+                        new ArrayList<>(){{add(2); add(6);}},
+                        new ArrayList<>(){{add(3); add(4);}},
+                        new ArrayList<>(){{add(3); add(5);}}
+                },
+                {
+                        new ArrayList<>(){{add(4); add(1); add(6);}},
+                        new ArrayList<>(){{add(5); add(1);}},
+                        new ArrayList<>(){{add(3); add(1);}}
+                }
+        };
+    }
+
+    public static ArrayList<Object>[][] getLexMatrix() {
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(0);}}
+                },
+                {
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);add(2);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);add(2);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                },
+                {
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);add(2);}},
+                        new ArrayList<>() {{ add(0);}},
+                        new ArrayList<>() {{ add(2);}},
+                },
+                {
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);}}
+                },
+                {
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}}
+                },
+                {
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(2);add(1);}},
+                        new ArrayList<>() {{add(1);}}
+                }
+        };
+    }
+
+    public static ArrayList<Object>[] getLexWeights() {
+        return new ArrayList[]{
+                new ArrayList<>() {{add(0);add(1);add(2);add(3);add(4);}},
+                new ArrayList<>() {{add(0);add(1);add(2);}},
+                new ArrayList<>() {{add(0);add(1);add(2);add(5);}},
+                new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(3);add(4);add(5);}}
+        };
+    }
+
+    public static ArrayList<Object>[] getFuzzyWeights() {
+        return new ArrayList[]{
+                new ArrayList<>(){{add(5); add(2); add(1);}},
+                new ArrayList<>(){{add(1); add(4);}},
+                new ArrayList<>(){{add(3); add(5); add(1);}}
+        };
     }
 }

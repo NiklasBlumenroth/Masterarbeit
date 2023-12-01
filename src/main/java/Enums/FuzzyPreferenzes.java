@@ -15,13 +15,13 @@ public enum FuzzyPreferenzes {
 
     public static FuzzyPreferenzes getPreferenzes(int Id){
         return switch (Id) {
-            case 0 -> VH;
-            case 1 -> H;
-            case 2 -> MH;
+            case 6 -> VH;
+            case 5 -> H;
+            case 4 -> MH;
             case 3 -> M;
-            case 4 -> ML;
-            case 5 -> L;
-            case 6 -> VL;
+            case 2 -> ML;
+            case 1 -> L;
+            case 0 -> VL;
             default -> null;
         };
     }
