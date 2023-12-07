@@ -210,6 +210,7 @@ public class MonteCarloHelper {
             System.out.println("\nfinal rankAcceptabilityIndices ");
             Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
         }
+        boolean hasTwoWinner = hasTwoWinner(rankAcceptabilityIndices[0]);
 
         scaleTotalRankingPositions(rankAcceptabilityIndices);
         if(show){
@@ -268,9 +269,26 @@ public class MonteCarloHelper {
         if(show){
             System.out.println("Ende: " + date);
         }
-        Nutzwertanalyse.currentEntropy = getCurrentEntropy(rankAcceptabilityIndices);
+        if(hasTwoWinner){
+            Nutzwertanalyse.currentEntropy = 0;
+        }else {
+            Nutzwertanalyse.currentEntropy = getCurrentEntropy(rankAcceptabilityIndices);
+        }
 
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy, lex);
+    }
+
+    public static boolean hasTwoWinner(double[] rankOneAcceptabilityIndices){
+        int count = 0;
+        for(int i = 0; i < rankOneAcceptabilityIndices.length; i++){
+            if(rankOneAcceptabilityIndices[i] == monteCarloIterations){
+                count++;
+            }
+        }
+        if(count == 2){
+            return true;
+        }
+        return false;
     }
 
     public static int[][] generateIndividualMatrix(int[][][] aggregatedMatrix){
@@ -356,7 +374,7 @@ public class MonteCarloHelper {
             }
 
         }
-        lowestValueObjectList.sort((o1, o2) -> Double.compare(o2.getLowestValue(), o1.getLowestValue()));
+        lowestValueObjectList.sort((o2, o1) -> Double.compare(o2.getLowestValue(), o1.getLowestValue()));
 
         return lowestValueObjectList;
     }

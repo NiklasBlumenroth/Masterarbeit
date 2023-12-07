@@ -73,6 +73,8 @@ public class Nutzwertanalyse {
                 System.out.println("Pfadlänge: " + indivCounter);
                 sum += indivCounter;
                 indivCounter = 0;
+                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
             endDate = new Date();
             System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
@@ -120,7 +122,7 @@ public class Nutzwertanalyse {
 
     public static void getRandomPath(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues, boolean lex) {
         Random random = new Random();
-        for(int i = lowestValues.size() - 1; i > 0; i--){
+        for(int i = 0; i < lowestValues.size(); i++){
             LowestValueObject object = lowestValues.get(i);
             if (object.isJudgement) {
                 if(aggregatedMatrix[object.getI()][object.getJ()].length > 1){
