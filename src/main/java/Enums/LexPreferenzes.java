@@ -30,9 +30,9 @@ public enum LexPreferenzes {
         return null;
     }
 
-    public static int getLexIdByValue(String value){
+    public static int getLexIdByValue(LexPreferenzes value){
         for (LexPreferenzes u : LexPreferenzes.values()){
-            if (value.equals(u.getValue())){
+            if (value == u){
                 return u.getId();
             }
         }

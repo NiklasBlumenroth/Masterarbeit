@@ -24,6 +24,19 @@ public enum LexJudgements {
         };
     }
 
+    public static int getJudgement(LexJudgements lexJudgements){
+        return switch (lexJudgements) {
+            case JA -> 0;
+            case JB -> 1;
+            case JC -> 2;
+            case JD -> 3;
+            case JE -> 4;
+            case JF -> 5;
+            case JG -> 6;
+            default -> -1;
+        };
+    }
+
     LexJudgements(String value) {
         this.value = value;
     }

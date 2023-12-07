@@ -25,7 +25,18 @@ public enum FuzzyPreferenzes {
             default -> null;
         };
     }
-
+    public static int getId(FuzzyPreferenzes fuzzyPreferenzes){
+        return switch (fuzzyPreferenzes) {
+            case VH -> 6;
+            case H -> 5;
+            case MH -> 4;
+            case M -> 3;
+            case ML -> 2;
+            case L -> 1;
+            case VL -> 0;
+            default -> -1;
+        };
+    }
     FuzzyPreferenzes(double value1, double value2, double value3) {
         this.value1 = value1;
         this.value2 = value2;

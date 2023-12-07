@@ -1,13 +1,17 @@
 import java.util.*;
 
 public class Nutzwertanalyse {
-    public static ArrayList<Object>[][] getMatrix() {
-//        return getLexMatrix();
+    public static ArrayList<Object>[][] getMatrix(boolean lex) {
+        if(lex){
+            return getLexMatrix();
+        }
         return getFuzzyMatrix();
     }
 
-    public static ArrayList<Object>[] getWeights() {
-//        return getLexWeights();
+    public static ArrayList<Object>[] getWeights(boolean lex) {
+        if(lex){
+            return getLexWeights();
+        }
         return getFuzzyWeights();
     }
     public static double currentEntropy;
@@ -23,7 +27,7 @@ public class Nutzwertanalyse {
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
-                    rechnen(15, 6, 6, false, false, useStaticProblem, show);
+                    rechnen(15, 6, 6, full, lex, useStaticProblem, show);
                     //rechnen(alt, crit, num, full, lex, useStaticProblem, show);
                 }
             }
@@ -41,8 +45,8 @@ public class Nutzwertanalyse {
             int[][] decisionMakerWeightsList = null;
             if(useStaticProblem){
                 //gets static problem matrix
-                ArrayList<Object>[][] staticAggregatedMatrix = getMatrix();
-                ArrayList<Object>[] staticAggregatedWeights = getWeights();
+                ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
+                ArrayList<Object>[] staticAggregatedWeights = getWeights(lex);
                 //transfer static arraylist problem to matrix filled with judgements and -1
                 aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
                 aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
@@ -58,12 +62,12 @@ public class Nutzwertanalyse {
             double sum = 0;
             int durchlaeufe = 100;
             for (int k = 0; k < durchlaeufe; k++) {
-                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show);
+                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                 indivCounter++;
 
                 while (currentEntropy != 0) {
-                    //getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue);
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show);
+                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
+                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                     indivCounter++;
                 }
                 System.out.println("Pfadlänge: " + indivCounter);
@@ -114,18 +118,30 @@ public class Nutzwertanalyse {
         return aggregatedWeights;
     }
 
-    public static void getRandomPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
+    public static void getRandomPath(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues, boolean lex) {
         Random random = new Random();
-        if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {
-            Integer randomNumber = random.nextInt(aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].size());
-            Object randomObject = aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].get(randomNumber);
-            aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")] = new ArrayList<>();
-            aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].add(randomObject);
-        } else {
-            Integer randomNumber = random.nextInt(aggregatedWeights[(Integer) lowestValue.get("lowestI")].size());
-            Object randomObject = aggregatedWeights[(Integer) lowestValue.get("lowestI")].get(randomNumber);
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")] = new ArrayList<>();
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")].add(randomObject);
+        for(int i = lowestValues.size() - 1; i > 0; i--){
+            LowestValueObject object = lowestValues.get(i);
+            if (object.isJudgement) {
+                if(aggregatedMatrix[object.getI()][object.getJ()].length > 1){
+                    int randomNumber = random.nextInt(aggregatedMatrix[object.getI()][object.getJ()].length);
+                    int newObject = aggregatedMatrix[object.getI()][object.getJ()][randomNumber];
+                    aggregatedMatrix[object.getI()][object.getJ()] = new int[]{newObject};
+                    break;
+                }
+            } else {
+                if(aggregatedWeights[object.getI()].length > 1){
+                    if(lex){
+
+                    }else {
+                        int randomNumber = random.nextInt(aggregatedWeights[object.getI()].length);
+                        int randomObject = aggregatedWeights[object.getI()][randomNumber];
+                        aggregatedWeights[object.getI()] = new int[]{randomObject};
+                        break;
+                    }
+
+                }
+            }
         }
     }
 

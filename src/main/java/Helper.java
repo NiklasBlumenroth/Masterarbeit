@@ -33,8 +33,13 @@ public class Helper {
     }
 
     public static double[] decisionMethod(int[][] matrix, int[] weights, boolean show, boolean lex) {
-        if(show){
+        if(show && lex){
             showMatrixAndWeights(matrix, weights);
+        }else if (show){
+            System.out.println("\n Matrix");
+            show2DArray(matrix);
+            System.out.println("Weigths");
+            show1DArray(weights);
         }
 
         int alt = matrix.length;
@@ -48,13 +53,15 @@ public class Helper {
 
         double[][] sums = new double[matrix.length][matrix[0].length];
         double value;
+
         // create sum for columns
         if(lex){
+            int[] weightsOrder = MonteCarloHelper.getOrder(MonteCarloHelper.getOrder(weights));
             for (int i = 0; i < alt; i++) {
                 double sum = 0.0;
                 String lexSum = "";
                 for (int j = 0; j < weights.length; j++) {
-                    int index = getIndex(weights, j);
+                    int index = getIndex(weightsOrder, j);
                     int value2 = matrix[i][index];
                     LexJudgements judgement = LexJudgements.getJudgement(value2);
                     LexPreferenzes preferenze = LexPreferenzes.getLexValueById(weights[index]);
@@ -176,8 +183,21 @@ public class Helper {
                 System.out.print(objects[i] + ", ");
             }
             System.out.print(objects[objects.length - 1]);
+            System.out.print("]\n");
+        }
+        System.out.println("\n");
+    }
+
+    public static void showAggregatedWeightsArray(int[][] matrix) {
+        for (int[] objects : matrix) {
+            System.out.print("[");
+            for (int i = 0; i < objects.length - 1; i++) {
+                System.out.print(objects[i] + ", ");
+            }
+            System.out.print(objects[objects.length - 1]);
             System.out.print("]");
         }
+        System.out.println("\n");
     }
     public static void showMatrixAndWeights(int[][] matrix, int[] weights) {
         int[][] invert = invertArray(matrix);

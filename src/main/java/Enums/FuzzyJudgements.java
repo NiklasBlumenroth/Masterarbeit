@@ -26,6 +26,19 @@ public enum FuzzyJudgements {
         };
     }
 
+    public static int getId(FuzzyJudgements judgements){
+        return switch (judgements) {
+            case VP -> 0;
+            case P -> 1;
+            case MP -> 2;
+            case F -> 3;
+            case MG -> 4;
+            case G -> 5;
+            case VG -> 6;
+            default -> -1;
+        };
+    }
+
     FuzzyJudgements(double value1, double value2, double value3) {
         this.value1 = value1;
         this.value2 = value2;
