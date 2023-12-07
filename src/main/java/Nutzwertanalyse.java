@@ -66,7 +66,10 @@ public class Nutzwertanalyse {
                 indivCounter++;
 
                 while (currentEntropy != 0) {
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
+//                    System.out.println(currentEntropy);
+                    if(getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex)){
+                        break;
+                    }
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                     indivCounter++;
                 }
@@ -120,15 +123,20 @@ public class Nutzwertanalyse {
         return aggregatedWeights;
     }
 
-    public static void getRandomPath(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues, boolean lex) {
+    public static boolean getRandomPath(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues, boolean lex) {
         Random random = new Random();
         for(int i = 0; i < lowestValues.size(); i++){
             LowestValueObject object = lowestValues.get(i);
             if (object.isJudgement) {
                 if(aggregatedMatrix[object.getI()][object.getJ()].length > 1){
+//                    System.out.println(object);
                     int randomNumber = random.nextInt(aggregatedMatrix[object.getI()][object.getJ()].length);
                     int newObject = aggregatedMatrix[object.getI()][object.getJ()][randomNumber];
+//                    System.out.println(Arrays.toString(aggregatedMatrix[object.getI()][object.getJ()]) + " -> " +newObject);
                     aggregatedMatrix[object.getI()][object.getJ()] = new int[]{newObject};
+                    if(object.getLowestKey() == newObject && object.getLowestValue() == 0.0){
+                        return true;
+                    }
                     break;
                 }
             } else {
@@ -145,6 +153,7 @@ public class Nutzwertanalyse {
                 }
             }
         }
+        return false;
     }
 
     public static ArrayList<Object>[][] getFuzzyMatrix() {

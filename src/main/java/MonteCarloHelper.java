@@ -797,7 +797,7 @@ public class MonteCarloHelper {
 
     @NotNull
     public static int[][] generateAggregatedWeights(@NotNull int[][] dMWList){
-        int[][] aggregatedWeights = new int[dMWList.length][];
+        int[][] aggregatedWeights = new int[dMWList[0].length][];
 
         for(int crit = 0; crit < dMWList[0].length; crit++){
             List<Integer> aggregatedList = new ArrayList<>();
