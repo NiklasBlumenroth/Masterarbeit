@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 public class Nutzwertanalyse {
@@ -15,7 +16,9 @@ public class Nutzwertanalyse {
         return getFuzzyWeights();
     }
     public static double currentEntropy;
-    public static void main(String[] args) {
+    public static String logPath = System.getProperty("user.dir") + "/src/main/resources/logs/";
+    public static String fileName;
+    public static void main(String[] args) throws IOException {
         int[] alternatives = {5, 10, 15};
         int[] criteria = {3, 6};
         int[] numberOfDecisionMakers = {3, 6};
@@ -23,7 +26,10 @@ public class Nutzwertanalyse {
         boolean useStaticProblem = false;
         boolean lex = true;
         boolean show = true;
-
+        Date date = new Date();
+        fileName = logPath + date.toString().replace(" ", "_").replace(":", "_") +".txt";
+        fileExist(fileName);
+        writeTxt(fileName, "newText");
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
@@ -85,7 +91,54 @@ public class Nutzwertanalyse {
         }
         System.out.println("End: " + endDate);
     }
+    private static String readTxt(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+        String txt = "";
+        while((line = br.readLine()) != null){
+            if(line.length() > 5){
+                txt += "\n" + line;
+            }
+        }
+        return txt;
+    }
 
+    private static int getLines(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        int counter = 0;
+        String line;
+        while((line = br.readLine()) != null){
+            if(line.length() > 5){
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    private static void fileExist(String fileName) throws IOException {
+        File file = new File(fileName);
+        if (file.createNewFile()) {
+            System.out.println("File created: " + file.getName());
+        }else {
+            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")-1));
+        }
+    }
+    private static void writeTxt(String fileName, String newText) throws IOException {
+        File myObj = new File(fileName);
+        if (myObj.createNewFile()) {
+            System.out.println("File created: " + myObj.getName());
+        }
+        String fileData = readTxt(fileName);
+        fileData = newText  + fileData;
+        FileOutputStream fos = new FileOutputStream(fileName);
+        fos.write(fileData.getBytes());
+        fos.flush();
+        fos.close();
+    }
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
         if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {
             aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")] = new ArrayList<>();

@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="fix decisionMethod, entropy, lowest value">
+    <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="update fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -441,15 +440,21 @@
     <MESSAGE value="fix: new run if invalid input" />
     <MESSAGE value="update" />
     <MESSAGE value="fix decisionMethod, entropy, lowest value" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix decisionMethod, entropy, lowest value" />
+    <MESSAGE value="update fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="update fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
-          <line>67</line>
+          <line>72</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
