@@ -1,4 +1,7 @@
+import lombok.SneakyThrows;
+
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Nutzwertanalyse {
@@ -15,35 +18,42 @@ public class Nutzwertanalyse {
         }
         return getFuzzyWeights();
     }
+
     public static double currentEntropy;
     public static String logPath = System.getProperty("user.dir") + "/src/main/resources/logs/";
     public static String fileName;
+
     public static void main(String[] args) throws IOException {
         int[] alternatives = {5, 10, 15};
         int[] criteria = {3, 6};
         int[] numberOfDecisionMakers = {3, 6};
+
         boolean full = false;
         boolean useStaticProblem = false;
         boolean lex = true;
-        boolean show = true;
-        Date date = new Date();
-        fileName = logPath + date.toString().replace(" ", "_").replace(":", "_") +".txt";
+        boolean show = false;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss_MM_dd_yyyy");
+        Calendar c = Calendar.getInstance();
+        String curr_date = dateFormat.format(c.getTime());
+
+        fileName = logPath + curr_date +".txt";
         fileExist(fileName);
-        writeTxt(fileName, "newText");
+        Nutzwertanalyse.writeTxt("newText");
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
-                    rechnen(3, 3, 3, full, lex, useStaticProblem, show);
+                    rechnen(15, 6, 6, full, lex, useStaticProblem, show);
                     //rechnen(alt, crit, num, full, lex, useStaticProblem, show);
                 }
             }
         }
     }
 
-    public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show){
+    public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show) throws IOException {
         Date startDate = new Date();
         Date endDate = new Date();
-        System.out.println("Start: " + startDate);
+        Nutzwertanalyse.writeTxt("Start: " + startDate);
         for (int l = 0; l < 10; l++) {
             int[][][] aggregatedMatrix = null;
             int[][] aggregatedWeights = null;
@@ -67,29 +77,33 @@ public class Nutzwertanalyse {
             int indivCounter = 0;
             double sum = 0;
             int durchlaeufe = 100;
+            boolean newProblem = false;
             for (int k = 0; k < durchlaeufe; k++) {
                 List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                 indivCounter++;
 
                 while (currentEntropy != 0) {
-//                    System.out.println(currentEntropy);
-                    if(getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex)){
+                    if(!getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex)){
+                        indivCounter = 0;
+                        newProblem = true;
                         break;
                     }
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                     indivCounter++;
                 }
-                System.out.println("Pfadlänge: " + indivCounter);
-                sum += indivCounter;
+                if(!newProblem){
+                    Nutzwertanalyse.writeTxt("Pfadlänge: " + indivCounter);
+                    sum += indivCounter;
+                }
                 indivCounter = 0;
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
             endDate = new Date();
-            System.out.println(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
+            Nutzwertanalyse.writeTxt(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
             sum = 0;
         }
-        System.out.println("End: " + endDate);
+        Nutzwertanalyse.writeTxt("End: " + endDate);
     }
     private static String readTxt(String fileName) throws IOException {
         File file = new File(fileName);
@@ -122,23 +136,21 @@ public class Nutzwertanalyse {
     private static void fileExist(String fileName) throws IOException {
         File file = new File(fileName);
         if (file.createNewFile()) {
-            System.out.println("File created: " + file.getName());
+            Nutzwertanalyse.writeTxt("File created: " + file.getName());
         }else {
-            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")-1));
+            Nutzwertanalyse.writeTxt("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")-1));
         }
     }
-    private static void writeTxt(String fileName, String newText) throws IOException {
-        File myObj = new File(fileName);
-        if (myObj.createNewFile()) {
-            System.out.println("File created: " + myObj.getName());
-        }
-        String fileData = readTxt(fileName);
-        fileData = newText  + fileData;
-        FileOutputStream fos = new FileOutputStream(fileName);
-        fos.write(fileData.getBytes());
-        fos.flush();
-        fos.close();
+
+    @SneakyThrows
+    public static void writeTxt(String newText) {
+        System.out.println(newText);
+        FileWriter fw = new FileWriter(fileName,true); //the true will append the new data
+        fw.write(newText + "\n");//appends the string to the file
+        fw.close();
+
     }
+
     public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
         if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {
             aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")] = new ArrayList<>();
@@ -182,33 +194,104 @@ public class Nutzwertanalyse {
             LowestValueObject object = lowestValues.get(i);
             if (object.isJudgement) {
                 if(aggregatedMatrix[object.getI()][object.getJ()].length > 1){
-//                    System.out.println(object);
                     int randomNumber = random.nextInt(aggregatedMatrix[object.getI()][object.getJ()].length);
                     int newObject = aggregatedMatrix[object.getI()][object.getJ()][randomNumber];
-//                    System.out.println(Arrays.toString(aggregatedMatrix[object.getI()][object.getJ()]) + " -> " +newObject);
                     aggregatedMatrix[object.getI()][object.getJ()] = new int[]{newObject};
-                    if(object.getLowestKey() == newObject && object.getLowestValue() == 0.0){
-                        return true;
-                    }
-                    break;
+                    return true;
                 }
             } else {
                 if(aggregatedWeights[object.getI()].length > 1){
                     if(lex){
-
+                        int randomNumber = random.nextInt(aggregatedWeights[object.getI()].length);
+                        int randomObject = aggregatedWeights[object.getI()][randomNumber];
+                        //System.out.println(randomObject + " from " + object.getI());
+                        aggregatedWeights[object.getI()] = new int[]{randomObject};
+                        return validateWeights(aggregatedWeights);
                     }else {
                         int randomNumber = random.nextInt(aggregatedWeights[object.getI()].length);
                         int randomObject = aggregatedWeights[object.getI()][randomNumber];
                         aggregatedWeights[object.getI()] = new int[]{randomObject};
-                        break;
+                        return true;
                     }
 
                 }
             }
         }
+        return true;
+    }
+    public static void doubleCut(int[][] aggregatedWeights){
+        for(int i = 0; i < aggregatedWeights.length; i++){
+            if(aggregatedWeights[i].length == 2){
+                //save couple
+                Set<Integer> set = new HashSet<>();
+                set.add(aggregatedWeights[i][0]);
+                set.add(aggregatedWeights[i][1]);
+                //search for another couple with same values
+                for(int j = 0; j < aggregatedWeights.length; j++){
+                    if(aggregatedWeights[j].length == 2 && i != j){
+                        if(set.contains(aggregatedWeights[j][0]) && set.contains(aggregatedWeights[j][1])){
+                            //cut numbers from set except for positions i and j
+                            for(int k = 0; k < aggregatedWeights.length; k++){
+                                if(k != i && k != j){
+                                    aggregatedWeights[k] = cutLexRandomObject(aggregatedWeights[j], (Integer) set.toArray()[0]);
+                                    aggregatedWeights[k] = cutLexRandomObject(aggregatedWeights[j], (Integer) set.toArray()[1]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public static boolean validateWeights(int[][] aggregatedWeights){
+        for(int[] array : aggregatedWeights){
+            //double cut
+            //doubleCut(aggregatedWeights);
+            //single cut
+            cutIfHasOnlyOne(aggregatedWeights);
+        }
+        //little validate check
+        for(int[] array : aggregatedWeights){
+            if(array.length == 0){
+                System.out.println();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void cutIfHasOnlyOne(int[][] aggregatedWeights){
+        for(int i = 0; i < aggregatedWeights.length; i++){
+            if(aggregatedWeights[i].length == 1){
+                int randomObject = aggregatedWeights[i][0];
+                for(int j = 0; j < aggregatedWeights.length; j++){
+                    if(hasElem(aggregatedWeights[j], randomObject) && j != i){
+                        aggregatedWeights[j] = cutLexRandomObject(aggregatedWeights[j], randomObject);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public static boolean hasElem(int[] array, int object){
+        for (int j : array) {
+            if (j == object) return true;
+        }
         return false;
     }
 
+    public static int[] cutLexRandomObject(int[] array, int randomObject){
+        int[] newArray = new int[array.length-1];
+        int count = 0;
+        for(int i = 0; i < array.length; i++){
+            if(array[i] != randomObject){
+                newArray[count] = array[i];
+                count++;
+            }
+        }
+        return newArray;
+    }
     public static ArrayList<Object>[][] getFuzzyMatrix() {
         return new ArrayList[][]{
                 {

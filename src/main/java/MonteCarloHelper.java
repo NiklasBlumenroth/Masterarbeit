@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class MonteCarloHelper {
-    public static int monteCarloIterations = 10_000;
+    public static int monteCarloIterations = 10_00;
     public static int iteration;
     public static int alternative;
     public static int criteria;
@@ -28,12 +28,12 @@ public class MonteCarloHelper {
                 .flatMap(ai -> Arrays.stream(D).boxed()
                         .map(bi -> new int[]{ai, bi}))
                 .toArray(int[][]::new);
-        System.out.println("Cartesian product:\n" + Arrays.deepToString(AB));
-        System.out.println("Cartesian product:\n" + Arrays.deepToString(CD));
+        Nutzwertanalyse.writeTxt("Cartesian product:" + Arrays.deepToString(AB));
+        Nutzwertanalyse.writeTxt("Cartesian product:" + Arrays.deepToString(CD));
 
         int[][][] ABCD = cartesianProduct(AB, CD);
 
-        System.out.println("Cartesian product:\n" + Arrays.deepToString(ABCD));
+        Nutzwertanalyse.writeTxt("Cartesian product:" + Arrays.deepToString(ABCD));
     }
 
     public static int[][][] cartesianProduct(int[][] s1, int[][] s2) {
@@ -51,14 +51,14 @@ public class MonteCarloHelper {
 
     public static List<LowestValueObject> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex, boolean show, boolean useStaticProblem){
         Date date = new Date();
-        if(show) System.out.println("Start: " + date);
+        if(show) Nutzwertanalyse.writeTxt("Start: " + date);
         alternative = aggregatedMatrix.length;
         criteria = aggregatedWeights.length;
 
         int[][] judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
         int[][] preferenceCombinationList = getPreferenceCombinations(aggregatedWeights, lex);
         //k = judgementCombinationList.length * preferenceCombinationList.length;
-        //System.out.println("\nAggregated K: " + k);
+        //Nutzwertanalyse.writeTxt("Aggregated K: " + k);
 
         int[][] sawMatrix = null;
         int[] sawWeights = null;
@@ -126,22 +126,22 @@ public class MonteCarloHelper {
 
         //monteCarloSimulation
         if(k < 1000){
-            iteration = k;
+            iteration = k-1;
         }else{
-            iteration = monteCarloIterations + 1;
+            iteration = monteCarloIterations;
         }
         if(full){
-            iteration = k;
+            iteration = k-1;
         }else{
-            iteration = monteCarloIterations + 1;
+            iteration = monteCarloIterations;
         }
         //monteCarloSimulation
         int prefCounter = 0;
         int jugCounter = 0;
-        for(int i = 0; i < iteration - 1; i++){
+        for(int i = 0; i < iteration; i++){
             if(useStaticProblem){
                 if(i % 100_000 == 0){
-                    System.out.println(i);
+                    Nutzwertanalyse.writeTxt("" + i);
                 }
             }
             if(full){
@@ -169,25 +169,32 @@ public class MonteCarloHelper {
                 }
             }
 
-            rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
+            rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, show, lex);
 
-            rankingPosition = getRanksArray(rankingTotalPoints);
-            System.out.println("\nranking ");
-            Helper.show1DArray(rankingPosition);
-            addRanking(rankAcceptabilityIndices, rankingPosition);
+            if(show){
+                rankingPosition = getRanksArray(rankingTotalPoints);
+                Nutzwertanalyse.writeTxt("\nranking ");
+                Helper.show1DArray(rankingPosition);
+                addRanking(rankAcceptabilityIndices, rankingPosition);
 
-            System.out.println("\nrankAcceptabilityIndices ");
-            Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+                Nutzwertanalyse.writeTxt("\nrankAcceptabilityIndices ");
+                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+            }else {
+                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, show, lex);
+                rankingPosition = getRanksArray(rankingTotalPoints);
+                addRanking(rankAcceptabilityIndices, rankingPosition);
+            }
+
 
 //            if(i > 38928000 && useStaticProblem){
 //                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
 //
 //                rankingPosition = getRanksArray(rankingTotalPoints);
-//                System.out.println("\nranking ");
+//                Nutzwertanalyse.writeTxt("ranking ");
 //                Helper.show1DArray(rankingPosition);
 //                addRanking(rankAcceptabilityIndices, rankingPosition);
 //
-//                System.out.println("\nrankAcceptabilityIndices ");
+//                Nutzwertanalyse.writeTxt("rankAcceptabilityIndices ");
 //                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 //            }else {
 //                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
@@ -208,30 +215,29 @@ public class MonteCarloHelper {
         }
         if(show){
 
-            System.out.println("\nIterations: " + iteration);
-            System.out.println("\nk: " + k);
+            Nutzwertanalyse.writeTxt("Iterations: " + iteration);
+            Nutzwertanalyse.writeTxt("k: " + k);
 
-            System.out.println("\nAggregated Matrix");
+            Nutzwertanalyse.writeTxt("Aggregated Matrix");
             Helper.show3DArray(aggregatedMatrix);
 
-            System.out.println("\nAggregated Weight");
+            Nutzwertanalyse.writeTxt("Aggregated Weight");
             Helper.showAggregatedWeightsArray(aggregatedWeights);
 
-            System.out.println("\nfinal rankAcceptabilityIndices ");
+            Nutzwertanalyse.writeTxt("final rankAcceptabilityIndices ");
             Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
         }
         boolean hasTwoWinner = hasTwoWinner(rankAcceptabilityIndices[0]);
 
         scaleTotalRankingPositions(rankAcceptabilityIndices);
         if(show){
-            System.out.println("\nfinal rankAcceptabilityIndices scaled");
+            Nutzwertanalyse.writeTxt("final rankAcceptabilityIndices scaled");
             Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
         }
-
         scaleAggregatedMatrixMap(objectCurrentJudgementAcceptabilityIndices);
         if(show){
             for(int j = 0; j < alternative; j++){
-                System.out.println("\ncurrentJudgementAcceptabilityIndex for a" + j);
+                Nutzwertanalyse.writeTxt("currentJudgementAcceptabilityIndex for a" + j);
                 Helper.show3DArray(objectCurrentJudgementAcceptabilityIndices[j]);
             }
         }
@@ -239,7 +245,7 @@ public class MonteCarloHelper {
         scaleAggregatedWeightsMap(objectCurrentPreferenceAcceptabilityIndices);
         if(show){
             for (int i = 0; i < criteria; i++){
-                System.out.println("\ncurrentPreferenceAcceptabilityIndex for a" + i);
+                Nutzwertanalyse.writeTxt("currentPreferenceAcceptabilityIndex for a" + i);
                 Helper.show2DArray(objectCurrentPreferenceAcceptabilityIndices[i]);
             }
         }
@@ -247,7 +253,7 @@ public class MonteCarloHelper {
         fillPotentialJudgementAcceptabilityIndices(objectCurrentJudgementAcceptabilityIndices, objectPotentialJudgementAcceptabilityIndices);
         if(show){
             for(int j = 0; j < alternative; j++){
-                System.out.println("\npotentialJudgementAcceptabilityIndex for a" + j);
+                Nutzwertanalyse.writeTxt("potentialJudgementAcceptabilityIndex for a" + j);
                 Helper.show3DArray(objectPotentialJudgementAcceptabilityIndices[j]);
             }
         }
@@ -255,29 +261,29 @@ public class MonteCarloHelper {
         fillPotentialAggregatedWeightsRankingMap(objectCurrentPreferenceAcceptabilityIndices, objectPotentialPreferenceAcceptabilityIndices);
         if(show){
             for (int i = 0; i < criteria; i++){
-                System.out.println("\npotentialPreferenceAcceptabilityIndex for a" + i);
+                Nutzwertanalyse.writeTxt("potentialPreferenceAcceptabilityIndex for a" + i);
                 Helper.show2DArray(objectPotentialPreferenceAcceptabilityIndices[i]);
             }
         }
 
         Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices, lex);
         if(show){
-            System.out.println("\njudgementEntropyMatrix");
+            Nutzwertanalyse.writeTxt("judgementEntropyMatrix");
             Helper.showEntropyMatrix(judgementEntropyMatrix);
         }
 
         Map<Object, Double>[] preferenceEntropy = getEntropyPreference(objectPotentialPreferenceAcceptabilityIndices, lex);
         if(show){
-            System.out.println("\npreferenceEntropy");
+            Nutzwertanalyse.writeTxt("preferenceEntropy");
             Helper.showEntropyWeights(preferenceEntropy);
 
-            System.out.println("\ncurrent entropy");
-            System.out.println(getCurrentEntropy(rankAcceptabilityIndices));
+            Nutzwertanalyse.writeTxt("current entropy");
+            Nutzwertanalyse.writeTxt("" + getCurrentEntropy(rankAcceptabilityIndices));
         }
 
         date = new Date();
         if(show){
-            System.out.println("Ende: " + date);
+            Nutzwertanalyse.writeTxt("Ende: " + date);
         }
         if(hasTwoWinner){
             Nutzwertanalyse.currentEntropy = 0;
@@ -286,6 +292,14 @@ public class MonteCarloHelper {
         }
 
         return getLowestValue(judgementEntropyMatrix, preferenceEntropy, lex);
+    }
+
+    public static int getPosCounter(double[] array){
+        int count = 0;
+        for(double value : array){
+            if(value >= 0) count++;
+        }
+        return count;
     }
 
     public static boolean hasTwoWinner(double[] rankOneAcceptabilityIndices){

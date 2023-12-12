@@ -36,9 +36,9 @@ public class Helper {
         if(show && lex){
             showMatrixAndWeights(matrix, weights);
         }else if (show){
-            System.out.println("\n Matrix");
+            String line = "\nMatrix";
             show2DArray(matrix);
-            System.out.println("Weigths");
+            line += "\nWeigths";
             show1DArray(weights);
         }
 
@@ -91,9 +91,6 @@ public class Helper {
             for(int i = 0; i < lexScores.length; i++){
                 scores[i] = lexScores.length / (getPlacement(temp, lexScores[i]) * 1.0 + 1);
             }
-            if(show){
-                show1DArray(scores);
-            }
         }
         return scores;
     }
@@ -139,98 +136,106 @@ public class Helper {
         return invertedMatrix;
     }
     public static void showEntropyMatrix(Map<Object, Double>[][] matrix){
+        String line = "";
         Map<Object, Double>[][] invertedMatrix = invertMatrix(matrix);
         for (Map<Object, Double>[] maps : invertedMatrix) {
             for (Map<Object, Double> map : maps) {
-                System.out.print(map);
+                line += map.toString();
             }
-            System.out.println();
+            line += "\n";
         }
+
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static void showEntropyWeights(Map<Object, Double>[] weights){
+        String line = "";
         for(int j = 0; j < weights.length; j++){
-            System.out.print(weights[j]);
+            line += weights[j].toString();
         }
-        System.out.println();
+        line += "\n";
+        Nutzwertanalyse.writeTxt(line);
     }
     public static void show3DArray(int[][][] matrix) {
+        String line = "";
         int[][][] invert = invertArray3D(matrix);
         for (int[][] objects : invert) {
             for (int i = 0; i < objects.length - 1; i++) {
-                System.out.print(Arrays.toString(objects[i]) + " : ");
+                line += Arrays.toString(objects[i]) + " : ";
             }
-            System.out.print(Arrays.toString(objects[objects.length - 1]));
-            System.out.println();
+            line += Arrays.toString(objects[objects.length - 1]) + "\n";
         }
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static void show3DArray(double[][][] matrix) {
+        String line = "";
         double[][][] invert = invertArray3D(matrix);
         for (double[][] objects : invert) {
             for (int i = 0; i < objects.length - 1; i++) {
-                System.out.print(Arrays.toString(objects[i]) + " : ");
+                line += Arrays.toString(objects[i]) + " ";
             }
-            System.out.print(Arrays.toString(objects[objects.length - 1]));
-            System.out.println();
+            line += Arrays.toString(objects[objects.length - 1]) + "\n";
         }
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static void show2DArray(int[][] matrix) {
+        String line = "";
         for (int[] objects : matrix) {
-            System.out.print("[");
+            line += "[";
             for (int i = 0; i < objects.length - 1; i++) {
-                System.out.print(objects[i] + ", ");
+                line += objects[i] + ", ";
             }
-            System.out.print(objects[objects.length - 1]);
-            System.out.print("]\n");
+            line += String.valueOf(objects[objects.length - 1]);
+            line += "]\n";
         }
-        System.out.println("\n");
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static void showAggregatedWeightsArray(int[][] matrix) {
+        String line = "";
         for (int[] objects : matrix) {
-            System.out.print("[");
+            line += "[";
             for (int i = 0; i < objects.length - 1; i++) {
-                System.out.print(objects[i] + ", ");
+                line += objects[i] + ", ";
             }
-            System.out.print(objects[objects.length - 1]);
-            System.out.print("]");
+            line += String.valueOf(objects[objects.length - 1]);
+            line += "]\n";
         }
-        System.out.println("\n");
+        Nutzwertanalyse.writeTxt(line);
     }
     public static void showMatrixAndWeights(int[][] matrix, int[] weights) {
         int[][] invert = invertArray(matrix);
-        System.out.println("\n");
+        String line = "Matrix | Weights\n";
         for (int j = 0; j < invert.length; j++) {
             for (int i = 0; i < invert[j].length - 1; i++) {
-                System.out.print(invert[j][i] + " : ");
+                line += invert[j][i] + " : ";
             }
-            System.out.print(invert[j][invert[j].length - 1]);
-            System.out.print(" | " + weights[j]);
-            System.out.println();
+            line += String.valueOf(invert[j][invert[j].length - 1]);
+            line += " | " + weights[j] + "\n";
         }
-        System.out.println("\n");
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static void show2DArray(double[][] matrix) {
+        String line = "";
 //        int[][] invert = invertArray(matrix);
         for (double[] objects : matrix) {
-            for (int i = 0; i < objects.length - 1; i++) {
-                System.out.print(objects[i] + " : ");
-            }
-            System.out.print(objects[objects.length - 1]);
-            System.out.println();
+            line += Arrays.toString(objects);
         }
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static void showAcceptabilityIndices(double[][] matrix) {
+        String line = "";
         for (double[] objects : matrix) {
             for (double object : objects) {
-                System.out.print(object + " : ");
+                line += object + " : ";
             }
-            System.out.println();
+            line += "\n";
         }
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static int[][] invertArray(int[][] array) {
@@ -285,21 +290,21 @@ public class Helper {
     }
 
     public static void show1DArray(int[] array) {
-        System.out.print(array[0]);
+        String line = String.valueOf(array[0]);
 
         for (int i = 1; i < array.length; i++) {
-            System.out.print(" | " + array[i]);
+            line += " | " + array[i];
         }
-        System.out.println();
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static void show1DArray(double[] array) {
-        System.out.print(array[0]);
+        String line = String.valueOf(array[0]);
 
         for (int i = 1; i < array.length; i++) {
-            System.out.print(" | " + array[i]);
+            line += " | " + array[i];
         }
-        System.out.println();
+        Nutzwertanalyse.writeTxt(line);
     }
 
     public static int[] generate1DArray( int size, int minValue, int maxValue) {
