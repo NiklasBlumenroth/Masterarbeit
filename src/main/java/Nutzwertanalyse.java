@@ -21,13 +21,13 @@ public class Nutzwertanalyse {
         int[] numberOfDecisionMakers = {3, 6};
         boolean full = false;
         boolean useStaticProblem = false;
-        boolean lex = false;
-        boolean show = false;
+        boolean lex = true;
+        boolean show = true;
 
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
-                    rechnen(15, 6, 6, full, lex, useStaticProblem, show);
+                    rechnen(3, 3, 3, full, lex, useStaticProblem, show);
                     //rechnen(alt, crit, num, full, lex, useStaticProblem, show);
                 }
             }

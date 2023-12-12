@@ -169,23 +169,33 @@ public class MonteCarloHelper {
                 }
             }
 
-            if(i > 38928000 && useStaticProblem){
-                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, false, lex);
+            rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
 
-                rankingPosition = getRanksArray(rankingTotalPoints);
-                System.out.println("\nranking ");
-                Helper.show1DArray(rankingPosition);
-                addRanking(rankAcceptabilityIndices, rankingPosition);
+            rankingPosition = getRanksArray(rankingTotalPoints);
+            System.out.println("\nranking ");
+            Helper.show1DArray(rankingPosition);
+            addRanking(rankAcceptabilityIndices, rankingPosition);
 
-                System.out.println("\nrankAcceptabilityIndices ");
-                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
-            }else {
-                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, false, lex);
+            System.out.println("\nrankAcceptabilityIndices ");
+            Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
 
-                rankingPosition = getRanksArray(rankingTotalPoints);
-                addRanking(rankAcceptabilityIndices, rankingPosition);
-
-            }
+//            if(i > 38928000 && useStaticProblem){
+//                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
+//
+//                rankingPosition = getRanksArray(rankingTotalPoints);
+//                System.out.println("\nranking ");
+//                Helper.show1DArray(rankingPosition);
+//                addRanking(rankAcceptabilityIndices, rankingPosition);
+//
+//                System.out.println("\nrankAcceptabilityIndices ");
+//                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
+//            }else {
+//                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
+//
+//                rankingPosition = getRanksArray(rankingTotalPoints);
+//                addRanking(rankAcceptabilityIndices, rankingPosition);
+//
+//            }
 
             //sawMatrix + ranking = countingMatrixRankingMap
             countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
