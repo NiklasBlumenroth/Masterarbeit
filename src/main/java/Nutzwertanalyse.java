@@ -6,17 +6,19 @@ import java.util.*;
 
 public class Nutzwertanalyse {
     public static ArrayList<Object>[][] getMatrix(boolean lex) {
-        if(lex){
-            return getLexMatrix();
-        }
-        return getFuzzyMatrix();
+        return getTestLexMatrix();
+//        if(lex){
+//            return getLexMatrix();
+//        }
+//        return getFuzzyMatrix();
     }
 
     public static ArrayList<Object>[] getWeights(boolean lex) {
-        if(lex){
-            return getLexWeights();
-        }
-        return getFuzzyWeights();
+        return getTestLexWeights();
+//        if(lex){
+//            return getLexWeights();
+//        }
+//        return getFuzzyWeights();
     }
 
     public static double currentEntropy;
@@ -28,8 +30,8 @@ public class Nutzwertanalyse {
         int[] criteria = {3, 6};
         int[] numberOfDecisionMakers = {3, 6};
 
-        boolean full = false;
-        boolean useStaticProblem = false;
+        boolean full = true;
+        boolean useStaticProblem = true;
         boolean lex = true;
         boolean show = false;
 
@@ -43,7 +45,7 @@ public class Nutzwertanalyse {
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
-                    rechnen(15, 6, 6, full, lex, useStaticProblem, show);
+                    rechnen(3, 3, 3, full, lex, useStaticProblem, show);
                     //rechnen(alt, crit, num, full, lex, useStaticProblem, show);
                 }
             }
@@ -53,12 +55,16 @@ public class Nutzwertanalyse {
     public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show) throws IOException {
         Date startDate = new Date();
         Date endDate = new Date();
+        int[][][] aggregatedMatrix = null;
+        int[][] aggregatedWeights = null;
+        int[][][] decisionMakerList = null;
+        int[][] decisionMakerWeightsList = null;
+        int indivPathLength = 0;
+        double avgPathLength = 0;
+        int durchlaeufe = 100;
+        boolean newProblem = false;
         Nutzwertanalyse.writeTxt("Start: " + startDate);
         for (int l = 0; l < 10; l++) {
-            int[][][] aggregatedMatrix = null;
-            int[][] aggregatedWeights = null;
-            int[][][] decisionMakerList = null;
-            int[][] decisionMakerWeightsList = null;
             if(useStaticProblem){
                 //gets static problem matrix
                 ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
@@ -74,34 +80,32 @@ public class Nutzwertanalyse {
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
 
-            int indivCounter = 0;
-            double sum = 0;
-            int durchlaeufe = 100;
-            boolean newProblem = false;
             for (int k = 0; k < durchlaeufe; k++) {
                 List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-                indivCounter++;
-
+                indivPathLength++;
+                System.out.println(currentEntropy);
                 while (currentEntropy != 0) {
                     if(!getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex)){
-                        indivCounter = 0;
+                        indivPathLength = 0;
                         newProblem = true;
                         break;
                     }
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-                    indivCounter++;
+                    indivPathLength++;
+                    System.out.println(currentEntropy);
                 }
                 if(!newProblem){
-                    Nutzwertanalyse.writeTxt("Pfadlänge: " + indivCounter);
-                    sum += indivCounter;
+                    Nutzwertanalyse.writeTxt("Pfadlänge: " + indivPathLength);
+                    avgPathLength += indivPathLength;
                 }
-                indivCounter = 0;
+                newProblem = false;
+                indivPathLength = 0;
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
             endDate = new Date();
-            Nutzwertanalyse.writeTxt(l + " Durchschnittliche Pfadlänge = " + sum / durchlaeufe + " : " + endDate);
-            sum = 0;
+            Nutzwertanalyse.writeTxt(l + " Durchschnittliche Pfadlänge = " + avgPathLength / durchlaeufe + " : " + endDate);
+            avgPathLength = 0;
         }
         Nutzwertanalyse.writeTxt("End: " + endDate);
     }
@@ -148,17 +152,23 @@ public class Nutzwertanalyse {
         FileWriter fw = new FileWriter(fileName,true); //the true will append the new data
         fw.write(newText + "\n");//appends the string to the file
         fw.close();
-
     }
 
-    public static void getIdealPath(ArrayList<Object>[][] aggregatedMatrix, ArrayList<Object>[] aggregatedWeights, Map<String, Object> lowestValue) {
-        if ((Boolean) lowestValue.get("lowestValueIsJudgement")) {
-            aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")] = new ArrayList<>();
-            aggregatedMatrix[(Integer) lowestValue.get("lowestI")][(Integer) lowestValue.get("lowestJ")].add(lowestValue.get("lowestKey"));
-        } else {
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")] = new ArrayList<>();
-            aggregatedWeights[(Integer) lowestValue.get("lowestI")].add(lowestValue.get("lowestKey"));
+    public static boolean getIdealPath(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues, boolean lex) {
+        for (LowestValueObject object : lowestValues) {
+            if (object.isJudgement) {
+                if (aggregatedMatrix[object.getI()][object.getJ()].length > 1) {
+                    aggregatedMatrix[object.getI()][object.getJ()] = new int[]{object.getLowestKey()};
+                    return true;
+                }
+            } else {
+                if (aggregatedWeights[object.getI()].length > 1) {
+                    aggregatedWeights[object.getI()] = new int[]{object.getLowestKey()};
+                    if (lex) return validateWeights(aggregatedWeights);
+                }
+            }
         }
+        return true;
     }
 
     public static int[][][] transferStaticAggregatedMatrixToIntArray(ArrayList<Object>[][] staticAggregatedMatrix){
@@ -373,6 +383,70 @@ public class Nutzwertanalyse {
                 new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
                 new ArrayList<>() {{add(0);add(1);add(3);add(4);add(5);}},
                 new ArrayList<>() {{add(3);add(4);add(5);}}
+        };
+    }
+
+    public static ArrayList<Object>[][] getTestLexMatrix() {
+        return new ArrayList[][]{
+                {
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(2);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);}}
+                },
+                {
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);}},
+                },
+                {
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                },
+                {
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(1);}}
+                },
+                {
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(1);add(2);}}
+                },
+                {
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);add(1);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(1);add(2);}},
+                        new ArrayList<>() {{add(0);}},
+                        new ArrayList<>() {{add(1);}}
+                }
+        };
+    }
+
+    public static ArrayList<Object>[] getTestLexWeights() {
+        return new ArrayList[]{
+                new ArrayList<>() {{add(0);add(1);add(2);add(3);add(4);}},
+                new ArrayList<>() {{add(1);add(2);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(0);add(1);add(2);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(0);add(3);add(4);add(5);}},
+                new ArrayList<>() {{add(0);add(1);add(2);add(3);}},
+                new ArrayList<>() {{add(1);add(2);add(3);add(4);add(5);}}
         };
     }
 

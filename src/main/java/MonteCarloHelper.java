@@ -15,40 +15,6 @@ public class MonteCarloHelper {
     public static long size = 0;
     public static int iterationNumber = 0;
 
-    public static void main(String[] args) {
-        int[] A = {1, 2};
-        int[] B = {3};
-        int[] C = {5, 6};
-        int[] D = {7, 8};
-        int[][] AB = Arrays.stream(A).boxed()
-                .flatMap(ai -> Arrays.stream(B).boxed()
-                        .map(bi -> new int[]{ai, bi}))
-                .toArray(int[][]::new);
-        int[][] CD = Arrays.stream(C).boxed()
-                .flatMap(ai -> Arrays.stream(D).boxed()
-                        .map(bi -> new int[]{ai, bi}))
-                .toArray(int[][]::new);
-        Nutzwertanalyse.writeTxt("Cartesian product:" + Arrays.deepToString(AB));
-        Nutzwertanalyse.writeTxt("Cartesian product:" + Arrays.deepToString(CD));
-
-        int[][][] ABCD = cartesianProduct(AB, CD);
-
-        Nutzwertanalyse.writeTxt("Cartesian product:" + Arrays.deepToString(ABCD));
-    }
-
-    public static int[][][] cartesianProduct(int[][] s1, int[][] s2) {
-        int size1 = s1.length;
-        int size2 = s2.length;
-        int[][][] result = new int[size1 * size2][2][2];
-        for (int i = 0, d = 0; i < size1; ++i) {
-            for (int j = 0; j < size2; ++j, ++d) {
-                result[d][0] = s1[i];
-                result[d][1] = s2[j];
-            }
-        }
-        return result;
-    }
-
     public static List<LowestValueObject> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex, boolean show, boolean useStaticProblem){
         Date date = new Date();
         if(show) Nutzwertanalyse.writeTxt("Start: " + date);
@@ -57,7 +23,6 @@ public class MonteCarloHelper {
 
         int[][] judgementCombinationList = getJudgementCombinations(aggregatedMatrix);
         int[][] preferenceCombinationList = getPreferenceCombinations(aggregatedWeights, lex);
-        //k = judgementCombinationList.length * preferenceCombinationList.length;
         //Nutzwertanalyse.writeTxt("Aggregated K: " + k);
 
         int[][] sawMatrix = null;
@@ -185,36 +150,15 @@ public class MonteCarloHelper {
                 addRanking(rankAcceptabilityIndices, rankingPosition);
             }
 
-
-//            if(i > 38928000 && useStaticProblem){
-//                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
-//
-//                rankingPosition = getRanksArray(rankingTotalPoints);
-//                Nutzwertanalyse.writeTxt("ranking ");
-//                Helper.show1DArray(rankingPosition);
-//                addRanking(rankAcceptabilityIndices, rankingPosition);
-//
-//                Nutzwertanalyse.writeTxt("rankAcceptabilityIndices ");
-//                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
-//            }else {
-//                rankingTotalPoints = Helper.decisionMethod(sawMatrix, sawWeights, true, lex);
-//
-//                rankingPosition = getRanksArray(rankingTotalPoints);
-//                addRanking(rankAcceptabilityIndices, rankingPosition);
-//
-//            }
-
             //sawMatrix + ranking = countingMatrixRankingMap
             countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
         }
-
-        if(full){
+        if(useStaticProblem){
             show = true;
         }
         if(show){
-
             Nutzwertanalyse.writeTxt("Iterations: " + iteration);
             Nutzwertanalyse.writeTxt("k: " + k);
 
