@@ -32,7 +32,7 @@ public class MonteCarloHelper {
         double[][] rankAcceptabilityIndices = new double[alternative][alternative];
         //fill ranking counter with 0
         for(int i = 0; i < alternative; i++){
-            for(int j = 0; j < criteria; j++){
+            for(int j = 0; j < alternative; j++){
                 rankAcceptabilityIndices[i][j] = 0;
             }
         }
@@ -121,7 +121,12 @@ public class MonteCarloHelper {
             }else{
                 Random random = new Random();
                 int rngNumberW = -1;
-                rngNumberW = random.nextInt(preferenceCombinationList.length);
+                try{
+                    rngNumberW = random.nextInt(preferenceCombinationList.length);
+                }catch (Exception e){
+                    Nutzwertanalyse.newProblem = true;
+                    return new ArrayList<>();
+                }
 
                 sawWeights = preferenceCombinationList[rngNumberW];
                 if(individual){
@@ -257,7 +262,7 @@ public class MonteCarloHelper {
                 count++;
             }
         }
-        if(count == 2){
+        if(count >= 2){
             return true;
         }
         return false;

@@ -45,8 +45,8 @@ public class Nutzwertanalyse {
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
-                    rechnen(6, 6, 6, full, lex, useStaticProblem, show);
-//                    rechnen(alt, crit, num, full, lex, useStaticProblem, show);
+                    //rechnen(6, 6, 6, full, lex, useStaticProblem, show);
+                    rechnen(alt, crit, num, full, lex, useStaticProblem, show);
                 }
             }
         }
@@ -74,7 +74,7 @@ public class Nutzwertanalyse {
         int durchlaeufe = 100;
 
         int linesInFile = getLines(fileName);
-        for (int l = 0; l < 10; l++) {
+        for (int l = linesInFile; l < 100; l++) {
             if(useStaticProblem){
                 //gets static problem matrix
                 ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
@@ -92,10 +92,19 @@ public class Nutzwertanalyse {
 
             for (int k = 0; k < durchlaeufe; k++) {
                 List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
+                if(lowestValue.size() == 0){
+                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
+                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
+                    //generates aggregated matrix and fill with -1
+                    aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                    aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+                    k--;
+                    newProblem = false;
+                    continue;
+                }
                 indivPathLength++;
 
                 while (currentEntropy != 0) {
-//                    System.out.println("Entropy = " + currentEntropy);
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
                     if(newProblem){
                         indivPathLength = 0;
@@ -110,7 +119,6 @@ public class Nutzwertanalyse {
                     k--;
                     newProblem = false;
                 }else {
-                    //                System.out.println("Problem done.");
 //                    Nutzwertanalyse.writeTxt(k + ": Pfadlänge: " + indivPathLength);
                     avgPathLength += indivPathLength;
                 }
@@ -121,7 +129,6 @@ public class Nutzwertanalyse {
             if(!newProblem){
                 endDate = new Date();
                 Nutzwertanalyse.writeTxt(l + " Durchschnittliche Pfadlänge = " + avgPathLength / durchlaeufe + " : " + endDate);
-                System.out.println();
             }
             avgPathLength = 0;
         }
