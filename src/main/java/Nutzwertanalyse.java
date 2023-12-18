@@ -26,9 +26,9 @@ public class Nutzwertanalyse {
     public static String fileName;
 
     public static void main(String[] args) throws IOException {
-        int[] alternatives = {5, 10, 15};
-        int[] criteria = {3, 6};
-        int[] numberOfDecisionMakers = {3, 6};
+        int[] alternatives = {15};
+        int[] criteria = {6};
+        int[] numberOfDecisionMakers = {6};
 
         boolean full = false;
         boolean useStaticProblem = false;
@@ -74,7 +74,7 @@ public class Nutzwertanalyse {
         int durchlaeufe = 100;
 
         int linesInFile = getLines(fileName);
-        for (int l = linesInFile; l < 100; l++) {
+        for (int l = linesInFile; l < 1000; l++) {
             if(useStaticProblem){
                 //gets static problem matrix
                 ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
