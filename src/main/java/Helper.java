@@ -92,6 +92,9 @@ public class Helper {
                 scores[i] = lexScores.length / (getPlacement(temp, lexScores[i]) * 1.0 + 1);
             }
         }
+        if(show){
+            Helper.show1DArray(scores);
+        }
         return scores;
     }
 
@@ -181,8 +184,9 @@ public class Helper {
     }
 
     public static void show2DArray(int[][] matrix) {
+        int[][] invert = invertArray(matrix);
         String line = "";
-        for (int[] objects : matrix) {
+        for (int[] objects : invert) {
             line += "[";
             for (int i = 0; i < objects.length - 1; i++) {
                 line += objects[i] + ", ";

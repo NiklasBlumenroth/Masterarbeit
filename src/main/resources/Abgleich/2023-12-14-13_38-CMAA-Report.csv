@@ -1,0 +1,115 @@
+14.12.2023, 13:38
+
+Current Entropy: 0
+
+Resolution Recommendation: 
+
+Entropy; type; c-index; a/p-index;resolution
+0; P; 1; 1; 
+0; P; 1; 2; 
+0; P; 2; 1; 
+0; P; 2; 2; 
+0; P; 3; 3; 
+
+Aggregated Judgement Matrix
+
+; a1; ; a2; ; a3; ; 
+c1; B; ; A; B; A; ; 
+c2; A; B; A; X; A; ; 
+c3; A; ; B; ; A; ; 
+
+
+Aggregated Preferences
+
+c1; ; ; c2; ; ; c3; ; ; 
+1; 1; 0; 1; 1; 0; 0; 0; 1; 
+
+
+Rank Acceptability Indices
+
+; r1; r2; r3; 
+a1; 0; 0,47; 0,53; 
+a2; 0; 0,53; 0,47; 
+a3; 1; 0; 0; 
+
+
+Judgement Entropy Matrix
+
+; a1; ; a2; ; a3; ; 
+c1; -; ; 0; 0; -; ; 
+c2; 0; 0; 0; 0; -; ; 
+c3; -; ; -; ; -; ; 
+
+
+Preference Entropies
+
+c1; ; ; c2; ; ; c3; ; ; 
+0; 0; -; 0; 0; -; -; -; 0; 
+
+
+Current Judgement Acceptability Indices
+for a0 wins
+
+; a1; ; a2; ; a3; ; 
+c1; -; ; 0; 0; -; ; 
+c2; 0; 0; 0; 0; -; ; 
+c3; -; ; -; ; -; ; 
+
+
+for a1 wins
+
+; a1; ; a2; ; a3; ; 
+c1; -; ; 0; 0; -; ; 
+c2; 0; 0; 0; 0; -; ; 
+c3; -; ; -; ; -; ; 
+
+
+for a2 wins
+
+; a1; ; a2; ; a3; ; 
+c1; -; ; 0,53; 0,47; -; ; 
+c2; 0,33; 0,67; 0,47; 0,53; -; ; 
+c3; -; ; -; ; -; ; 
+
+
+Potential Judgement Acceptability Indices
+for a0 wins
+
+; a1; ; a2; ; a3; ; 
+c1; -; ; 0; 0; -; ; 
+c2; 0; 0; 0; 0; -; ; 
+c3; -; ; -; ; -; ; 
+
+
+for a1 wins
+
+; a1; ; a2; ; a3; ; 
+c1; -; ; 0; 0; -; ; 
+c2; 0; 0; 0; 0; -; ; 
+c3; -; ; -; ; -; ; 
+
+
+for a2 wins
+
+; a1; ; a2; ; a3; ; 
+c1; -; ; 1; 1; -; ; 
+c2; 1; 1; 1; 1; -; ; 
+c3; -; ; -; ; -; ; 
+
+
+Current Preference Acceptability Indices
+
+; c1; ; ; c2; ; ; c3; ; ; 
+a1; 0; 0; -; 0; 0; -; -; -; 0; 
+a2; 0; 0; -; 0; 0; -; -; -; 0; 
+a3; 0,52; 0,48; -; 0,48; 0,52; -; -; -; 1; 
+
+
+Potential Preference Acceptability Indices
+
+; c1; ; ; c2; ; ; c3; ; ; 
+a1; 0; 0; -; 0; 0; -; -; -; 0; 
+a2; 0; 0; -; 0; 0; -; -; -; 0; 
+a3; 1; 1; -; 1; 1; -; -; -; 1; 
+
+

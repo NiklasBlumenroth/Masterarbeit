@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="continue if invalid problem solving">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14-13_36-CMAA-Report.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14-13_37-CMAA-Report.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14-13_38-CMAA-Report.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14_Step1-Instances.rtf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14_Step2-Instances.rtf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Helper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/2022-04-01_Complementary-Data_CMAA-Article.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2022-04-01_Complementary-Data_CMAA-Article.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Beispiel-Niklas.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/Beispiel-Niklas.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +88,12 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ic3Dr4gon\IdeaProjects\Masterarbeit\src\main\resources\Abgleich" />
+      <recent name="C:\Users\Ic3Dr4gon\IdeaProjects\Masterarbeit\src\main\resources\saves" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Nutzwertanalyse">
     <configuration name="ArraySortAndRestore" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ArraySortAndRestore" />
@@ -97,7 +111,7 @@
     </configuration>
     <configuration name="MonteCarloHelper" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="MonteCarloHelper" />
-      <module name="MasterarbeitIndividualProjekt" />
+      <module name="Masterarbeit" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -147,8 +161,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Nutzwertanalyse" />
-        <item itemvalue="Maven.Masterarbeit [clean,install]" />
         <item itemvalue="Application.MonteCarloHelper" />
+        <item itemvalue="Maven.Masterarbeit [clean,install]" />
         <item itemvalue="Application.Helper" />
         <item itemvalue="Application.ArraySortAndRestore" />
       </list>
@@ -410,7 +424,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702407209962</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="continue if invalid problem solving">
+      <option name="closed" value="true" />
+      <created>1702475934057</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1702475934057</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -453,32 +475,6 @@
     <MESSAGE value="add logging" />
     <MESSAGE value="continue if invalid problem solving" />
     <option name="LAST_COMMIT_MESSAGE" value="continue if invalid problem solving" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Helper.java</url>
-          <line>36</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
-          <line>86</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>136</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MonteCarloHelper.java</url>
-          <line>92</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterarbeit$Nutzwertanalyse.ic" NAME="Nutzwertanalyse Coverage Results" MODIFIED="1691670302471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
