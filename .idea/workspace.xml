@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="continue if invalid problem solving">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14-13_36-CMAA-Report.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14-13_37-CMAA-Report.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14-13_38-CMAA-Report.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14_Step1-Instances.rtf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2023-12-14_Step2-Instances.rtf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Helper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/2022-04-01_Complementary-Data_CMAA-Article.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2022-04-01_Complementary-Data_CMAA-Article.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Beispiel-Niklas.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/Beispiel-Niklas.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

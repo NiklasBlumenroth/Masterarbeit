@@ -32,21 +32,21 @@ public class Nutzwertanalyse {
 
         boolean full = false;
         boolean useStaticProblem = false;
-        boolean lex = false;
+        boolean lex = true;
         boolean show = false;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss_MM_dd_yyyy");
-        Calendar c = Calendar.getInstance();
-        String curr_date = dateFormat.format(c.getTime());
-
-        fileName = logPath + curr_date +".txt";
-        fileExist(fileName);
-        Nutzwertanalyse.writeTxt("newText");
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss_MM_dd_yyyy");
+//        Calendar c = Calendar.getInstance();
+//        String curr_date = dateFormat.format(c.getTime());
+//
+//        fileName = logPath + curr_date +".txt";
+//        fileExist(fileName);
+//        Nutzwertanalyse.writeTxt("newText");
         for(int alt : alternatives){
             for(int crit : criteria){
                 for(int num : numberOfDecisionMakers){
                     rechnen(6, 6, 6, full, lex, useStaticProblem, show);
-                    //rechnen(alt, crit, num, full, lex, useStaticProblem, show);
+//                    rechnen(alt, crit, num, full, lex, useStaticProblem, show);
                 }
             }
         }
@@ -54,7 +54,16 @@ public class Nutzwertanalyse {
     public static boolean newProblem = false;
     public static boolean nextIsZero = false;
     public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show) throws IOException {
-        Date startDate = new Date();
+        String berechnungsName;
+
+        if(lex){
+            berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }else {
+            berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }
+        fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        fileExist(fileName);
+
         Date endDate = new Date();
         int[][][] aggregatedMatrix = null;
         int[][] aggregatedWeights = null;
@@ -63,7 +72,8 @@ public class Nutzwertanalyse {
         int indivPathLength = 0;
         double avgPathLength = 0;
         int durchlaeufe = 100;
-        Nutzwertanalyse.writeTxt("Start: " + startDate);
+
+        int linesInFile = getLines(fileName);
         for (int l = 0; l < 10; l++) {
             if(useStaticProblem){
                 //gets static problem matrix
@@ -115,7 +125,6 @@ public class Nutzwertanalyse {
             }
             avgPathLength = 0;
         }
-        Nutzwertanalyse.writeTxt("End: " + endDate);
     }
     private static String readTxt(String fileName) throws IOException {
         File file = new File(fileName);
@@ -148,9 +157,9 @@ public class Nutzwertanalyse {
     private static void fileExist(String fileName) throws IOException {
         File file = new File(fileName);
         if (file.createNewFile()) {
-            Nutzwertanalyse.writeTxt("File created: " + file.getName());
+            System.out.println("File created: " + file.getName());
         }else {
-            Nutzwertanalyse.writeTxt("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")-1));
+            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")-1));
         }
     }
 
