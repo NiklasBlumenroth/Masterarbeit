@@ -74,7 +74,7 @@ public class Nutzwertanalyse {
         int durchlaeufe = 100;
 
         int linesInFile = getLines(fileName);
-        for (int l = linesInFile; l < 100; l++) {
+        for (int l = linesInFile; l < 300; l++) {
             if(useStaticProblem){
                 //gets static problem matrix
                 ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);

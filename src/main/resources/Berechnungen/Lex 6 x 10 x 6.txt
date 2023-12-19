@@ -8,3 +8,15 @@
 7 Durchschnittliche Pfadlänge = 14.14 : Mon Dec 18 14:57:42 CET 2023
 8 Durchschnittliche Pfadlänge = 14.42 : Mon Dec 18 14:58:40 CET 2023
 9 Durchschnittliche Pfadlänge = 13.98 : Mon Dec 18 14:59:48 CET 2023
+10 Durchschnittliche Pfadlänge = 16.38 : Tue Dec 19 07:08:22 CET 2023
+11 Durchschnittliche Pfadlänge = 13.01 : Tue Dec 19 07:09:20 CET 2023
+12 Durchschnittliche Pfadlänge = 14.75 : Tue Dec 19 07:10:20 CET 2023
+13 Durchschnittliche Pfadlänge = 13.3 : Tue Dec 19 07:11:14 CET 2023
+14 Durchschnittliche Pfadlänge = 14.7 : Tue Dec 19 07:12:14 CET 2023
+15 Durchschnittliche Pfadlänge = 13.32 : Tue Dec 19 07:13:07 CET 2023
+16 Durchschnittliche Pfadlänge = 14.11 : Tue Dec 19 07:14:07 CET 2023
+17 Durchschnittliche Pfadlänge = 15.1 : Tue Dec 19 07:15:06 CET 2023
+18 Durchschnittliche Pfadlänge = 11.91 : Tue Dec 19 07:15:53 CET 2023
+19 Durchschnittliche Pfadlänge = 12.94 : Tue Dec 19 07:16:46 CET 2023
+20 Durchschnittliche Pfadlänge = 14.5 : Tue Dec 19 07:17:46 CET 2023
+21 Durchschnittliche Pfadlänge = 14.27 : Tue Dec 19 07:18:51 CET 2023
