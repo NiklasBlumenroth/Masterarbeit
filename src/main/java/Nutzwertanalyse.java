@@ -30,9 +30,9 @@ public class Nutzwertanalyse {
         int[] criteria = {3, 6};
         int[] numberOfDecisionMakers = {3, 6};
 
-        boolean full = false;
+        boolean full =false;
         boolean useStaticProblem = false;
-        boolean lex = true;
+        boolean lex = false;
         boolean show = false;
 
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss_MM_dd_yyyy");
@@ -55,6 +55,7 @@ public class Nutzwertanalyse {
     }
     public static boolean newProblem = false;
     public static boolean nextIsZero = false;
+    public static int idealCounter = 0;
     public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show, int number) throws IOException {
         String berechnungsName;
 
@@ -107,16 +108,16 @@ public class Nutzwertanalyse {
                 indivPathLength++;
 
                 while (currentEntropy != 0) {
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
+                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
                     if(newProblem){
                         indivPathLength = 0;
                         break;
                     }
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                     indivPathLength++;
-//                    System.out.println(currentEntropy);
                 }
-
+//                System.out.println("idealCounter = " + idealCounter);
+                idealCounter = 0;
                 if(newProblem){
                     k--;
                     newProblem = false;
@@ -185,6 +186,7 @@ public class Nutzwertanalyse {
             if (object.isJudgement) {
                 if (aggregatedMatrix[object.getI()][object.getJ()].length > 1) {
                     aggregatedMatrix[object.getI()][object.getJ()] = new int[]{object.getLowestKey()};
+                    System.out.println("Entropy: " + currentEntropy + object + " chosen: " + object.getLowestKey());
                 }
                 break;
             } else {
@@ -236,6 +238,7 @@ public class Nutzwertanalyse {
                     int newObject = aggregatedMatrix[object.getI()][object.getJ()][randomNumber];
                     aggregatedMatrix[object.getI()][object.getJ()] = new int[]{newObject};
 //                    System.out.println("Entropy: " + currentEntropy + object + " chosen: " + newObject);
+                    if(newObject == object.getLowestKey()) idealCounter++;
                     break;
                 }
             } else {
@@ -252,6 +255,7 @@ public class Nutzwertanalyse {
                         int randomObject = aggregatedWeights[object.getI()][randomNumber];
                         aggregatedWeights[object.getI()] = new int[]{randomObject};
 //                        System.out.println("Entropy: " + currentEntropy + object + " chosen: " + randomObject);
+                        if(randomObject == object.getLowestKey()) idealCounter++;
                         break;
                     }
                 }

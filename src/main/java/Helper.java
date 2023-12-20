@@ -54,35 +54,46 @@ public class Helper {
         double[][] sums = new double[matrix.length][matrix[0].length];
         double value;
 
-        // create sum for columns
-        if(lex){
-            int[] weightsOrder = MonteCarloHelper.getOrder(MonteCarloHelper.getOrder(weights));
-            for (int i = 0; i < alt; i++) {
-                double sum = 0.0;
-                String lexSum = "";
-                for (int j = 0; j < weights.length; j++) {
-                    int index = getIndex(weightsOrder, j);
-                    int value2 = matrix[i][index];
-                    LexJudgements judgement = LexJudgements.getJudgement(value2);
-                    LexPreferenzes preferenze = LexPreferenzes.getLexValueById(weights[index]);
-                    lexSum = lexSum + preferenze + judgement;
-                }
-                scores[i] = sum;
-                lexScores[i] = lexSum;
+//         create sum for columns
+        for (int i = 0; i < alt; i++) {
+            Double sum = 0.0;
+            for (int j = 0; j < crit; j++) {
+                sum = sum + (matrix[i][j] * weights[j]);
+                sums[i][j] = matrix[i][j] * weights[j];
             }
-        }else {
-            for (int i = 0; i < alt; i++) {
-                double sum = 0.0;
-                for (int j = 0; j < crit; j++) {
-                    FuzzyPreferenzes fuzzyPreferenzes =  FuzzyPreferenzes.getPreferenzes(weights[j]);
-                    FuzzyJudgements fuzzyJudgements = FuzzyJudgements.getJudgement(matrix[i][j]);
-                    value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
-                    sum += value;
-                    sums[i][j] = value;
-                }
-                scores[i] = sum;
-            }
+            scores[i] = sum;
         }
+
+
+//        if(lex){
+//            int[] weightsOrder = MonteCarloHelper.getOrder(MonteCarloHelper.getOrder(weights));
+//            for (int i = 0; i < alt; i++) {
+//                double sum = 0.0;
+//                String lexSum = "";
+//                for (int j = 0; j < weights.length; j++) {
+//                    int index = getIndex(weightsOrder, j);
+//                    int value2 = matrix[i][index];
+//                    LexJudgements judgement = LexJudgements.getJudgement(value2);
+//                    LexPreferenzes preferenze = LexPreferenzes.getLexValueById(weights[index]);
+//                    lexSum = lexSum + preferenze + judgement;
+//                }
+//                scores[i] = sum;
+//                lexScores[i] = lexSum;
+//            }
+//        }else {
+//            for (int i = 0; i < alt; i++) {
+//                double sum = 0.0;
+//                for (int j = 0; j < crit; j++) {
+//                    FuzzyPreferenzes fuzzyPreferenzes =  FuzzyPreferenzes.getPreferenzes(weights[j]);
+//                    FuzzyJudgements fuzzyJudgements = FuzzyJudgements.getJudgement(matrix[i][j]);
+//                    value = (fuzzyJudgements.value1 * fuzzyPreferenzes.value1 + fuzzyJudgements.value2 * fuzzyPreferenzes.value2 + fuzzyJudgements.value3 * fuzzyPreferenzes.value3) / 3;
+//
+//                    sum += value;
+//                    sums[i][j] = value;
+//                }
+//                scores[i] = sum;
+//            }
+//        }
 
 
         if (lex) {
