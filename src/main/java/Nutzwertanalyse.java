@@ -42,18 +42,20 @@ public class Nutzwertanalyse {
 //        fileName = logPath + curr_date +".txt";
 //        fileExist(fileName);
 //        Nutzwertanalyse.writeTxt("newText");
-        for(int alt : alternatives){
-            for(int crit : criteria){
-                for(int num : numberOfDecisionMakers){
-                    //rechnen(6, 6, 6, full, lex, useStaticProblem, show);
-                    rechnen(alt, crit, num, full, lex, useStaticProblem, show);
+        for(int i = 0; i < 1000; i += 10){
+            for(int alt : alternatives){
+                for(int crit : criteria){
+                    for(int num : numberOfDecisionMakers){
+                        //rechnen(6, 6, 6, full, lex, useStaticProblem, show);
+                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
+                    }
                 }
             }
         }
     }
     public static boolean newProblem = false;
     public static boolean nextIsZero = false;
-    public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show) throws IOException {
+    public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show, int number) throws IOException {
         String berechnungsName;
 
         if(lex){
@@ -74,7 +76,7 @@ public class Nutzwertanalyse {
         int durchlaeufe = 100;
 
         int linesInFile = getLines(fileName);
-        for (int l = linesInFile; l < 300; l++) {
+        for (int l = linesInFile; l < number; l++) {
             if(useStaticProblem){
                 //gets static problem matrix
                 ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
