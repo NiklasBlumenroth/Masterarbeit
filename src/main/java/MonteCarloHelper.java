@@ -88,9 +88,9 @@ public class MonteCarloHelper {
         }else{
             k = judgementCombinationList.length * preferenceCombinationList.length;
         }
-
+//        Nutzwertanalyse.writeTxt("Aggregated K: " + k);
         //monteCarloSimulation
-        if(k < 1000){
+        if(k < 10000){
             iteration = k;
         }else{
             iteration = monteCarloIterations;
@@ -158,8 +158,6 @@ public class MonteCarloHelper {
                     Nutzwertanalyse.writeTxt("currentPreferenceAcceptabilityIndex for a" + j);
                     Helper.show2DArray(objectCurrentPreferenceAcceptabilityIndices[j]);
                 }
-            }else {
-//                addRanking(rankAcceptabilityIndices, rankingPosition);
             }
         }
         if(useStaticProblem){
@@ -239,6 +237,9 @@ public class MonteCarloHelper {
         }else {
             Nutzwertanalyse.currentEntropy = getCurrentEntropy(rankAcceptabilityIndices);
         }
+
+
+        Nutzwertanalyse.calculateMaxEntropy = calculateMaxEntropy(alternative);
         List<LowestValueObject> list = getLowestValue(judgementEntropyMatrix, preferenceEntropy, lex);
         return list;
     }
@@ -357,11 +358,6 @@ public class MonteCarloHelper {
     }
 
     private static int[][] getPreferenceCombinations(int[][] aggregatedWeights, boolean lex){
-        int kCounter = 1;
-        //countCombinations
-        for(int j = 0; j < aggregatedWeights.length; j++){
-            kCounter *= aggregatedWeights[j].length;
-        }
         int[][] aggregatedWeightsListForm = new int[aggregatedWeights.length][];
         for(int i = 0; i < aggregatedWeights.length; i++){
             aggregatedWeightsListForm[i] = aggregatedWeights[i];
@@ -578,6 +574,14 @@ public class MonteCarloHelper {
                 entropy -= probability * Math.log(probability) / Math.log(2);
             }
         }
+        return entropy;
+    }
+
+    public static double calculateMaxEntropy(int alt) {
+        double entropy = 0.0;
+
+        entropy -= Math.log((double) 1 /alt) / Math.log(2);
+
         return entropy;
     }
 

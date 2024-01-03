@@ -6,22 +6,23 @@ import java.util.*;
 
 public class Nutzwertanalyse {
     public static ArrayList<Object>[][] getMatrix(boolean lex) {
-        return getTestLexBiotechMatrix();
-//        if(lex){
-//            return getLexMatrix();
-//        }
-//        return getFuzzyMatrix();
+//        return getTestLexBiotechMatrix();
+        if(lex){
+            return getLexMatrix();
+        }
+        return getFuzzyMatrix();
     }
 
     public static ArrayList<Object>[] getWeights(boolean lex) {
-        return getTestLexBiotechWeights();
-//        if(lex){
-//            return getLexWeights();
-//        }
-//        return getFuzzyWeights();
+//        return getTestLexBiotechWeights();
+        if(lex){
+            return getLexWeights();
+        }
+        return getFuzzyWeights();
     }
 
     public static double currentEntropy;
+    public static double calculateMaxEntropy;
     public static String logPath = System.getProperty("user.dir") + "/src/main/resources/logs/";
     public static String fileName;
 
@@ -30,7 +31,7 @@ public class Nutzwertanalyse {
         int[] criteria = {3, 6};
         int[] numberOfDecisionMakers = {3, 6};
 
-        boolean full =false;
+        boolean full = false;
         boolean useStaticProblem = false;
         boolean lex = false;
         boolean show = false;
@@ -46,8 +47,8 @@ public class Nutzwertanalyse {
             for(int alt : alternatives){
                 for(int crit : criteria){
                     for(int num : numberOfDecisionMakers){
-                        //rechnen(6, 6, 6, full, lex, useStaticProblem, show);
-                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
+                        rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
+//                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                     }
                 }
             }
@@ -93,6 +94,11 @@ public class Nutzwertanalyse {
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
 
+            Nutzwertanalyse.writeTxt("Aggregated Matrix");
+            Helper.show3DArray(aggregatedMatrix);
+
+            Nutzwertanalyse.writeTxt("Aggregated Weight");
+            Helper.showAggregatedWeightsArray(aggregatedWeights);
             for (int k = 0; k < durchlaeufe; k++) {
                 List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                 if(lowestValue.size() == 0){
@@ -107,8 +113,8 @@ public class Nutzwertanalyse {
                 }
                 indivPathLength++;
 
-                while (currentEntropy != 0) {
-                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
+                while (currentEntropy > calculateMaxEntropy * 0.1) {//currentEntropy > calculateMaxEntropy * 0.1
+                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
                     if(newProblem){
                         indivPathLength = 0;
                         break;
@@ -122,7 +128,7 @@ public class Nutzwertanalyse {
                     k--;
                     newProblem = false;
                 }else {
-//                    Nutzwertanalyse.writeTxt(k + ": Pfadlänge: " + indivPathLength);
+                    Nutzwertanalyse.writeTxt(k + ": Pfadlänge: " + indivPathLength);
                     avgPathLength += indivPathLength;
                 }
                 indivPathLength = 0;
@@ -176,9 +182,9 @@ public class Nutzwertanalyse {
     @SneakyThrows
     public static void writeTxt(String newText) {
         System.out.println(newText);
-        FileWriter fw = new FileWriter(fileName,true); //the true will append the new data
-        fw.write(newText + "\n");//appends the string to the file
-        fw.close();
+//        FileWriter fw = new FileWriter(fileName,true); //the true will append the new data
+//        fw.write(newText + "\n");//appends the string to the file
+//        fw.close();
     }
 
     public static void getIdealPath(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues, boolean lex) {
@@ -237,7 +243,7 @@ public class Nutzwertanalyse {
                     int randomNumber = random.nextInt(aggregatedMatrix[object.getI()][object.getJ()].length);
                     int newObject = aggregatedMatrix[object.getI()][object.getJ()][randomNumber];
                     aggregatedMatrix[object.getI()][object.getJ()] = new int[]{newObject};
-//                    System.out.println("Entropy: " + currentEntropy + object + " chosen: " + newObject);
+                    System.out.println("Entropy: " + currentEntropy + object + " chosen: " + newObject);
                     if(newObject == object.getLowestKey()) idealCounter++;
                     break;
                 }
@@ -248,19 +254,24 @@ public class Nutzwertanalyse {
                         int randomObject = aggregatedWeights[object.getI()][randomNumber];
                         aggregatedWeights[object.getI()] = new int[]{randomObject};
                         validateWeights(aggregatedWeights);
-//                        System.out.println("Entropy: " + currentEntropy + object + " chosen: " + randomObject);
+                        System.out.println("Entropy: " + currentEntropy + object + " chosen: " + randomObject);
                         break;
                     }else {
                         int randomNumber = random.nextInt(aggregatedWeights[object.getI()].length);
                         int randomObject = aggregatedWeights[object.getI()][randomNumber];
                         aggregatedWeights[object.getI()] = new int[]{randomObject};
-//                        System.out.println("Entropy: " + currentEntropy + object + " chosen: " + randomObject);
+                        System.out.println("Entropy: " + currentEntropy + object + " chosen: " + randomObject);
                         if(randomObject == object.getLowestKey()) idealCounter++;
                         break;
                     }
                 }
             }
         }
+//        Nutzwertanalyse.writeTxt("Aggregated Matrix");
+//        Helper.show3DArray(aggregatedMatrix);
+//
+//        Nutzwertanalyse.writeTxt("Aggregated Weight");
+//        Helper.showAggregatedWeightsArray(aggregatedWeights);
     }
     public static void doubleCut(int[][] aggregatedWeights){
         for(int i = 0; i < aggregatedWeights.length; i++){
