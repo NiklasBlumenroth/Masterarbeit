@@ -1,0 +1,2 @@
+0 Durchschnittliche Pfadlänge = 23.43 : Mon Jan 15 14:23:49 CET 2024
+1 Durchschnittliche Pfadlänge = 25.17 : Mon Jan 15 14:42:01 CET 2024

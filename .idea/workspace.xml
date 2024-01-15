@@ -5,29 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="berechnungen">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_12_2023_15_01_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_12_2023_15_01__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_12_2023_13_23_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_12_2023_13_23__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_20_12_2023_12_13_[Changes]/shelved.patch" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/Ergebnisse.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/niklas-simulation.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Helper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MonteCarloHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Notizen.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Notizen.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/NotizenPaper.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NotizenPaper.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/LEX 3 DMs.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/LEX 6 DMs.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 10 x 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 10 x 6.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 15 x 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 15 x 6.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 6.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 10 x 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 10 x 6.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 6.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 5 x 3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 5 x 6.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/testFileClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/testFileClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Ergebnisse.xlsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,6 +87,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Blumenroth\ideaProjects\Masterarbeit\src\main\resources" />
+      <recent name="C:\Users\Blumenroth\ideaProjects\Masterarbeit\src\main\resources\logs" />
       <recent name="C:\Users\Ic3Dr4gon\IdeaProjects\Masterarbeit\src\main\resources\Abgleich" />
       <recent name="C:\Users\Ic3Dr4gon\IdeaProjects\Masterarbeit\src\main\resources\saves" />
     </key>
@@ -146,7 +133,6 @@
         <option name="myRunnerSettings" />
         <option name="myRunnerParameters">
           <MavenRunnerParameters>
-            <option name="cmdOptions" />
             <option name="profiles">
               <set />
             </option>
@@ -159,9 +145,6 @@
             <option name="pomFileName" value="pom.xml" />
             <option name="profilesMap">
               <map />
-            </option>
-            <option name="projectsCmdOptionValues">
-              <list />
             </option>
             <option name="resolveToWorkspace" value="false" />
             <option name="workingDirPath" value="$PROJECT_DIR$" />
@@ -510,6 +493,17 @@
     <MESSAGE value="continue if invalid problem solving" />
     <MESSAGE value="berechnungen" />
     <option name="LAST_COMMIT_MESSAGE" value="berechnungen" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/testFileClass.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterarbeit$Nutzwertanalyse.ic" NAME="Nutzwertanalyse Coverage Results" MODIFIED="1691670302471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
