@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class testFileClass {
-    public static final int numberOfDecisionMaker = 6;
-    public static final int alt = 6;
-    public static final int crit = 6;
-    public static final boolean lex = false;
+    public static final int numberOfDecisionMaker = 3;
+    public static final int alt = 5;
+    public static final int crit = 5;
+    public static final boolean lex = true;
     public static final Class jugClazz = FuzzyJudgements.class;
     public static final Class prefClazz = FuzzyPreferenzes.class;
 
@@ -47,7 +47,7 @@ public class testFileClass {
         return score;
     }
     public static void main(String[] args) throws IOException {
-        String berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        String berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
         String dir = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\";
         File file = new File(dir + berechnungsName + ".txt");
         FileReader fr = new FileReader(file);
@@ -59,7 +59,11 @@ public class testFileClass {
             list[i] = 0;
         }
         while((line = br.readLine()) != null){
+            line = line.substring(line.indexOf("=") + 2, line.indexOf("."));
             list[Integer.parseInt(line)]++;
+            if(Integer.parseInt(line) == 23){
+                System.out.println();
+            }
         }
 
         for(int i : list){

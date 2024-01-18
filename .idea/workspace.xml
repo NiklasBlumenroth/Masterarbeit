@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="berechnungen">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logs/Ergebnisse.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/niklas-simulation.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Notizen.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Notizen.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/NotizenPaper.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NotizenPaper.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/testFileClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/testFileClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Ergebnisse.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 6.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +90,7 @@
       <recent name="C:\Users\Ic3Dr4gon\IdeaProjects\Masterarbeit\src\main\resources\saves" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Nutzwertanalyse">
+  <component name="RunManager" selected="Application.testFileClass">
     <configuration name="Helper" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Helper" />
       <module name="Masterarbeit" />
@@ -133,6 +130,7 @@
         <option name="myRunnerSettings" />
         <option name="myRunnerParameters">
           <MavenRunnerParameters>
+            <option name="cmdOptions" />
             <option name="profiles">
               <set />
             </option>
@@ -146,6 +144,9 @@
             <option name="profilesMap">
               <map />
             </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
             <option name="resolveToWorkspace" value="false" />
             <option name="workingDirPath" value="$PROJECT_DIR$" />
           </MavenRunnerParameters>
@@ -155,8 +156,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Nutzwertanalyse" />
         <item itemvalue="Application.testFileClass" />
+        <item itemvalue="Application.Nutzwertanalyse" />
         <item itemvalue="Application.MonteCarloHelper" />
         <item itemvalue="Maven.Masterarbeit [clean,install]" />
         <item itemvalue="Application.Helper" />
@@ -499,8 +500,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/testFileClass.java</url>
-          <line>66</line>
+          <line>70</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/testFileClass.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

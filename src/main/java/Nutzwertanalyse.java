@@ -45,14 +45,7 @@ public class Nutzwertanalyse {
 //        fileExist(fileName);
 //        Nutzwertanalyse.writeTxt("newText");
         for(int i = 0; i < 1001; i += 1){
-            for(int alt : alternatives){
-                for(int crit : criteria){
-                    for(int num : numberOfDecisionMakers){
-                        //rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
-                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
-                    }
-                }
-            }
+            rechnen(5, 5, 3, full, lex, useStaticProblem, show, i);
         }
     }
     public static boolean newProblem = false;
@@ -75,7 +68,7 @@ public class Nutzwertanalyse {
         int[][] decisionMakerWeightsList = null;
         int indivPathLength = 0;
         double avgPathLength = 0;
-        int durchlaeufe = 100;
+        int durchlaeufe = 1;
 
         int linesInFile = getLines(fileNameFuzzy);
         for (int l = linesInFile; l < number; l++) {
@@ -93,7 +86,7 @@ public class Nutzwertanalyse {
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
-
+            lex = true;
             for (int k = 0; k < durchlaeufe; k++) {
                 List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                 if(lowestValue.size() == 0){
@@ -109,7 +102,7 @@ public class Nutzwertanalyse {
                 indivPathLength++;
 
                 while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
+                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
                     if(newProblem){
                         indivPathLength = 0;
                         break;
@@ -120,6 +113,8 @@ public class Nutzwertanalyse {
 //                System.out.println("idealCounter = " + idealCounter);
                 idealCounter = 0;
                 if(newProblem){
+                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
+                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
                     k--;
                     newProblem = false;
                 }else {
@@ -140,12 +135,13 @@ public class Nutzwertanalyse {
             aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
             aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             //FUZZY SAW
+            lex = false;
             for (int k = 0; k < durchlaeufe; k++) {
                 List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
                 indivPathLength++;
 
                 while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, false);
+                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue, false);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, false, show, useStaticProblem);
                     indivPathLength++;
                 }
@@ -198,7 +194,7 @@ public class Nutzwertanalyse {
         if (file.createNewFile()) {
             System.out.println("File created: " + file.getName());
         }else {
-            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")-1));
+            System.out.println("File already exists: " + fileName.substring(fileName.lastIndexOf("\\")+1));
         }
     }
 
@@ -223,13 +219,16 @@ public class Nutzwertanalyse {
             if (object.isJudgement) {
                 if (aggregatedMatrix[object.getI()][object.getJ()].length > 1) {
                     aggregatedMatrix[object.getI()][object.getJ()] = new int[]{object.getLowestKey()};
-                    System.out.println("Entropy: " + currentEntropy + object + " chosen: " + object.getLowestKey());
+//                    System.out.println("Entropy: " + currentEntropy + object + " chosen: " + object.getLowestKey());
+                    break;
                 }
-                break;
+
             } else {
                 if (aggregatedWeights[object.getI()].length > 1) {
                     aggregatedWeights[object.getI()] = new int[]{object.getLowestKey()};
-                    if (lex) validateWeights(aggregatedWeights);
+                    if(lex){
+                        validateWeights(aggregatedWeights);
+                    }
                     break;
                 }
             }
