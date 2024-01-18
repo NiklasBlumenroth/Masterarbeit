@@ -224,3 +224,5 @@
 223 Durchschnittliche Pfadlänge = 13.17 : Thu Jan 18 07:38:06 CET 2024
 224 Durchschnittliche Pfadlänge = 13.5 : Thu Jan 18 07:52:24 CET 2024
 225 Durchschnittliche Pfadlänge = 12.46 : Thu Jan 18 08:04:53 CET 2024
+226 Durchschnittliche Pfadlänge = 12.79 : Thu Jan 18 17:37:03 CET 2024
+227 Durchschnittliche Pfadlänge = 12.61 : Thu Jan 18 17:53:32 CET 2024

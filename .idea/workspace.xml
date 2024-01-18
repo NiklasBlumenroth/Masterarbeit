@@ -7,6 +7,13 @@
     <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="berechnungen">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Abgleich/Beispiel-Niklas.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/Beispiel-Niklas.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/niklas-simulation.ods" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/niklas-simulation.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/niklas-simulation.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -443,7 +450,21 @@
       <option name="project" value="LOCAL" />
       <updated>1703071839925</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="berechnungen">
+      <created>1705562821263</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1705562821263</updated>
+    </task>
+    <task id="LOCAL-00041" summary="berechnungen">
+      <created>1705562969674</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1705562969674</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -457,13 +478,28 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/main" />
+                        <option value="origin/remove_objects_and_map_later" />
                       </list>
                     </value>
                   </entry>
                 </map>
               </option>
             </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/remove_objects_and_map_later" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>
@@ -500,6 +536,16 @@
           <url>file://$PROJECT_DIR$/src/main/java/testFileClass.java</url>
           <line>64</line>
           <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
+          <line>146</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
+          <line>116</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
