@@ -1,37 +1,3 @@
-Aggregated Judgement Matrix
-
-Aufgaben allgemein:
-- Paper zusammenfassen(6/28)
-+ Monte Carlo implementieren
-- CMAA implementieren
-- Analyse implementieren (Excel Beispiel-Niklas)
-- Entscheidungsmodelle recherchieren (links herausgesucht)
-- Entscheidungsmodelle implementieren
-
-Zu Implementieren:
-+ Aggregated Judgement Matrix
-+ Current Entropy
-+ Aggregated Preferences
-+ Rank Acceptability Indices
-+ Judgement Entropy Matrix
-+ Preference Entropies
-+ Current Judgement Acceptability Indices
-+ Potential Judgement Acceptability Indices
-+ Current Preference Acceptability Indices
-+ Potential Preference Acceptability Indices
-- voll rechnen
-
-Kathesisches Produkt:
-https://im-coder.com/kartesisches-produkt-beliebiger-mengen-in-java.html
-https://stackoverflow.com/questions/40202033/cartesian-product-of-two-arrays
-
-WPM -> https://diglib.tugraz.at/download.php?id=5db292624d76a&location=browse
-PROMETHEE: PROMETHEE -> https://link.springer.com/chapter/10.1007/978-1-4939-3094-4_6
-TOPSIS: TOPSIS -> https://web.archive.org/web/20160102105303/http://www.fwl.wi.tum.de/fileadmin/Downloads/Master_Forst/TOPSIS_zur_Effizienzanalyse.pdf
-ABX-LEX -> https://www.worldscientific.com/doi/10.1142/S0219622020500431
-
-
-
 
 /*
         - adm und its
@@ -42,23 +8,9 @@ ABX-LEX -> https://www.worldscientific.com/doi/10.1142/S0219622020500431
             - 100 Pfade mit zufallsauflösung
             - wenn k unter 1000 soll voll gerechnet werden
             - 1000 Probleme
-            - Anzahl der DM:    2,3,4,5,6
-            - Anzahl der Crit:  3,4,5,6,7,8,9,10
-            - Anzahl der Alt:   3,4,5,6
-            -
+            - Anzahl der DM:    3,6
+            - Anzahl der Crit:  3,6
+            - Anzahl der Alt:   5,10,15
         - zufällige pfade wählen
         - Fuzzy 5 lex 5 als Standard
-        - danach fuzzy 3 lex 3
-        - danach fuzzy 7 lex 7
-        - nicht nur die niedrigsten Werte der entropie ausgeben lassen sondern die niedrigsten 3-5
-        Teststudie 24.10.
-        gedanken zum ersten intro machen und durchführen
-        -> flyer oder link für aktivitäten heraussuchen damit bewertet werden kann
-        mit vorgesetzten sprechen für zeitlichen ablauf
          */
-
-zu Besprechen 04.01.24
-- Simulation Lex/Fuzzy
-- Datenlage Studie
-- Gliederung Masterarbeit
-- Gliederung Individualprojekt
