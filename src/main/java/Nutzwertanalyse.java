@@ -45,7 +45,14 @@ public class Nutzwertanalyse {
 //        fileExist(fileName);
 //        Nutzwertanalyse.writeTxt("newText");
         for(int i = 0; i < 1001; i += 1){
-            rechnen(5, 5, 3, full, lex, useStaticProblem, show, i);
+            for(int alt : alternatives){
+                for(int crit : criteria){
+                    for(int num : numberOfDecisionMakers){
+                        //rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
+                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
+                    }
+                }
+            }
         }
     }
     public static boolean newProblem = false;
@@ -68,7 +75,7 @@ public class Nutzwertanalyse {
         int[][] decisionMakerWeightsList = null;
         int indivPathLength = 0;
         double avgPathLength = 0;
-        int durchlaeufe = 1;
+        int durchlaeufe = 100;
 
         int linesInFile = getLines(fileNameFuzzy);
         for (int l = linesInFile; l < number; l++) {
@@ -95,14 +102,14 @@ public class Nutzwertanalyse {
                     //generates aggregated matrix and fill with -1
                     aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                     aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                    k--;
+                    k=0;
                     newProblem = false;
                     continue;
                 }
                 indivPathLength++;
 
                 while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
-                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
+                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
                     if(newProblem){
                         indivPathLength = 0;
                         break;
@@ -141,7 +148,7 @@ public class Nutzwertanalyse {
                 indivPathLength++;
 
                 while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
-                    getIdealPath(aggregatedMatrix, aggregatedWeights, lowestValue, false);
+                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, false);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, false, show, useStaticProblem);
                     indivPathLength++;
                 }
@@ -226,9 +233,7 @@ public class Nutzwertanalyse {
             } else {
                 if (aggregatedWeights[object.getI()].length > 1) {
                     aggregatedWeights[object.getI()] = new int[]{object.getLowestKey()};
-                    if(lex){
-                        validateWeights(aggregatedWeights);
-                    }
+                    if (lex) validateWeights(aggregatedWeights);
                     break;
                 }
             }
