@@ -44,7 +44,7 @@ public class Nutzwertanalyse {
 //        fileName = logPath + curr_date +".txt";
 //        fileExist(fileName);
 //        Nutzwertanalyse.writeTxt("newText");
-        for(int i = 0; i < 1001; i += 1){
+        for(int i = 0; i < 1001; i += 1000){
 
 //            rechnen(5, 5, 3, full, lex, useStaticProblem, show, i);
             for(int alt : alternatives){
@@ -56,7 +56,7 @@ public class Nutzwertanalyse {
                             rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                         }
                         //rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
-                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
+                        //rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                     }
                 }
             }

@@ -7,13 +7,33 @@
     <list default="true" id="03f8605a-aac9-4779-8672-4d91f18ce921" name="Changes" comment="berechnungen">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Abgleich/Beispiel-Niklas.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/Beispiel-Niklas.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Abgleich/2022-04-01_Complementary-Data_CMAA-Article.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Abgleich/2022-04-01_Complementary-Data_CMAA-Article.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 10 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 10 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 10 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 10 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 15 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 15 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 15 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/SimulationIdealAuflösung/FuzzySAW 3 x 5 x 5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 3 x 5 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 10 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 10 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 10 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 10 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 3.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 15 x 6.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 5 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 5 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 5 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/FuzzySAW 6 x 5 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 10 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 10 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 10 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 10 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 15 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 15 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 15 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/SimulationIdealAuflösung/Lex 3 x 5 x 5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 3 x 5 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 10 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 10 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 10 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 10 x 6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 3.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 15 x 6.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/niklas-simulation.ods" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/niklas-simulation.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/niklas-simulation.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 5 x 3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 5 x 3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 5 x 6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Berechnungen/Lex 6 x 5 x 6.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +108,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Blumenroth\ideaProjects\Masterarbeit\src\main\resources\SimulationIdealAuflösung" />
       <recent name="C:\Users\Blumenroth\ideaProjects\Masterarbeit\src\main\resources" />
       <recent name="C:\Users\Blumenroth\ideaProjects\Masterarbeit\src\main\resources\logs" />
       <recent name="C:\Users\Ic3Dr4gon\IdeaProjects\Masterarbeit\src\main\resources\Abgleich" />
@@ -464,7 +485,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705562969674</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="berechnungen">
+      <created>1705599404584</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1705599404584</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -536,16 +564,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/testFileClass.java</url>
           <line>64</line>
           <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
-          <line>146</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Nutzwertanalyse.java</url>
-          <line>116</line>
-          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
