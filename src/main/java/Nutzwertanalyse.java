@@ -50,10 +50,11 @@ public class Nutzwertanalyse {
             for(int alt : alternatives){
                 for(int crit : criteria){
                     for(int num : numberOfDecisionMakers){
+                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                         if(num == 6 && alt == 15 && crit == 6){
 
                         }else {
-                            rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
+
                         }
                         //rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
                         //rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
