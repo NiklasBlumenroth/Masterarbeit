@@ -47,8 +47,8 @@ public class testFileClass {
         return score;
     }
     public static void main(String[] args) throws IOException {
-        String berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-        String dir = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\";
+        String berechnungsName = "FuzzySAW2 3 x 5 x 5";//"FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        String dir = System.getProperty("user.dir") + "\\src\\main\\resources\\SimulationIdealAuflösung\\";
         File file = new File(dir + berechnungsName + ".txt");
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);

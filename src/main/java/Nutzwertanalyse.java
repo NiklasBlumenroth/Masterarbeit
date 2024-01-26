@@ -44,20 +44,18 @@ public class Nutzwertanalyse {
 //        fileName = logPath + curr_date +".txt";
 //        fileExist(fileName);
 //        Nutzwertanalyse.writeTxt("newText");
-        for(int i = 0; i < 1001; i += 1000){
-
+        for(int i = 0; i < 1001; i += 10){
 //            rechnen(5, 5, 3, full, lex, useStaticProblem, show, i);
             for(int alt : alternatives){
                 for(int crit : criteria){
                     for(int num : numberOfDecisionMakers){
-                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                         if(num == 6 && alt == 15 && crit == 6){
 
                         }else {
-
+                            //rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                         }
                         //rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
-                        //rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
+                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                     }
                 }
             }
