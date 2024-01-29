@@ -47,6 +47,7 @@ public class testFileClass {
         return score;
     }
     public static void main(String[] args) throws IOException {
+        /*
         String berechnungsName = "FuzzySAW2 3 x 5 x 5";//"FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
         String dir = System.getProperty("user.dir") + "\\src\\main\\resources\\SimulationIdealAuflösung\\";
         File file = new File(dir + berechnungsName + ".txt");
@@ -70,21 +71,23 @@ public class testFileClass {
             System.out.println(i);
         }
 
-//        String berechnungsName = numberOfDecisionMaker + " x " + alt + " x " + crit;
-//        if(lex){
-//            berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-//        }else {
-//            berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-//        }
-//        String dir = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\";
-//        Set<String> set = Stream.of(new File(dir).listFiles())
-//                .filter(file -> !file.isDirectory())
-//                .map(File::getName)
-//                .collect(Collectors.toSet());
-//        for(String path : set){
-//            System.out.println(path + " -> " + getSavedValue(dir + path));
-//        }
-//        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
-//        System.out.println(getSavedValue(fileName));
+         */
+
+        String berechnungsName = numberOfDecisionMaker + " x " + alt + " x " + crit;
+        if(lex){
+            berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }else {
+            berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        }
+        String dir = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\";
+        Set<String> set = Stream.of(new File(dir).listFiles())
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .collect(Collectors.toSet());
+        for(String path : set){
+            System.out.println(path + " -> " + getSavedValue(dir + path));
+        }
+        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        System.out.println(getSavedValue(fileName));
     }
 }
