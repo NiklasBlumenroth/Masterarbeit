@@ -42,22 +42,82 @@
 - durch zählen der Ergebnisse der Instanzen entsteht rank acceptability index
 
 3. Combinatorial Multicriteria Acceptability Analysis
-- Ein Entscheidungsproblem besteht aus Leistungsbeurteilungsaufgaben und Kriterienpräferenzaufgaben.
--
-
+- CMAA behält Nutzereingaben nebeneinander bei, was zu einem diskreten kombinatorischen Problem führt.
+- CMAA-Rahmenwerk ist kompatibel mit kompensatorischen und nicht-kompensatorischen Entscheidungsmodellen.
+- Verschiedene Anforderungen dieser Entscheidungsmodelle, wie die Gesamtordnung ordinaler Kriterien, werden berücksichtigt.
 
 
 3.1. Performance judgements
+- Entscheidungsprobleme bestehen aus Leistungsbewertungsaufgaben und Kriterienpräferenzaufgaben.
+- Bewertungen sind subjektiv und können Diskrepanzen aufweisen.
+- CMAA erlaubt verschiedene Arten von Bewertungen, einschließlich skalaren oder unscharfen Zahlen, linguistischen Werten oder Wahrscheinlichkeitsverteilungen.
+- Bewertungen werden in individuellen und aggregierten Bewertungsmatrizen organisiert.
+- Kriterienpräferenzen erfordern subjektive Bewertungen der Wichtigkeit eines Kriteriums durch Entscheidungsträger.
+- Präferenzen können aggregiert werden, um einen aggregierten Präferenzvektor zu erstellen.
+- Entscheidungsmodelle können Bedingungen an Präferenzen oder Bewertungen stellen.
+- Modifikationen, die vom Modell gefordert werden, werden bei der Erstellung von Problembeispielen vorgenommen.
 
 3.2. Criteria preferences
+- Kriterien werden ähnlich wie Leistungsbewertungen behandelt.
+- Jede Präferenzaufgabe erfordert subjektive Bewertungen der Kriterienwichtigkeit von Entscheidungsträgern.
+- Präferenzen können aggregiert werden, um einen aggregierten Präferenzvektor zu bilden.
+- Bei mehr als einer Präferenz für ein gegebenes Kriterium entsteht eine Präferenzdiskrepanz, die unterschiedliche mentale Modelle anzeigt.
+- Entscheidungsmodelle können Bedingungen an Präferenzen oder Bewertungen stellen.
+- Modifikationen, die vom Modell gefordert werden, werden bei der Erstellung von Problembeispielen vorgenommen.
+- Ein Präferenzvektor, der die vom Entscheidungsmodell festgelegten Bedingungen erfüllt, wird als machbar bezeichnet.
+
 
 3.3. Resolution of discrepancies
+- Diskrepanzen werden durch unterschiedliche numerische Werte für eine bestimmte Bewertungs- oder Präferenzaufgabe identifiziert.
+- Hauptfunktion von Diskrepanzen in CMAA ist die Kennzeichnung unterschiedlicher mentaler Modelle.
+- Die Auflösung einer Diskrepanz bedeutet, dass die Entscheidungsträger ihre mentalen Modelle teilen und sich auf eines einigen.
+- Die Auflösung einer Diskrepanz kann durch Auswahl eines Kompromisswerts oder durch teilweise Auflösung erfolgen.
+- Eine vollständig aufgelöste aggregierte Bewertungsmatrix wird als Instanz der aggregierten Matrix bezeichnet.
+- Die Anzahl der Instanzen einer aggregierten Bewertungsmatrix wächst exponentiell mit der Anzahl der enthaltenen Diskrepanzen.
+- Der Instanzraum des Problems wird durch Aufzählung aller Kombinationen von Instanzen von P und A erhalten.
 
 3.4. Analysis algorithm
-- Aus Eingaben entsteht aggregierte Form
-- Instanzen werden nacheinander gerechnet
-- Ergebnisse in acceptability matrizen gespeichert
-- Entropie matrix für judgements und preferences wird aufgestellt
-- judgements oder preference mit geringster entropie wird aufgelöst bis currentEntropie 0 entspricht
+- CMAA-Algorithmus erstellt aggregierte Bewertungsmatrix und Präferenzvektor aus den Eingaben der Entscheidungsträger.
+- Algorithmus löst das Entscheidungsproblem für jede Instanz und aktualisiert entsprechend die Zählervariablen.
+- Zählervariablen registrieren die Rangakzeptabilitäten und verschiedene Attribute der aktuellen Instanz.
+- Analytische Statistiken entsprechen denen von SMAA, plus drei neue.
+- Einführung von drei neuen Analysevariablen: Urteilsakzeptanzindex, Präferenzakzeptanzindex und paarweiser Präferenzakzeptanzindex.
+- Komplexität des Analysealgorithmus hängt von der Anzahl und Kardinalität der Diskrepanzen in der Eingabe ab.
+- Bei einer großen Anzahl von Urteilsdiskrepanzen kann die Monte-Carlo-Simulation zur Vermeidung von prohibitiven Berechnungszeiten verwendet werden.
 
 3.5. Consensus iteration
+- CMAA-Algorithmus berechnet die Rang 1 Akzeptabilitäten, die aus jeder potenziellen Auflösung resultieren würden.
+- Einführung von drei neuen Analysevariablen: Potenzieller Urteilsakzeptanzindex, potenzieller Präferenzakzeptanzindex und potenzieller paarweiser Präferenzakzeptanzindex.
+- Verwendung der Shannon-Information-Entropie, um die Trennung der Akzeptabilitätsindizes zu messen.
+- Kleinster Entropiewert identifiziert die Auflösung, die die größte Trennung der Akzeptabilitäten und den größten Informationszuwachs bietet.
+- Definition eines iterativen, heuristischen Algorithmus, um die Entscheidungsträger von den anfänglichen Akzeptabilitäten zu einer einstimmigen Entscheidung zu führen.
+- Algorithmus implementiert eine gierige oder kurzsichtige Heuristik: Er wählt die Diskrepanz mit dem größten Potenzial für eine Entropieverbesserung in einem einzigen Schritt.
+- Algorithmus ist interaktiv: Berechnungen wechseln sich mit Klärungskonferenzen zwischen den Entscheidungsträgern ab.
+
+4.1. Decision problem
+wird nicht gebraucht
+
+5.1. Distribution of consensus path length
+- Simulation zur Untersuchung der Repräsentativität eines Beispiel-Konsens-Iterationspfades.
+- Behandlung der Anzahl der Schritte zur Erreichung des Konsenses als Zufallsvariable.
+- Monte-Carlo-Simulationsexperiment mit 10.000 Durchläufen, bei dem Diskrepanzen zufällig aufgelöst wurden.
+- Kürzeste Pfade bestanden aus nur drei Schritten, während die längsten Pfade 15 Schritte zur Erreichung des Konsenses benötigten.
+- Durchschnittliche Pfadlänge betrug 7,14 Schritte.
+- Schlussfolgerung, dass der Beispiel-Pfad kürzer als der Durchschnitt ist, aber mit einer Wahrscheinlichkeit von 0,16 nicht ungewöhnlich ist.
+- Gierige Heuristik fand nicht den kürzesten Pfad, schnitt aber besser ab als der durchschnittliche zufällige Pfad.
+wird nicht benötigt
+
+5.2. Application of CMAA with other decision models
+wird nicht benötigt
+
+
+
+Paper2
+
+Einleitung:
+- Konsensbildung in Mehrkriterien-Gruppenentscheidungen basiert auf Aggregationsmethode, Konsensmetrik und Anpassungsstrategie.
+- Einführung der Kombinatorischen Akzeptanzentropie (CAE) als Konsensmetrik in der Kombinatorischen Multikriterien-Akzeptanzanalyse (CMAA).
+- CAE-Metrik unterscheidet sich von klassischen Ansätzen, da sie keine Aggregation durchführt, nicht auf einer Ähnlichkeitsmaßnahme basiert und keine Anpassungsrichtung vorschreibt.
+- Diskussion über Input- und Output-Konsensmaßnahmen und die Präferenz für Output-Konsens, da das Ranking von Alternativen letztendlich von Interesse ist.
+- Darstellung des Konsensbildungsprozesses in MCGDM als iterativer Prozess, in dem die Bewertungen der Entscheidungsträger sukzessive angepasst werden.
+- Diskussion über verschiedene Aspekte der Konsensbildung, einschließlich Minderheitsmeinungen, extreme Meinungen und nicht-kooperatives Verhalten.
