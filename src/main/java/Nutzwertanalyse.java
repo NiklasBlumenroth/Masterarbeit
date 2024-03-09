@@ -1,16 +1,110 @@
+import Enums.Auflösungen;
 import lombok.SneakyThrows;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
+
+
 public class Nutzwertanalyse {
+    public static List<Auflösungen> getAufloesungen(){
+        List<Auflösungen> list = new ArrayList<>();
+        list.add(new Auflösungen(0,2,3));
+        list.add(new Auflösungen(2,2,3));
+        list.add(new Auflösungen(1,2,3));
+        list.add(new Auflösungen(4,2,3));
+        list.add(new Auflösungen(0,1,2));
+        list.add(new Auflösungen(3,2,3));
+        list.add(new Auflösungen(2,-1,2));
+        list.add(new Auflösungen(3,4,3));
+        list.add(new Auflösungen(2,4,2));
+        list.add(new Auflösungen(0,4,4));
+        list.add(new Auflösungen(4,4,2));
+        list.add(new Auflösungen(1,5,3));
+        list.add(new Auflösungen(4,1,3));
+        list.add(new Auflösungen(4,6,2));
+        list.add(new Auflösungen(0,3,4));
+        list.add(new Auflösungen(4,3,2));
+        list.add(new Auflösungen(1,1,3));
+        list.add(new Auflösungen(1,3,0));
+
+        return list;
+    }
+
+    public static ArrayList<Object>[] getFuzzyPreference() {
+        return new ArrayList[]{
+                new ArrayList<>(){{add(4); add(3);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(2);add(1);add(4);}},
+                new ArrayList<>(){{add(2); add(0); add(3);}},
+                new ArrayList<>(){{add(3); add(2);}},
+        };
+    }
+
+    public static ArrayList<Object>[][] getFuzzyJudgement() {
+        return new ArrayList[][]{
+                {//alternative 1 done
+                        new ArrayList<>(){{add(1); add(2); add(3); add(4);}},
+                        new ArrayList<>(){{add(0); add(1);add(2);}},
+                        new ArrayList<>(){{add(1);}},
+                        new ArrayList<>(){{add(1); add(2); add(3);}},
+                        new ArrayList<>(){{add(1);add(2);add(3);;}}
+                },{//alternative 2 done
+                new ArrayList<>(){{add(2);add(1);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(3);add(2);add(1);add(4);}}
+                },{//alternative 3 done
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(1);add(4);}},
+                new ArrayList<>(){{ add(3);add(4);}},
+                new ArrayList<>(){{add(3);add(4);}}
+                },{//alternative 4 done
+                new ArrayList<>(){{ add(4);add(2);}},
+                new ArrayList<>(){{add(0);add(2);add(1);}},
+                new ArrayList<>(){{add(0); add(1); add(2); }},
+                new ArrayList<>(){{add(2); add(3); add(4);}},
+                new ArrayList<>(){{add(2);add(1);add(4);}}
+        },{//alternative 5
+                new ArrayList<>(){{add(4);add(3);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(2);add(1);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(2);add(3);}}
+        },{//alternative 6
+                new ArrayList<>(){{add(3); }},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(2);}}
+        },{//alternative 7
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(3); add(2); }},
+                new ArrayList<>(){{add(1); add(2); add(3);}},
+                new ArrayList<>(){{add(2); add(3); }},
+                new ArrayList<>(){{add(2); add(3);}}
+        }
+        };
+    }
+
+    public static long getk(ArrayList<Object>[][] judgements, ArrayList<Object>[] preferences){
+        long i = 1;
+        for(ArrayList<Object>[] array : judgements){
+            for(ArrayList<Object> list : array){
+                i *= list.size();
+            }
+        }
+        return i;
+    }
+
     public static ArrayList<Object>[][] getMatrix(boolean lex) {
 //        return getTestLexBiotechMatrix();
         if(lex){
             return getLexMatrix();
         }
-        return getFuzzyMatrix();
+        return getFuzzyJudgement();
     }
 
     public static ArrayList<Object>[] getWeights(boolean lex) {
@@ -18,7 +112,7 @@ public class Nutzwertanalyse {
         if(lex){
             return getLexWeights();
         }
-        return getFuzzyWeights();
+        return getFuzzyPreference();
     }
 
     public static double currentEntropy;
@@ -28,151 +122,60 @@ public class Nutzwertanalyse {
     public static String fileNameFuzzy;
 
     public static void main(String[] args) throws IOException {
-        int[] alternatives = {5, 10, 15};
-        int[] criteria = {3, 6};
-        int[] numberOfDecisionMakers = {3, 6};
-
-        boolean full = false;
-        boolean useStaticProblem = false;
-        boolean lex = true;
+        boolean full = true;
+        boolean useStaticProblem = true;
+        boolean lex = false;
         boolean show = false;
+        String berechnungsName= "FuzzySAW Auswertung";
+        fileNameFuzzy = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        fileExist(fileNameFuzzy);
 
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss_MM_dd_yyyy");
-//        Calendar c = Calendar.getInstance();
-//        String curr_date = dateFormat.format(c.getTime());
-//
-//        fileName = logPath + curr_date +".txt";
-//        fileExist(fileName);
-//        Nutzwertanalyse.writeTxt("newText");
-        for(int i = 0; i < 1001; i += 10){
-//            rechnen(5, 5, 3, full, lex, useStaticProblem, show, i);
-            for(int alt : alternatives){
-                for(int crit : criteria){
-                    for(int num : numberOfDecisionMakers){
-                        if(num == 6 && alt == 15 && crit == 6){
+        int[][][] aggregatedMatrix = null;
+        int[][] aggregatedWeights = null;
 
-                        }else {
-                            //rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
-                        }
-                        //rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
-                        rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
-                    }
+        //gets static problem matrix
+        ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
+        ArrayList<Object>[] staticAggregatedWeights = getWeights(lex);
+        //transfer static arraylist problem to matrix filled with judgements and -1
+        aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
+        aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
+        //FUZZY SAW
+        lex = false;
+        List<Auflösungen> aufloesungen = getAufloesungen();
+
+        List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
+        fillIsValid(aggregatedMatrix, aggregatedWeights, lowestValue);
+        for(LowestValueObject value : lowestValue){
+            writeTxt(value.toString());
+        }
+
+
+    }
+    public static void fillIsValid(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues) {
+        for (int i = 0; i < lowestValues.size(); i++) {
+            LowestValueObject object = lowestValues.get(i);
+            if (object.isJudgement) {
+                if (aggregatedMatrix[object.getI()][object.getJ()].length > 1) {
+                    object.setValid(true);
+                } else {
+                    object.setValid(false);
+                }
+            } else {
+                if (aggregatedWeights[object.getI()].length > 1) {
+                    object.setValid(true);
+                } else {
+                    object.setValid(false);
                 }
             }
         }
     }
+
+
     public static boolean newProblem = false;
     public static boolean nextIsZero = false;
     public static int idealCounter = 0;
     public static void rechnen(int alt, int crit, int numberOfDecisionMaker, boolean full, boolean lex, boolean useStaticProblem, boolean show, int number) throws IOException {
-        String berechnungsName;
 
-        berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-        fileNameLex = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
-        fileExist(fileNameLex);
-        berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-        fileNameFuzzy = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
-        fileExist(fileNameFuzzy);
-
-        Date endDate = new Date();
-        int[][][] aggregatedMatrix = null;
-        int[][] aggregatedWeights = null;
-        int[][][] decisionMakerList = null;
-        int[][] decisionMakerWeightsList = null;
-        int indivPathLength = 0;
-        double avgPathLength = 0;
-        int durchlaeufe = 100;
-
-        int linesInFile = getLines(fileNameFuzzy);
-        for (int l = linesInFile; l < number; l++) {
-            if(useStaticProblem){
-                //gets static problem matrix
-                ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
-                ArrayList<Object>[] staticAggregatedWeights = getWeights(lex);
-                //transfer static arraylist problem to matrix filled with judgements and -1
-                aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
-                aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
-            }else{
-                decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
-                decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
-                //generates aggregated matrix and fill with -1
-                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            }
-            lex = true;
-            for (int k = 0; k < durchlaeufe; k++) {
-                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-
-                if(lowestValue.size() == 0){
-                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
-                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
-                    //generates aggregated matrix and fill with -1
-                    aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                    aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                    k=-1;
-                    newProblem = false;
-                    System.out.println("new");
-                    continue;
-                }
-                indivPathLength++;
-                while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
-                    if(newProblem){
-                        indivPathLength = 0;
-                        break;
-                    }
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-                    indivPathLength++;
-                }
-//                System.out.println("idealCounter = " + idealCounter);
-                idealCounter = 0;
-                if(newProblem){
-                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
-                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
-                    k--;
-                    newProblem = false;
-                }else {
-                    //Nutzwertanalyse.writeTxt(k + ": Pfadlänge: " + indivPathLength);
-                    avgPathLength += indivPathLength;
-                }
-                indivPathLength = 0;
-
-                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            }
-            if(!newProblem){
-                endDate = new Date();
-                Nutzwertanalyse.writeTxt(l + " Durchschnittliche Pfadlänge = " + avgPathLength / durchlaeufe + " : " + endDate);
-                }
-            avgPathLength = 0;
-
-            aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            //FUZZY SAW
-            lex = false;
-            for (int k = 0; k < durchlaeufe; k++) {
-                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-                indivPathLength++;
-                while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, false);
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, false, show, useStaticProblem);
-                    indivPathLength++;
-                }
-                //Nutzwertanalyse.writeTxtFuzzy("" + indivPathLength);
-                idealCounter = 0;
-                avgPathLength += indivPathLength;
-                indivPathLength = 0;
-
-                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            }
-
-            if(!newProblem){
-                endDate = new Date();
-                Nutzwertanalyse.writeTxtFuzzy(l + " Durchschnittliche Pfadlänge = " + avgPathLength / durchlaeufe + " : " + endDate);
-            }
-            avgPathLength = 0;
-        }
     }
     private static String readTxt(String fileName) throws IOException {
         File file = new File(fileName);
@@ -214,9 +217,10 @@ public class Nutzwertanalyse {
     @SneakyThrows
     public static void writeTxt(String newText) {
         System.out.println(newText);
-        FileWriter fw = new FileWriter(fileNameLex,true); //the true will append the new data
+        /*FileWriter fw = new FileWriter(fileNameFuzzy,true); //the true will append the new data
         fw.write(newText + "\n");//appends the string to the file
         fw.close();
+         */
     }
 
     @SneakyThrows
@@ -386,25 +390,7 @@ public class Nutzwertanalyse {
         }
         return newArray;
     }
-    public static ArrayList<Object>[][] getFuzzyMatrix() {
-        return new ArrayList[][]{
-                {
-                        new ArrayList<>(){{add(2); add(1);}},
-                        new ArrayList<>(){{add(3); add(5);}},
-                        new ArrayList<>(){{add(4); add(6);}}
-                },
-                {
-                        new ArrayList<>(){{add(2); add(6);}},
-                        new ArrayList<>(){{add(3); add(4);}},
-                        new ArrayList<>(){{add(3); add(5);}}
-                },
-                {
-                        new ArrayList<>(){{add(4); add(1); add(6);}},
-                        new ArrayList<>(){{add(5); add(1);}},
-                        new ArrayList<>(){{add(3); add(1);}}
-                }
-        };
-    }
+
 
     public static ArrayList<Object>[][] getLexMatrix() {
         return new ArrayList[][]{
@@ -561,12 +547,118 @@ public class Nutzwertanalyse {
                 new ArrayList<>() {{add(1);add(2);add(3);add(4);add(5);}},
         };
     }
-
-    public static ArrayList<Object>[] getFuzzyWeights() {
+/*
+ public static ArrayList<Object>[] getFuzzyPreference() {
         return new ArrayList[]{
                 new ArrayList<>(){{add(5); add(2); add(1);}},
                 new ArrayList<>(){{add(1); add(4);}},
                 new ArrayList<>(){{add(3); add(5); add(1);}}
         };
     }
+    public static ArrayList<Object>[][] getFuzzyJudgement() {
+        return new ArrayList[][]{
+                {//alternative 1
+                        new ArrayList<>(){{add(2); add(1);}},
+                        new ArrayList<>(){{add(3); add(5);}},
+                        new ArrayList<>(){{add(4); add(6);}}
+                },
+                {//alternative 2
+                        new ArrayList<>(){{add(2); add(6);}},
+                        new ArrayList<>(){{add(3); add(4);}},
+                        new ArrayList<>(){{add(3); add(5);}}
+                },
+                {//alternative 3
+                        new ArrayList<>(){{add(4); add(1); add(6);}},
+                        new ArrayList<>(){{add(5); add(1);}},
+                        new ArrayList<>(){{add(3); add(1);}}
+                }
+        };
+    }
+ */
+/*
+  public static ArrayList<Object>[] getFuzzyPreference() {
+        return new ArrayList[]{
+                new ArrayList<>(){{add(4); add(3); add(4);add(4);add(3);}},
+                new ArrayList<>(){{add(3); add(2); add(3);add(2);add(3);}},
+                new ArrayList<>(){{add(2); add(1); add(4);add(1);add(2);}},
+                new ArrayList<>(){{add(2); add(0); add(3);add(3);add(2);}},
+                new ArrayList<>(){{add(3); add(2); add(3);add(3);add(3);}},
+        };
+    }
+
+    public static ArrayList<Object>[][] getFuzzyJudgement() {
+        return new ArrayList[][]{
+                {//alternative 1 done
+                        new ArrayList<>(){{add(3); add(2); add(1); add(2); add(1);}},
+                        new ArrayList<>(){{add(4); add(1); add(1); add(2); add(1);}},
+                        new ArrayList<>(){{add(2); add(2); add(1); add(3); add(3);}},
+                        new ArrayList<>(){{add(1); add(0); add(1); add(1); add(2);}},
+                        new ArrayList<>(){{add(3); add(2); add(1); add(3); add(1);}}
+                },{//alternative 2 done
+                new ArrayList<>(){{add(1); add(2); add(3); add(2); add(3);}},
+                new ArrayList<>(){{add(2); add(4); add(3); add(3); add(4);}},
+                new ArrayList<>(){{add(2); add(3); add(3); add(2); add(2);}},
+                new ArrayList<>(){{add(2); add(3); add(2); add(2); add(1);}},
+                new ArrayList<>(){{add(4); add(3); add(2); add(3); add(3);}}
+                },{//alternative 3 done
+                new ArrayList<>(){{add(4); add(2); add(2); add(3); add(3);}},
+                new ArrayList<>(){{add(2); add(4); add(4); add(4); add(4);}},
+                new ArrayList<>(){{add(4); add(3); add(3); add(3); add(3);}},
+                new ArrayList<>(){{add(4); add(3); add(2); add(3); add(3);}},
+                new ArrayList<>(){{add(3); add(2); add(1); add(3); add(3);}}
+                },{//alternative 4 done
+                new ArrayList<>(){{add(2); add(2); add(1); add(2); add(1);}},
+                new ArrayList<>(){{add(4); add(0); add(0); add(3); add(1);}},
+                new ArrayList<>(){{add(4); add(2); add(2); add(4); add(4);}},
+                new ArrayList<>(){{add(4); add(1); add(1); add(3); add(2);}},
+                new ArrayList<>(){{add(4); add(1); add(1); add(4); add(2);}}
+        },{//alternative 5
+                new ArrayList<>(){{add(3); add(3); add(2); add(3); add(2);}},
+                new ArrayList<>(){{add(4); add(2); add(1); add(3); add(2);}},
+                new ArrayList<>(){{add(4); add(3); add(2); add(4); add(3);}},
+                new ArrayList<>(){{add(4); add(2); add(2); add(2); add(2);}},
+                new ArrayList<>(){{add(3); add(2); add(1); add(3); add(2);}}
+        },{//alternative 6
+                new ArrayList<>(){{add(3); add(2); add(2); add(2); add(2);}},
+                new ArrayList<>(){{add(3); add(3); add(3); add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(2); add(3); add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(4); add(3); add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(3); add(3); add(3); add(2);}}
+        },{//alternative 7
+                new ArrayList<>(){{add(3); add(3); add(2); add(2); add(2);}},
+                new ArrayList<>(){{add(3); add(2); add(1); add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(2); add(3); add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(3); add(3); add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(3); add(2); add(3); add(3);}}
+        }
+        };
+    }
+
+ */
+    /*
+    boolean full = true;
+        boolean useStaticProblem = true;
+        boolean lex = false;
+        boolean show = false;
+        String berechnungsName= "FuzzySAW Auswertung";
+        fileNameFuzzy = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
+        fileExist(fileNameFuzzy);
+
+        int[][][] aggregatedMatrix = null;
+        int[][] aggregatedWeights = null;
+
+        //gets static problem matrix
+        ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
+        ArrayList<Object>[] staticAggregatedWeights = getWeights(lex);
+        //transfer static arraylist problem to matrix filled with judgements and -1
+        aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
+        aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
+        //FUZZY SAW
+        lex = false;
+        List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
+        fillIsValid(aggregatedMatrix, aggregatedWeights, lowestValue);
+        for(LowestValueObject value : lowestValue){
+            writeTxt(value.toString());
+        }
+     */
 }

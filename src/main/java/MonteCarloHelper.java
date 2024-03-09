@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class MonteCarloHelper {
-    public static int monteCarloIterations = 10_000;
+    public static int monteCarloIterations = 10_000_0;
     public static int iteration;
     public static int alternative;
     public static int criteria;
@@ -17,7 +17,7 @@ public class MonteCarloHelper {
 
     public static List<LowestValueObject> showMonteCarloSaw(int[][][] aggregatedMatrix, int[][] aggregatedWeights, boolean full, boolean lex, boolean show, boolean useStaticProblem){
         Date date = new Date();
-        if(show) Nutzwertanalyse.writeTxt("Start: " + date);
+        //if(show) Nutzwertanalyse.writeTxt("Start: " + date);
         alternative = aggregatedMatrix.length;
         criteria = aggregatedWeights.length;
 
@@ -144,24 +144,9 @@ public class MonteCarloHelper {
             countByRankingAndDecision(rankingPosition, objectCurrentJudgementAcceptabilityIndices, sawMatrix);
             //sawWeights + ranking = countingWeightsRankingMap
             countByRankingAndWeights(rankingPosition, objectCurrentPreferenceAcceptabilityIndices, sawWeights);
-
-            if(show){
-                Nutzwertanalyse.writeTxt("\nranking ");
-                Helper.show1DArray(rankingPosition);
-                Nutzwertanalyse.writeTxt("\nrankAcceptabilityIndices ");
-                Helper.showAcceptabilityIndices(rankAcceptabilityIndices);
-                for(int j = 0; j < alternative; j++){
-                    Nutzwertanalyse.writeTxt("currentJudgementAcceptabilityIndex for a" + j);
-                    Helper.show3DArray(objectCurrentJudgementAcceptabilityIndices[j]);
-                }
-                for (int j = 0; j < criteria; j++){
-                    Nutzwertanalyse.writeTxt("currentPreferenceAcceptabilityIndex for a" + j);
-                    Helper.show2DArray(objectCurrentPreferenceAcceptabilityIndices[j]);
-                }
-            }
         }
         if(useStaticProblem){
-            show = true;
+            show = false;
         }
         if(show){
             Nutzwertanalyse.writeTxt("k: " + k);
@@ -215,7 +200,7 @@ public class MonteCarloHelper {
 
         Map<Object, Double>[][] judgementEntropyMatrix = getEntropyMatrix(objectPotentialJudgementAcceptabilityIndices, lex);
         if(show){
-            Nutzwertanalyse.writeTxt("judgementEntropyMatrix");
+            Nutzwertanalyse.writeTxt("\njudgementEntropyMatrix");
             Helper.showEntropyMatrix(judgementEntropyMatrix);
         }
 

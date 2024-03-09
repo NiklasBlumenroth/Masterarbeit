@@ -2,11 +2,9 @@ package Enums;
 
 public enum FuzzyJudgements {
     VP    (0, 1, 2),
-    P        (1, 2, 3),
-    MP    (2, 3.5, 5),
+    P        (2, 3, 4),
     F          (4, 5, 6),
-    MG         (5, 6.5, 8),
-    G             (7, 8, 9),
+    G             (6, 7, 8),
     VG         (8, 9, 10);
 
     public final double value1;
@@ -17,11 +15,9 @@ public enum FuzzyJudgements {
         return switch (Id) {
             case 0 -> VP;
             case 1 -> P;
-            case 2 -> MP;
-            case 3 -> F;
-            case 4 -> MG;
-            case 5 -> G;
-            case 6 -> VG;
+            case 2 -> F;
+            case 3 -> G;
+            case 4 -> VG;
             default -> null;
         };
     }
@@ -30,11 +26,9 @@ public enum FuzzyJudgements {
         return switch (judgements) {
             case VP -> 0;
             case P -> 1;
-            case MP -> 2;
-            case F -> 3;
-            case MG -> 4;
-            case G -> 5;
-            case VG -> 6;
+            case F -> 2;
+            case G -> 3;
+            case VG -> 4;
             default -> -1;
         };
     }

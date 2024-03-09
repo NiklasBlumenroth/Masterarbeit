@@ -1,0 +1,94 @@
+INIT
+
+current entropy
+1.7469843458732885
+LowestValueObject(i=2, j=1, isJudgement=true, lowestValue=1.1420047780493146, lowestKey=4, isValid=true)
+Runde: 1 : c1,a3    c1,a3
+
+current entropy
+1.6702254729340582
+LowestValueObject(i=2, j=2, isJudgement=true, lowestValue=0.6548436190922484, lowestKey=4, isValid=true)
+Runde: 2 : c3,a3    c3,a3
+
+current entropy
+1.190868497756953
+LowestValueObject(i=2, j=1, isJudgement=true, lowestValue=0.38085406371488884, lowestKey=4, isValid=true)
+Runde: 3 : c2,a3    c2,a3
+
+current entropy
+0.9668895551695705
+LowestValueObject(i=2, j=4, isJudgement=true, lowestValue=0.5206832774219821, lowestKey=4, isValid=true)
+Runde: 4 : c5,a3    c5,a3
+
+current entropy
+1.3044627595050713
+LowestValueObject(i=1, j=0, isJudgement=true, lowestValue=0.8416476654112984, lowestKey=1, isValid=true)
+Runde: 5: c1,a2     c1,a2
+
+current entropy
+1.0028885714221132
+LowestValueObject(i=2, j=3, isJudgement=true, lowestValue=0.5572465036784936, lowestKey=4, isValid=true)
+Runde: 6: c4,a3     c4,a3
+
+current entropy
+1.3372502805906117
+LowestValueObject(i=2, j=-1, isJudgement=false, lowestValue=0.9850220326927007, lowestKey=4, isValid=true)
+Runde: 7: c3        c3
+
+current entropy
+1.3148539598458795
+LowestValueObject(i=4, j=3, isJudgement=true, lowestValue=1.0348913169739031, lowestKey=2, isValid=true)
+Runde: 8: c4,a5     c4,c5
+
+current entropy
+1.1950059234665393
+LowestValueObject(i=4, j=2, isJudgement=true, lowestValue=0.9206253516857055, lowestKey=1, isValid=true)
+Runde: 9: c3,a5     c3,a5
+
+current entropy
+1.3446309963864898
+LowestValueObject(i=4, j=0, isJudgement=true, lowestValue=0.9127754376359982, lowestKey=3, isValid=true)
+Runde: 10: c1,a5    c1,a5
+
+current entropy
+1.5344459435444155
+LowestValueObject(i=4, j=4, isJudgement=true, lowestValue=0.9333582278084166, lowestKey=2, isValid=true)
+Runde: 11: c5,a5    c5,a5
+
+current entropy
+0.9218303259395253
+LowestValueObject(i=5, j=1, isJudgement=true, lowestValue=0.6634558245903469, lowestKey=3, isValid=true)
+Runde: 12 : c2,a6   c2,a6
+
+current entropy
+0.6665766584308243
+LowestValueObject(i=1, j=4, isJudgement=true, lowestValue=0.40708514266936635, lowestKey=1, isValid=true)
+Runde: 13 : c5,a2   c5,a2
+
+current entropy
+0.5564492169333033
+LowestValueObject(i=6, j=4, isJudgement=true, lowestValue=0.3266902092875044, lowestKey=2, isValid=true)
+Runde: 14 : c5,a7   c5,a7
+
+current entropy
+0.32400337723940886
+LowestValueObject(i=3, j=0, isJudgement=true, lowestValue=0.1393496965096293, lowestKey=2, isValid=true)
+Runde: 15 : c1,a4   c1,a4
+
+current entropy
+0.45430617696613546
+LowestValueObject(i=3, j=4, isJudgement=true, lowestValue=0.14500550126350129, lowestKey=1, isValid=true)
+Runde: 16: c5,a4    c5,a4
+
+current entropy
+0.16038082644861615
+LowestValueObject(i=1, j=1, isJudgement=true, lowestValue=0.0171960097483361, lowestKey=3, isValid=true)
+Runde: 17 : c2,a2   c2,a2
+
+current entropy
+0.017352332402616702
+LowestValueObject(i=3, j=1, isJudgement=true, lowestValue=0.0, lowestKey=0, isValid=true)
+Runde: 18: c2,a4    c2,a4
+
+current entropy
+0.0

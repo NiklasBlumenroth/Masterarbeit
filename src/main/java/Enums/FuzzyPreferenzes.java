@@ -1,13 +1,11 @@
 package Enums;
 
 public enum FuzzyPreferenzes {
-    VL     (0.0, 0.1,0.2),
-    L         (0.1, 0.2,0.3),
-    ML     (0.2, 0.35,0.5),
-    M          (0.4, 0.5,0.6),
-    MH   (0.5, 0.65,0.8),
-    H       (0.7, 0.8,0.9),
-    VH   (0.8, 0.9,1.0);
+    VL     (0.0, 0.1, 0.2),
+    L         (0.2, 0.3, 0.4),
+    M          (0.4, 0.5, 0.6),
+    H       (0.6, 0.7, 0.8),
+    VH   (0.8, 0.9, 1.0);
 
     public final double value1;
     public final double value2;
@@ -15,11 +13,9 @@ public enum FuzzyPreferenzes {
 
     public static FuzzyPreferenzes getPreferenzes(int Id){
         return switch (Id) {
-            case 6 -> VH;
-            case 5 -> H;
-            case 4 -> MH;
-            case 3 -> M;
-            case 2 -> ML;
+            case 4 -> VH;
+            case 3 -> H;
+            case 2 -> M;
             case 1 -> L;
             case 0 -> VL;
             default -> null;
@@ -27,11 +23,9 @@ public enum FuzzyPreferenzes {
     }
     public static int getId(FuzzyPreferenzes fuzzyPreferenzes){
         return switch (fuzzyPreferenzes) {
-            case VH -> 6;
-            case H -> 5;
-            case MH -> 4;
-            case M -> 3;
-            case ML -> 2;
+            case VH -> 4;
+            case H -> 3;
+            case M -> 2;
             case L -> 1;
             case VL -> 0;
             default -> -1;

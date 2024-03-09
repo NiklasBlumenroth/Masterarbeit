@@ -121,3 +121,257 @@ Einleitung:
 - Diskussion über Input- und Output-Konsensmaßnahmen und die Präferenz für Output-Konsens, da das Ranking von Alternativen letztendlich von Interesse ist.
 - Darstellung des Konsensbildungsprozesses in MCGDM als iterativer Prozess, in dem die Bewertungen der Entscheidungsträger sukzessive angepasst werden.
 - Diskussion über verschiedene Aspekte der Konsensbildung, einschließlich Minderheitsmeinungen, extreme Meinungen und nicht-kooperatives Verhalten.
+
+
+PAPER: Combinatorial acceptability entropy - a novel
+consensus model for multi-criteria group decisions
+
+Einleitung:
+- Konsens ist in Gruppenentscheidungen wichtig für Engagement und Erfolg.
+- Forschung konzentriert sich auf Konsensmessung und -bildung.
+- Drei Hauptkomponenten: Aggregationsmethode, Konsensmetrik, Anpassungsstrategie.
+- Klassische Ansätze nutzen Durchschnittsbildung und Ähnlichkeitsmetriken.
+- Combinatorial Acceptability Entropy (CAE) verzichtet auf Aggregation und vorgeschriebene Anpassungsrichtung.
+- CAE erreicht schneller Konsens und identifiziert einflussreiche Entscheidungen.
+- Unterscheidung zwischen Input- und Output-Metriken für Konsensmessung.
+- Soft Consensus als teilweise Übereinstimmung akzeptiert.
+- Input-Metriken basieren auf Durchschnittswerten oder Distanzen zwischen Urteilen.
+- Output-Konsens bevorzugt, da Endrangfolge relevanter als individuelle Eingaben ist.
+- Anpassungen bei Output-Metriken weniger spezifisch als bei Input-Metriken.
+- Konsensbildung ist ein iterativer Prozess, der auf einem Konsensmaß basiert.
+
+- Prozess umfasst Anpassung von Bewertungen bis zum Erreichen eines Schwellenwerts.
+- Methoden variieren in Konsensmessung, Identifikation und Richtung der Anpassungen.
+- Entscheidungsträger passen ihre Bewertungen in Richtung des Gruppendurchschnitts an.
+- Anpassungen können vorgeschlagen, erzwungen oder automatisiert sein.
+- Widerwillige Entscheidungsträger können bestraft oder ignoriert werden.
+- Modelle berücksichtigen politische/psychologische Kosten der Konsensbildung.
+- Ansätze zur Kostenminimierung und Effizienzsteigerung werden vorgestellt.
+- Umgang mit Minderheitsmeinungen, extremen Ansichten und nicht-kooperativem Verhalten.
+- Gewichtung von Entscheidungsträgern kann sich je nach Kooperation ändern.
+- Skalierbarkeit der Methoden für große Gruppen wird durch soziale Medien relevanter.
+- Papierstruktur: Einführung, Unterscheidung von Konsenstypen, Kombinatorische Akzeptanz, Simulationen, Schlussfolgerungen.
+
+2.2 Cooperative and competitive groups
+- Diskrepanzen in Gruppenentscheidungen entstehen durch unterschiedliche Wahrnehmungen und Präferenzen.
+- Fünf Ursachen für Diskrepanzen: Sprachgebrauch, Annahmen, Informationsasymmetrien, individuelle Ziele, Geschmack.
+- Zwei Arten von Gruppenentscheidungen: wettbewerbsorientiert und kooperativ.
+- Wettbewerbsentscheidungen entstehen durch unvereinbare Ziele/Glaubenssätze und erfordern Kompromisse.
+- Kooperative Entscheidungen basieren auf Informations- und Interpretationsunterschieden und sind leichter lösbar.
+- Konsens in Wettbewerbsentscheidungen kann psychologische/politische Kosten verursachen.
+- Merkmale von MCGDM-Methoden berücksichtigen wettbewerbsorientierte Entscheidungen.
+- In kooperativen Entscheidungen führt geteiltes Verständnis zu schnellem, kostengünstigem Konsens.
+- Praktische Entscheidungen können sowohl kooperative als auch wettbewerbsorientierte Elemente enthalten.
+
+2.3 Input consensus and output consensus
+- Input-Konsens misst Ähnlichkeit der Entscheidungseingaben, Output-Konsens der Ergebnisse.
+- Typische Input-Metrik: Durchschnittliche Distanz zwischen individuellen Urteilen und Gruppenmittel.
+- Output-Metrik: Summe der Distanzen zwischen individuellen Rankings und Gruppenmittel.
+- Input-Konsens ist hinreichend, aber nicht notwendig für Output-Konsens.
+- Beispiel zeigt starken Output-Konsens trotz schwachem Input-Konsens.
+- Input-Konsens kann Einigkeit überbewerten, Output-Konsens erkennt Uneinigkeit besser.
+- Probleme bei Input-Konsens: Kann wahre Meinungsverschiedenheiten übersehen.
+- Output-Konsens ist relevanter, da er tatsächliche Übereinstimmung in Entscheidungen misst.
+
+3 The CAE consensus model
+3.1 Design considerations
+
+3.2 Combinatorial acceptability as a measure of preferredness
+- CAE-Modell basiert auf der Annahme, dass bei kooperativen Entscheidungen ein 'korrekter' Konsens existiert.
+- Korrekter Konsens entsteht, wenn alle mentalen Modelle geteilt und integriert werden.
+- Drei Korollare leiten das Design des CAE-Modells:
+- Korollar 1.1: Einzig 'richtige' Lösung bei geteilten mentalen Modellen.
+- Korollar 1.2: Jedes mentale Modell kann entscheidend sein.
+- Korollar 1.3: Voreingenommene Konsensprozesse können zu falschen Ergebnissen führen.
+- CAE-Modell muss unvoreingenommen sein und allen Urteilen gleiche Wichtigkeit beimessen.
+- Das Modell muss den 'Unique Argument Test' bestehen, d.h., es muss in der Lage sein, das überzeugendste Argument zu identifizieren.
+- Kombinatorische Akzeptanz misst die Bevorzugung einer Alternative basierend auf allen möglichen Urteils- und Präferenzkombinationen.
+- Rangakzeptanz und Gesamtakzeptanz einer Alternative werden durch die Häufigkeit ihrer bevorzugten Platzierung bestimmt.
+- Akzeptanzberechnung ist unabhängig von der Entscheidungsmethode und nutzt die daraus resultierenden Rankings.
+- Monte-Carlo-Simulation kann für große Instanzenzahlen eingesetzt werden, um Genauigkeit und Praktikabilität zu gewährleisten
+- Wiederholte Eingabewerte werden in der Instanzgenerierung nur einmal berücksichtigt, entsprechend der Gleichbehandlung aller Urteile.
+- Rangakzeptanzen können probabilistisch interpretiert werden, wobei jede Alternative die gleiche Chance hat, ausgewählt zu werden.
+
+3.3 Acceptability entropy as a consensus metric
+- CAE-Metrik basiert auf der Informationstheorie und misst Unsicherheit in Rangakzeptanzen.
+- Entropie maximiert bei Gleichverteilung, minimiert bei eindeutiger Präferenz.
+- Entropie kann Konsensgrad messen und wird bei einstimmigen Rängen null.
+- Hohe Entropiewerte signalisieren Unentschiedenheit, niedrige eine klare Präferenz.
+- CAE-Metrik ist sensitiv und eignet sich für die Messung von Output-Konsens.
+- Entropie misst, wie einheitlich die bevorzugte Alternative aus allen Eingaben hervorgeht.
+- Ein 'harter' Konsens verlangt, dass alle Eingabekombinationen zur selben Präferenz führen.
+- Potenzielle Entropien für Urteile und Präferenzen können den Konsensbildungsprozess leiten.
+- CAE-Algorithmus benötigt keine Anpassungsrichtung und fördert einstimmige Werte.
+- Tabelle 1 vergleicht CAE mit durchschnittsbasierten Methoden hinsichtlich Konsenskosten und Interpretation von Ausreißern.
+
+4 Numerical examples and comparisons
+4.1 Illustration of the consensus-building process
+- Beispiel mit zwei Entscheidungsträgern, Kriterien und Alternativen zeigt CAE-Prozess.
+- Anfängliche Urteile weisen Diskrepanzen auf; Entropie ist maximal mit h(1) = 1.0.
+- Potenzielle Urteilsakzeptanz zeigt bevorzugte Alternativen bei hypothetischen Auflösungen.
+- Niedrigste Urteilsentropie bestimmt zu lösende Diskrepanz; Kompromiss bei 0.8 gefunden.
+- Zweiter Schritt verbessert Entropie auf h(1) = 0.76, nahe an optimaler Entropie von 0.54.
+- Entscheidungsträger wählen entropieminimierenden Wert 0.2, um Konsens zu erreichen.
+- Endresultat zeigt harte Konsensbildung mit h(1) = 0.0 und eindeutiger Präferenz für a1.
+
+4.2 Illustration of convergence speed
+- Beispiel mit sechs Entscheidungsträgern und drei Alternativen zeigt CAE-Leistung.
+- Anfängliche Entropie von 1.75 weist auf keine klare bevorzugte Alternative hin.
+- Drei gezielte Auflösungen führen zu hartem Konsens für Alternative a4.
+- Erste Auflösung senkt Entropie auf 1.03, zweite auf 0.31 mit starker Empfehlung für a4.
+- Dritte Auflösung erreicht vollständigen Konsens; Entropie fällt auf 0.0.
+- Über 3.6E13 Instanzen bestätigen a4 als bevorzugte Alternative.
+- Übrige Diskrepanzen beeinflussen das Ergebnis nicht mehr.
+- Prozess kann für niedrigere Ränge fortgesetzt werden, falls erforderlich.
+
+4.3 Comparison of convergence behavior
+- Simulationsstudie vergleicht CAE-Methode mit Input-Averaging-Algorithmus MACRP 3.
+- MACRP 3 nutzt durchschnittliche Distanz zu Gruppenmittelwerten als Konsensmetrik.
+- CAE erreicht Konsensschwelle schneller und unabhängig von Problemgröße.
+- MACRP 3 benötigt mit steigender Alternativenzahl mehr Schritte für weichen Konsens.
+- CAE identifiziert bevorzugte Alternative effizienter als MACRP 3.
+- MACRP 3 zeigt selbst nach vielen Schritten nur schwache Konsensverbesserung.
+- CAE zeigt über 90% Übereinstimmung bei bevorzugter Alternative in wenigen Schritten.
+- Studie demonstriert Überlegenheit von CAE in Geschwindigkeit und Skalierbarkeit.
+
+5 Conclusions
+5.1 Summary
+- CAE-Metrik wandelt Einzelbenutzer-Multi-Kriterien-Methoden in Gruppenmethoden um.
+- Unterscheidung zwischen kooperativen und wettbewerbsorientierten Gruppenentscheidungen.
+- CAE ist effizient, unvoreingenommen und fördert gemeinsames Verständnis.
+- Simulation zeigt Überlegenheit von CAE gegenüber Input-Averaging-Methoden.
+- CAE erreicht schnell harten Konsens, unabhängig von der Anzahl der Alternativen.
+- CAE-Ansatz erweiterbar für Top-n-Alternativen oder vollständige Rankings.
+- Optimistische Identifikationsregel wählt Diskrepanz mit niedrigster Entropie.
+- Effizienz alternativer Identifikationsregeln und mehrstufiger Vorausschau zu untersuchen.
+- CAE auch für wettbewerbsorientierte Entscheidungen anwendbar; mögliche Einführung einer Richtungsregel.
+
+PAPER 3: PROJECT SELECTION IN A BIOTECHNOLOGY STARTUP USING COMBINATORIAL ACCEPTABILITY ANALYSIS
+Einleitung:
+- Vorstellung der ersten Anwendung des CMAA-Frameworks in einer Startup-Gruppenentscheidung.
+- Ziel ist die Validierung von CMAA für die Praxis und die Entwicklung von Richtlinien.
+- CMAA unterstützt kooperative Gruppen bei schnellen Entscheidungen mit hohem Konsensgrad.
+- CMAA integriert mit Standard-Multi-Kriterien-Entscheidungsmethoden ohne Input-Aggregation.
+- Akzeptanz einer Alternative basiert auf Kombinationen von Entscheidungseingaben.
+- Entropie der Akzeptanzvektoren dient als Konsensmaß; Konsensbildung minimiert Entropie.
+- Startups treffen Entscheidungen unter hoher Unsicherheit und müssen schnell experimentieren.
+- Kooperative, rationale Entscheidungsgruppen teilen Informationen für eine gemeinsame mentale Modellbildung.
+- Beiträge: Erste CMAA-Anwendung in der Praxis, Definition von Diskrepanztypen, Validierung durch unabhängige Entscheidungsträger, Effizienz bei nicht-kompensatorischen Modellen, Ausreichendkeit von 10.000 Monte-Carlo-Simulationen.
+
+2. Background
+2.1. Distributed and shared mental models
+- Gruppen besitzen mehr Wissen als Einzelpersonen, treffen aber nicht immer bessere Entscheidungen.
+- Hidden Profile-Forschung untersucht, warum Gruppen ihr Potenzial nicht ausschöpfen.
+- Unterschiedliches Wissen führt zu verteilten mentalen Modellen (DMM) und Diskrepanzen in Urteilen und Präferenzen.
+- Korrekte Entscheidung ist die, auf die sich alle nach Teilen ihrer mentalen Modelle einigen würden.
+- Gruppen können das korrekte Urteil finden, wenn sie erfolgreich Informationen austauschen.
+- Dissens ist für die Entscheidungsqualität notwendig; Minderheiteninformationen sind entscheidend.
+- Konsensalgorithmen sollten Diskrepanzen identifizieren, die den Konsens am meisten verbessern.
+- Klärungskonferenzen helfen, DMM in geteilte Modelle umzuwandeln und Diskrepanzen aufzulösen.
+- CMAA-Ansatz zeigt, dass Klärungskonferenzen nur für einen Teil der Diskrepanzen nötig sind.
+
+
+2.2. Treatment of groups in MCDM
+- Multi-Kriterien-Entscheidungsmethoden sind für einzelne Entscheidungsträger konzipiert; Aggregation für Gruppen nötig.
+- Aggregierte Werte können irreführend sein und wichtige Informationen unterdrücken.
+- Konsensmessung basiert oft auf Distanzen zwischen Bewertungen oder Rankings.
+- Konsensbildung zielt darauf ab, Ausreißerwerte zu korrigieren, meist in Richtung des Gruppendurchschnitts.
+- Unterschiedliche Distanzmetriken beeinflussen die Konsensgeschwindigkeit.
+- Entscheidungsträgergewichtung basiert auf subjektiven (Erfahrung) oder objektiven (Eingabewerten) Kriterien.
+- Anpassungen der Eingaben können Kosten verursachen; Toleranzniveaus werden berücksichtigt.
+- Konsensmodelle fördern arithmetischen Kompromiss, aber Minderheitsargumente können entscheidend sein.
+- Für kooperative, rationale Gruppen sollte kein Entscheidungseingang bevorzugt werden.
+
+3. Combinatorial Multicriteria Acceptability Analysis
+3.1. Motivation and basic approach
+- CMAA ermöglicht Gruppen die Nutzung ihrer bevorzugten Multi-Kriterien-Entscheidungsmethoden.
+- Unterscheidet sich von anderen Ansätzen durch separate Beibehaltung von Benutzereingaben.
+- Erzeugt Entscheidungsinstanzen durch Kombination von Eingaben verschiedener Entscheidungsträger.
+- Ziel ist es, die korrekte Entscheidung zu finden, die sich aus dem geteilten mentalen Modell ergibt.
+- In der Praxis müssen nur wenige Diskrepanzen gelöst werden, da viele Instanzen zur gleichen bevorzugten Alternative führen.
+- CMAA bietet Entscheidungsanalyse und zukunftsorientierte Anleitung für den Konsensbildungsprozess.
+- Benötigt nur, dass die Entscheidungsmethode die bevorzugte Alternative oder ein vollständiges Ranking zurückgibt.
+- Aggregierte Urteilsmatrizen und Präferenzvektoren zeigen Übereinstimmungen und Differenzen der Entscheidungsträger auf.
+- Die Anzahl der Instanzen wächst mit der Anzahl der Diskrepanzen; Monte Carlo-Simulation vermeidet lange Berechnungszeiten
+
+
+3.2. Acceptability
+- Hauptanalysevariable in CMAA ist der Rangakzeptanzindex bi1, die relative Häufigkeit der besten Rangposition einer Alternative.
+- Akzeptanzwerte größer als 1 entstehen, wenn mehrere Alternativen bevorzugt werden.
+- Hohe Akzeptanz zeigt starke Unterstützung im Zustandsraum, niedrige Akzeptanz schwache Unterstützung.
+- Charakterisierung als 'starke' und 'schwache' Alternativen, nicht als Wahrscheinlichkeit der Auswahl.
+- Urteils- und Präferenzakzeptanz messen den Einfluss jedes einzelnen Entscheidungsträgereingangs.
+- Akzeptanz kann den aktuellen Zustand oder potenzielle zukünftige Zustände der Entscheidung widerspiegeln.
+- Beispiel: Alternative a1 ist mit 75% Akzeptanz die stärkste, Summe der Akzeptanzen übersteigt 1 aufgrund von Unentschieden.
+
+3.3. Entropy-based consensus-building heuristic
+- Konsensbildung in CMAA nutzt Informationsentropie zur Fortschrittsmessung.
+- Entropie misst Unsicherheit in Wahrscheinlichkeitsverteilungen; niedrige Entropie zeigt klare Präferenzen.
+- Normalisierte Akzeptanzen bestimmen die Trennung der Alternativen in 'schwache' und 'starke'.
+- Urteils- und Präferenzentropien zeigen den Einfluss von möglichen Auflösungen auf die Akzeptanz.
+- Kleinste Entropiewerte identifizieren die effektivste Diskrepanzauflösung für den Konsens.
+- Entscheidungsträger streben nach Entropiereduktion durch einstimmige Auflösung von Diskrepanzen.
+- Prozess endet bei hartem Konsens (Entropie 0), weichem Konsens (unter Schwellenwert) oder ausreichender Akzeptanz.
+- Heuristik ist myopisch und optimistisch, da sie nur einen Schritt vorausschaut und auf beste Auflösung setzt.
+- Entscheidungsträger können Diskrepanzen anders auflösen, was Entropie verringern oder erhöhen kann.
+
+3.4. Inactive, active and pivot discrepancies
+- CMAA zielt darauf ab, den Einfluss jeder Diskrepanzauflösung auf die Akzeptanz zu bestimmen.
+- Unterscheidung zwischen aktiven, inaktiven und Pivot-Diskrepanzen.
+- Inaktive Diskrepanzen beeinflussen das Ergebnis nicht und können ignoriert werden.
+- Aktive Diskrepanzen führen zu unterschiedlichen Akzeptanzen und leiten den Konsensprozess.
+- Pivot-Diskrepanzen können die Akzeptanz einer Alternative auf null reduzieren und vereinfachen die Entscheidung.
+- Konsens ist erreicht, wenn keine aktiven Diskrepanzen mehr vorhanden sind.
+- Wissen über aktive, inaktive und Pivot-Diskrepanzen unterstützt die Steuerung des Konsensprozesses.
+
+4. The product-development decision problem
+4.1. The decision context
+- Drei Postdoktoranden planen die Gründung eines Biotechnologie-Startups in Deutschland.
+- Entwicklung von zwei Technologien für die Viruszüchtung in der Impfstoffherstellung und Gentherapie.
+- Die Gründer bilden eine kooperative, rationale Gruppe ohne Erfahrung in formalen Entscheidungsmethoden.
+- Erfindung 1: Bioreaktor mit schnellerem Durchsatz und ohne Risiko von Virusmutationen.
+- Erfindung 2: Reinigungsgerät mit neuem Filtermaterial, kostengünstiger und effizienter als bestehende Technologien.
+- Gründer mit PhDs in Bioprozesstechnik; Aufgaben verteilt auf Technologieentwicklung und Geschäftsentwicklung.
+- Entscheidung im Rahmen eines staatlichen Förderprogramms mit dem Ziel, Venture Capital zu sichern.
+- Auswahl aus sechs Laborversuchen zur Weiterentwicklung der Produkte.
+- Hohe Unsicherheit bezüglich Technologieperformance, Skalierbarkeit und Marktanerkennung.
+- Neue Geräte müssen bestehende Lösungen übertreffen und unabhängige Anwendungstests bestehen.
+
+4.2. The decision problem
+- Sechs Alternativen (a1 bis a6) und sechs Kriterien (c1 bis c6) für die Entscheidungsfindung.
+- Alternativen betreffen Bioreaktor (a1, a2, a3) und Filterprodukt (a4, a5, a6) mit unterschiedlichen Zeitrahmen.
+- "Neues Virus" bezieht sich auf COVID-19-Impfstoffkandidaten; zwei Alternativen bieten neue Anwendungsmöglichkeiten.
+- Leistungskriterien umfassen Kundenattraktivität, Patentierbarkeit, Erfolgswahrscheinlichkeit, schnelle Ergebnisse, MVP-Relevanz und Venture-Capital-Chancen.
+- Nicht-kompensatorisches Entscheidungsmodell mit ordinalen Kriterien verwendet, da starke Leistung in einem Kriterium ausschlaggebend sein kann.
+- Entscheidungsträger (DM1, DM2, DM3) geben optimistische Urteile ab; nur wenige Bewertungen mit niedriger Leistung (X).
+- Aggregierte Urteile zeigen 19 Diskrepanzen; insgesamt über 500.000 Urteilsinstanzen.
+- Präferenzvektoren weisen sechs Diskrepanzen auf; 200 mögliche Kriterienvektoren.
+- Insgesamt über 100 Millionen Entscheidungsinstanzen für das Problem.
+- Anfängliche Akzeptanzindizes (vor Normalisierung) zeigen Verteilung der Präferenzen zwischen den Alternativen.
+
+4.3. Decision-maker input
+- Entscheidungsträger gaben optimistische Erstbewertungen und Kriterienpräferenzen per E-Mail ab.
+- Von 108 Urteilen wurden nur sieben als niedrige Leistung (X) bewertet.
+- Aggregierte Leistungsbewertungen zeigen 19 Diskrepanzen; insgesamt 524.288 Urteilsinstanzen.
+- Präferenzvektoren offenbaren sechs Präferenzdiskrepanzen ohne einheitliche Priorität.
+- Nur zwei Entscheidungsträger waren sich über die Priorität eines Kriteriums sicher.
+- Die Anzahl möglicher Kriterienvektoren pro Entscheidungsträger ist gering (4, 2, 2).
+- Insgesamt ergibt sich eine Anzahl von 104.857.600 Entscheidungsinstanzen.
+- Anfängliche Akzeptanzindizes summieren sich auf 1.08, bevor sie normalisiert werden.
+
+4.4. Initial acceptability analysis
+- CMAA-Analyse ergibt Rangfolge mit Alternative a3 an der Spitze.
+- Entropie nahe am Maximum deutet auf hohe Unsicherheit hin; Analyse von über 100 Millionen Instanzen in 76 Sekunden.
+- Alternative a3 würde bevorzugt, wenn keine weitere Konsensphase folgt, was jedoch falsch wäre.
+- Aktuelle Akzeptabilitäten zeigen Einfluss von Urteilen und Präferenzen auf Alternativen.
+- Analyse liefert Sensitivitätsinformationen und identifiziert einflussreiche Diskrepanzen.
+- Wichtig für Entscheidungsfindung, wenn vollständiger Konsens unwahrscheinlich ist.
+- CMAA hilft bei teilweisem Konsens, 'Was-wäre-wenn'-Fragen und Orientierung bei gescheiterten Klärungsversuchen.
+- Diskussionen über Prioritäten und Kriterien können Entscheidungsunsicherheit verringern.
+
+5. Consensus-building and decision-maker feedback
+5.1. Consensus-building
+
+
+5.2. Feedback from the decision-makers
+
