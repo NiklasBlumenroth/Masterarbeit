@@ -28,13 +28,13 @@ public class Nutzwertanalyse {
     public static String fileNameFuzzy;
 
     public static void main(String[] args) throws IOException {
-        int[] alternatives = {5, 10, 15};
-        int[] criteria = {3, 6};
-        int[] numberOfDecisionMakers = {3, 6};
+        int[] alternatives = {7};
+        int[] criteria = {5};
+        int[] numberOfDecisionMakers = {5};
 
         boolean full = false;
-        boolean useStaticProblem = false;
-        boolean lex = true;
+        boolean useStaticProblem = true;
+        boolean lex = false;
         boolean show = false;
 
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss_MM_dd_yyyy");
@@ -70,7 +70,7 @@ public class Nutzwertanalyse {
         berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
         fileNameLex = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         fileExist(fileNameLex);
-        berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        berechnungsName = "FuzzySAW static" + numberOfDecisionMaker + " x " + alt + " x " + crit;
         fileNameFuzzy = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         fileExist(fileNameFuzzy);
 
@@ -81,7 +81,7 @@ public class Nutzwertanalyse {
         int[][] decisionMakerWeightsList = null;
         int indivPathLength = 0;
         double avgPathLength = 0;
-        int durchlaeufe = 100;
+        int durchlaeufe = 1000;
 
         int linesInFile = getLines(fileNameFuzzy);
         for (int l = linesInFile; l < number; l++) {
@@ -99,55 +99,6 @@ public class Nutzwertanalyse {
                 aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
                 aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
-            lex = true;
-            for (int k = 0; k < durchlaeufe; k++) {
-                List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-
-                if(lowestValue.size() == 0){
-                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
-                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
-                    //generates aggregated matrix and fill with -1
-                    aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                    aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-                    k=-1;
-                    newProblem = false;
-                    System.out.println("new");
-                    continue;
-                }
-                indivPathLength++;
-                while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
-                    getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, lex);
-                    if(newProblem){
-                        indivPathLength = 0;
-                        break;
-                    }
-                    lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-                    indivPathLength++;
-                }
-//                System.out.println("idealCounter = " + idealCounter);
-                idealCounter = 0;
-                if(newProblem){
-                    decisionMakerList = MonteCarloHelper.generateDecisionMakerList(numberOfDecisionMaker, alt, crit, lex);
-                    decisionMakerWeightsList = MonteCarloHelper.generateDecisionMakerWeightList(numberOfDecisionMaker, crit, lex);
-                    k--;
-                    newProblem = false;
-                }else {
-                    //Nutzwertanalyse.writeTxt(k + ": Pfadlänge: " + indivPathLength);
-                    avgPathLength += indivPathLength;
-                }
-                indivPathLength = 0;
-
-                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
-            }
-            if(!newProblem){
-                endDate = new Date();
-                Nutzwertanalyse.writeTxt(l + " Durchschnittliche Pfadlänge = " + avgPathLength / durchlaeufe + " : " + endDate);
-                }
-            avgPathLength = 0;
-
-            aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-            aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             //FUZZY SAW
             lex = false;
             for (int k = 0; k < durchlaeufe; k++) {
