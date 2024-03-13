@@ -73,21 +73,44 @@ public class testFileClass {
 
          */
 
-        String berechnungsName = numberOfDecisionMaker + " x " + alt + " x " + crit;
-        if(lex){
-            berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-        }else {
-            berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
-        }
-        String dir = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\";
-        Set<String> set = Stream.of(new File(dir).listFiles())
-                .filter(file -> !file.isDirectory())
-                .map(File::getName)
-                .collect(Collectors.toSet());
-        for(String path : set){
-            System.out.println(path + " -> " + getSavedValue(dir + path));
-        }
-        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
-        System.out.println(getSavedValue(fileName));
+        String berechnungsName = "FuzzySAW static5 x 7 x 5.txt";
+        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName;
+        getHeuristic(fileName);
+
     }
+    private static void getHeuristic(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+        String txt = "";
+        List<Integer> list = new ArrayList<>();
+        while((line = br.readLine()) != null){
+            if(line.length() > 5){
+                try{
+
+                }catch (Exception e){
+
+                }
+                String lineValue = line.substring(line.indexOf("=") + 1, line.indexOf(":")-1);
+                lineValue = lineValue.replace(" ", "");
+                lineValue = lineValue.substring(0, lineValue.indexOf("."));
+                list.add(Integer.valueOf(lineValue));
+            }
+        }
+        int[] heuristic = new int[50];
+
+        for(int i = 0; i < heuristic.length; i++){
+            heuristic[i] = 0;
+        }
+
+        for(Integer value: list){
+            heuristic[value]++;
+        }
+
+        for(int i = 0; i < heuristic.length; i++){
+            System.out.println(heuristic[i]);//ausgabe beginnt mit pfadlänge = 0
+        }
+    }
+
 }

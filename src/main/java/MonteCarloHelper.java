@@ -104,11 +104,6 @@ public class MonteCarloHelper {
         int prefCounter = 0;
         int jugCounter = 0;
         for(int i = 0; i < iteration; i++){
-            if(useStaticProblem){
-                if(i % 100_000 == 0){
-                    System.out.println(i);
-                }
-            }
             if(full){
                 if(jugCounter == judgementCombinationList.length){
                     jugCounter = 0;
@@ -159,9 +154,6 @@ public class MonteCarloHelper {
                     Helper.show2DArray(objectCurrentPreferenceAcceptabilityIndices[j]);
                 }
             }
-        }
-        if(useStaticProblem){
-            show = true;
         }
         if(show){
             Nutzwertanalyse.writeTxt("k: " + k);

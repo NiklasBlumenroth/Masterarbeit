@@ -10,7 +10,7 @@ public class Nutzwertanalyse {
         if(lex){
             return getLexMatrix();
         }
-        return getFuzzyMatrix();
+        return getStudyFuzzyJudgement();
     }
 
     public static ArrayList<Object>[] getWeights(boolean lex) {
@@ -18,7 +18,65 @@ public class Nutzwertanalyse {
         if(lex){
             return getLexWeights();
         }
-        return getFuzzyWeights();
+        return getStudyFuzzyPreference();
+    }
+
+    public static ArrayList<Object>[] getStudyFuzzyPreference() {
+        return new ArrayList[]{
+                new ArrayList<>(){{add(4); add(3);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(2);add(1);add(4);}},
+                new ArrayList<>(){{add(2); add(0); add(3);}},
+                new ArrayList<>(){{add(3); add(2);}},
+        };
+    }
+
+    public static ArrayList<Object>[][] getStudyFuzzyJudgement() {
+        return new ArrayList[][]{
+                {//alternative 1 done
+                        new ArrayList<>(){{add(1); add(2); add(3); add(4);}},
+                        new ArrayList<>(){{add(0); add(1);add(2);}},
+                        new ArrayList<>(){{add(1);}},
+                        new ArrayList<>(){{add(1); add(2); add(3);}},
+                        new ArrayList<>(){{add(1);add(2);add(3);;}}
+                },{//alternative 2 done
+                new ArrayList<>(){{add(2);add(1);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(3);add(2);add(1);add(4);}}
+        },{//alternative 3 done
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(1);add(4);}},
+                new ArrayList<>(){{ add(3);add(4);}},
+                new ArrayList<>(){{add(3);add(4);}}
+        },{//alternative 4 done
+                new ArrayList<>(){{ add(4);add(2);}},
+                new ArrayList<>(){{add(0);add(2);add(1);}},
+                new ArrayList<>(){{add(0); add(1); add(2); }},
+                new ArrayList<>(){{add(2); add(3); add(4);}},
+                new ArrayList<>(){{add(2);add(1);add(4);}}
+        },{//alternative 5
+                new ArrayList<>(){{add(4);add(3);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(2);add(1);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(2);add(3);}}
+        },{//alternative 6
+                new ArrayList<>(){{add(3); }},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(2);}}
+        },{//alternative 7
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(3); add(2); }},
+                new ArrayList<>(){{add(1); add(2); add(3);}},
+                new ArrayList<>(){{add(2); add(3); }},
+                new ArrayList<>(){{add(2); add(3);}}
+        }
+        };
     }
 
     public static double currentEntropy;
@@ -44,7 +102,7 @@ public class Nutzwertanalyse {
 //        fileName = logPath + curr_date +".txt";
 //        fileExist(fileName);
 //        Nutzwertanalyse.writeTxt("newText");
-        for(int i = 0; i < 1001; i += 10){
+        for(int i = 0; i < 100001; i += 100){
 //            rechnen(5, 5, 3, full, lex, useStaticProblem, show, i);
             for(int alt : alternatives){
                 for(int crit : criteria){
@@ -81,14 +139,14 @@ public class Nutzwertanalyse {
         int[][] decisionMakerWeightsList = null;
         int indivPathLength = 0;
         double avgPathLength = 0;
-        int durchlaeufe = 1000;
+        int durchlaeufe = 1;
 
         int linesInFile = getLines(fileNameFuzzy);
         for (int l = linesInFile; l < number; l++) {
+            //gets static problem matrix
+            ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
+            ArrayList<Object>[] staticAggregatedWeights = getWeights(lex);
             if(useStaticProblem){
-                //gets static problem matrix
-                ArrayList<Object>[][] staticAggregatedMatrix = getMatrix(lex);
-                ArrayList<Object>[] staticAggregatedWeights = getWeights(lex);
                 //transfer static arraylist problem to matrix filled with judgements and -1
                 aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
                 aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
@@ -103,7 +161,7 @@ public class Nutzwertanalyse {
             lex = false;
             for (int k = 0; k < durchlaeufe; k++) {
                 List<LowestValueObject> lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, lex, show, useStaticProblem);
-                indivPathLength++;
+
                 while (currentEntropy != 0) {//currentEntropy > calculateMaxEntropy * 0.1
                     getRandomPath(aggregatedMatrix, aggregatedWeights, lowestValue, false);
                     lowestValue = MonteCarloHelper.showMonteCarloSaw(aggregatedMatrix, aggregatedWeights, full, false, show, useStaticProblem);
@@ -113,9 +171,8 @@ public class Nutzwertanalyse {
                 idealCounter = 0;
                 avgPathLength += indivPathLength;
                 indivPathLength = 0;
-
-                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
-                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
+                aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
+                aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
             }
 
             if(!newProblem){
