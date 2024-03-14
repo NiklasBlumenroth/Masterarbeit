@@ -25,7 +25,7 @@ public class Nutzwertanalyse {
         return new ArrayList[]{
                 new ArrayList<>(){{add(4); add(3);}},
                 new ArrayList<>(){{add(3); add(2);}},
-                new ArrayList<>(){{add(2);add(1);add(4);}},
+                new ArrayList<>(){{add(2);}},
                 new ArrayList<>(){{add(2); add(0); add(3);}},
                 new ArrayList<>(){{add(3); add(2);}},
         };
@@ -40,32 +40,32 @@ public class Nutzwertanalyse {
                         new ArrayList<>(){{add(1); add(2); add(3);}},
                         new ArrayList<>(){{add(1);add(2);add(3);;}}
                 },{//alternative 2 done
-                new ArrayList<>(){{add(2);add(1);add(4);}},
-                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(2);}},
+                new ArrayList<>(){{add(3);}},
                 new ArrayList<>(){{add(2); add(3);}},
                 new ArrayList<>(){{add(2); add(3);}},
-                new ArrayList<>(){{add(3);add(2);add(1);add(4);}}
+                new ArrayList<>(){{add(3);}}
         },{//alternative 3 done
-                new ArrayList<>(){{add(3);add(2);add(4);}},
-                new ArrayList<>(){{add(3);add(2);add(4);}},
-                new ArrayList<>(){{add(3);add(2);add(1);add(4);}},
-                new ArrayList<>(){{ add(3);add(4);}},
-                new ArrayList<>(){{add(3);add(4);}}
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(3);}}
         },{//alternative 4 done
-                new ArrayList<>(){{ add(4);add(2);}},
-                new ArrayList<>(){{add(0);add(2);add(1);}},
+                new ArrayList<>(){{add(4);}},
+                new ArrayList<>(){{add(0);}},
                 new ArrayList<>(){{add(0); add(1); add(2); }},
                 new ArrayList<>(){{add(2); add(3); add(4);}},
-                new ArrayList<>(){{add(2);add(1);add(4);}}
+                new ArrayList<>(){{add(2);}}
         },{//alternative 5
-                new ArrayList<>(){{add(4);add(3);}},
+                new ArrayList<>(){{add(4);}},
                 new ArrayList<>(){{add(2); add(3);}},
-                new ArrayList<>(){{add(2);add(1);}},
-                new ArrayList<>(){{add(3);add(2);add(4);}},
-                new ArrayList<>(){{add(2);add(3);}}
+                new ArrayList<>(){{add(2);}},
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(2);}}
         },{//alternative 6
                 new ArrayList<>(){{add(3); }},
-                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3);}},
                 new ArrayList<>(){{add(3); add(2);}},
                 new ArrayList<>(){{add(3); add(2);}},
                 new ArrayList<>(){{add(2);}}
@@ -74,7 +74,7 @@ public class Nutzwertanalyse {
                 new ArrayList<>(){{add(3); add(2); }},
                 new ArrayList<>(){{add(1); add(2); add(3);}},
                 new ArrayList<>(){{add(2); add(3); }},
-                new ArrayList<>(){{add(2); add(3);}}
+                new ArrayList<>(){{add(2);}}
         }
         };
     }
@@ -90,7 +90,7 @@ public class Nutzwertanalyse {
         int[] criteria = {5};
         int[] numberOfDecisionMakers = {5};
 
-        boolean full = false;
+        boolean full = true;
         boolean useStaticProblem = true;
         boolean lex = false;
         boolean show = false;
@@ -102,17 +102,11 @@ public class Nutzwertanalyse {
 //        fileName = logPath + curr_date +".txt";
 //        fileExist(fileName);
 //        Nutzwertanalyse.writeTxt("newText");
-        for(int i = 0; i < 100001; i += 100){
+        for(int i = 0; i < 470; i += 10){
 //            rechnen(5, 5, 3, full, lex, useStaticProblem, show, i);
             for(int alt : alternatives){
                 for(int crit : criteria){
                     for(int num : numberOfDecisionMakers){
-                        if(num == 6 && alt == 15 && crit == 6){
-
-                        }else {
-                            //rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
-                        }
-                        //rechnen(6, 6, 6, full, lex, useStaticProblem, show, i);
                         rechnen(alt, crit, num, full, lex, useStaticProblem, show, i);
                     }
                 }
@@ -128,7 +122,7 @@ public class Nutzwertanalyse {
         berechnungsName = "Lex " + numberOfDecisionMaker + " x " + alt + " x " + crit;
         fileNameLex = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         fileExist(fileNameLex);
-        berechnungsName = "FuzzySAW static" + numberOfDecisionMaker + " x " + alt + " x " + crit;
+        berechnungsName = "FuzzySAW " + numberOfDecisionMaker + " x " + alt + " x " + crit;
         fileNameFuzzy = System.getProperty("user.dir") + "\\src\\main\\resources\\Berechnungen\\" + berechnungsName + ".txt";
         fileExist(fileNameFuzzy);
 
@@ -139,7 +133,7 @@ public class Nutzwertanalyse {
         int[][] decisionMakerWeightsList = null;
         int indivPathLength = 0;
         double avgPathLength = 0;
-        int durchlaeufe = 1;
+        int durchlaeufe = 1000;
 
         int linesInFile = getLines(fileNameFuzzy);
         for (int l = linesInFile; l < number; l++) {
@@ -171,8 +165,8 @@ public class Nutzwertanalyse {
                 idealCounter = 0;
                 avgPathLength += indivPathLength;
                 indivPathLength = 0;
-                aggregatedMatrix = transferStaticAggregatedMatrixToIntArray(staticAggregatedMatrix);
-                aggregatedWeights = transferStaticAggregatedWeightToIntArray(staticAggregatedWeights);
+                aggregatedMatrix = MonteCarloHelper.generateAggregatedMatrix(decisionMakerList);
+                aggregatedWeights = MonteCarloHelper.generateAggregatedWeights(decisionMakerWeightsList);
             }
 
             if(!newProblem){
@@ -222,17 +216,17 @@ public class Nutzwertanalyse {
     @SneakyThrows
     public static void writeTxt(String newText) {
         System.out.println(newText);
-        FileWriter fw = new FileWriter(fileNameLex,true); //the true will append the new data
-        fw.write(newText + "\n");//appends the string to the file
-        fw.close();
+        //FileWriter fw = new FileWriter(fileNameLex,true); //the true will append the new data
+        //fw.write(newText + "\n");//appends the string to the file
+        //fw.close();
     }
 
     @SneakyThrows
     public static void writeTxtFuzzy(String newText) {
         System.out.println(newText);
-        FileWriter fw = new FileWriter(fileNameFuzzy,true); //the true will append the new data
-        fw.write(newText + "\n");//appends the string to the file
-        fw.close();
+        //FileWriter fw = new FileWriter(fileNameFuzzy,true); //the true will append the new data
+        //fw.write(newText + "\n");//appends the string to the file
+        //fw.close();
     }
 
     public static void getIdealPath(int[][][] aggregatedMatrix, int[][] aggregatedWeights, List<LowestValueObject> lowestValues, boolean lex) {
@@ -578,3 +572,63 @@ public class Nutzwertanalyse {
         };
     }
 }
+/*
+public static ArrayList<Object>[] getStudyFuzzyPreference() {
+        return new ArrayList[]{
+                new ArrayList<>(){{add(4); add(3);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(2);add(1);add(4);}},
+                new ArrayList<>(){{add(2); add(0); add(3);}},
+                new ArrayList<>(){{add(3); add(2);}},
+        };
+    }
+
+    public static ArrayList<Object>[][] getStudyFuzzyJudgement() {
+        return new ArrayList[][]{
+                {//alternative 1 done
+                        new ArrayList<>(){{add(1); add(2); add(3); add(4);}},
+                        new ArrayList<>(){{add(0); add(1);add(2);}},
+                        new ArrayList<>(){{add(1);}},
+                        new ArrayList<>(){{add(1); add(2); add(3);}},
+                        new ArrayList<>(){{add(1);add(2);add(3);;}}
+                },{//alternative 2 done
+                new ArrayList<>(){{add(2);add(1);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(3);add(2);add(1);add(4);}}
+        },{//alternative 3 done
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3);add(2);add(1);add(4);}},
+                new ArrayList<>(){{ add(3);add(4);}},
+                new ArrayList<>(){{add(3);add(4);}}
+        },{//alternative 4 done
+                new ArrayList<>(){{ add(4);add(2);}},
+                new ArrayList<>(){{add(0);add(2);add(1);}},
+                new ArrayList<>(){{add(0); add(1); add(2); }},
+                new ArrayList<>(){{add(2); add(3); add(4);}},
+                new ArrayList<>(){{add(2);add(1);add(4);}}
+        },{//alternative 5
+                new ArrayList<>(){{add(4);add(3);}},
+                new ArrayList<>(){{add(2); add(3);}},
+                new ArrayList<>(){{add(2);add(1);}},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(2);add(3);}}
+        },{//alternative 6
+                new ArrayList<>(){{add(3); }},
+                new ArrayList<>(){{add(3);add(2);add(4);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(3); add(2);}},
+                new ArrayList<>(){{add(2);}}
+        },{//alternative 7
+                new ArrayList<>(){{add(3);}},
+                new ArrayList<>(){{add(3); add(2); }},
+                new ArrayList<>(){{add(1); add(2); add(3);}},
+                new ArrayList<>(){{add(2); add(3); }},
+                new ArrayList<>(){{add(2); add(3);}}
+        }
+        };
+    }
+
+ */

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class MonteCarloHelper {
-    public static int monteCarloIterations = 10_000;
+    public static int monteCarloIterations = 10_0000;
     public static int iteration;
     public static int alternative;
     public static int criteria;
@@ -155,6 +155,7 @@ public class MonteCarloHelper {
                 }
             }
         }
+        show = true;
         if(show){
             Nutzwertanalyse.writeTxt("k: " + k);
 
@@ -402,9 +403,6 @@ public class MonteCarloHelper {
                     exp++;
                 }
             }
-        }
-        if(exp > 5){
-            return null;
         }
 
         int[][] aggregatedMatrixListForm = new int[aggregatedMatrix.length * aggregatedMatrix[0].length][];
